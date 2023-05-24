@@ -11,18 +11,18 @@ import javax.swing.SwingUtilities;
  */
 public class MainFrame extends JFrame{
     final int SIZE = 800;
-    JPanel mainPanel = new JPanel();
     
     public MainFrame(){
         setTitle("Escape Room");
         setSize(SIZE,SIZE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        
-        setContentPane(mainPanel);
         setVisible(true);
         
-        new GameEngine(mainPanel);
+        new GameEngine( (JPanel p) -> {
+            setContentPane(p);
+            revalidate();
+        }  );
     }
     
     public static void main(String[] args) {

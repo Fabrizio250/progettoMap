@@ -5,6 +5,7 @@
 package hasbullateam.escape_room;
 
 import java.awt.Color;
+import java.util.function.Consumer;
 import javax.swing.JPanel;
 
 /**
@@ -12,16 +13,14 @@ import javax.swing.JPanel;
  * @author giuse
  */
 public class GameEngine{
-    JPanel mainPanel;
     
-    public GameEngine(JPanel jPanel){
-        this.mainPanel = jPanel;
-        mainPanel.setBackground(Color.red);
-        refresh();
+    public GameEngine( Consumer<JPanel> setPanel ){
+        JPanel lol = new JPanel();
+        lol.setBackground(Color.red);
+        
+        setPanel.accept( lol );
         
     }
     
-    private void refresh(){
-        mainPanel.revalidate();
-    }
+
 }
