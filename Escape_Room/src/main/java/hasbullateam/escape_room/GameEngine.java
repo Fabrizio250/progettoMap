@@ -2,6 +2,7 @@
 package hasbullateam.escape_room;
 
 
+import hasbullateam.escape_room.escape_room_game.EscapeRoom;
 import java.util.function.Consumer;
 import javax.swing.JPanel;
 

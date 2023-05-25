@@ -18,6 +18,7 @@ public class MainFrame extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
+        setFocusable(true);
         
         new GameEngine( (JPanel p) -> {
             setContentPane(p);
