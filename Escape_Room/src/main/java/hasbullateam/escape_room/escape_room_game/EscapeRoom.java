@@ -4,10 +4,14 @@ package hasbullateam.escape_room.escape_room_game;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -16,9 +20,10 @@ import javax.swing.JPanel;
  * @author giuse
  */
 public class EscapeRoom extends JPanel{
-    static final int GRID_SIZE = 32;
+    static final int GRID_SIZE = 10;
     SquarePanel matrix[][];
     PlayerSquarePanel player;
+    ImageManager backgroundImage;
     
     public EscapeRoom() {
         //------------- non toccare -------------
@@ -29,12 +34,50 @@ public class EscapeRoom extends JPanel{
         this.setFocusable(true);
         this.addAncestorListener(new RequestFocusListener());
         this.addKeyListener(new KeyboardInput());
-        //----------------------------------------
-        
-        player = new PlayerSquarePanel( new Cord(GRID_SIZE/2, GRID_SIZE/2) );
+        //---------------- player ------------------
+        player = new PlayerSquarePanel( new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png" );
         player.setOccupiedSquare(getMatrixSquare(player.position));
         setSquare(player);
-       
+        //---------------- background image ----------
+        backgroundImage = new ImageManager("images\\prigione.jpg");
+        
+        //-------- stanza ------
+        Room atrio = new Room("images\\prigione.jpg");
+        atrio.addObject("lol", new ObjectSquare(new Cord( 4,4 ), "images\\player.png" )  );
+        loadRoom(atrio);
+        
+        setSquare(new SquarePanel(new Cord(6,6), Color.red));
+
+    }
+    
+    public void startGame(){
+        
+    }
+    
+    public void loadRoom(Room room){
+        // carica background
+        this.backgroundImage = new ImageManager(room.backGroundPath);
+        
+        // carica object
+        for(ObjectSquare obj: room.objects.values()){
+            loadObjectSquare(obj);
+        }
+        
+        // carica player
+        changePlayerPosition(room.playerStarPosition);
+    }
+    
+    public void loadObjectSquare(ObjectSquare obj){
+        this.setSquare(new SquarePanel(obj.position, obj.pathImage) );
+    }
+    
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        //------- disegna background ---------
+        this.backgroundImage.resizeOnFirstDrawn(this.getWidth(), this.getHeight());
+        g.drawImage(backgroundImage.getImage(), 0, 0, null);
+        //------------------------------------
     }
     
     private void movePlayer(Command command){
@@ -86,8 +129,8 @@ public class EscapeRoom extends JPanel{
         for(int y = 0; y<GRID_SIZE; y++){
             for(int x = 0; x<GRID_SIZE; x++){
                 
-                setMatrixSquare(  new SquarePanel( new Cord(x,y), 
-                new Color( rd.nextInt(100), rd.nextInt(100), rd.nextInt(100) ) ));
+                setMatrixSquare(  new SquarePanel( new Cord(x,y)));
+                //new Color( rd.nextInt(100), rd.nextInt(100), rd.nextInt(100) ) ));
                 
                 this.add( getMatrixSquare(x, y), getMatrixSquare(x, y).position.getIndex(GRID_SIZE) );
             }
