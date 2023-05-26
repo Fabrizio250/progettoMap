@@ -19,6 +19,8 @@ import javax.swing.JPanel;
  *
  * @author giuse
  */
+
+//TODO: creare GridPanel
 public class EscapeRoom extends JPanel{
     static final int GRID_SIZE = 10;
     SquarePanel matrix[][];
@@ -61,8 +63,7 @@ public class EscapeRoom extends JPanel{
         player = new PlayerSquarePanel( room.playerStarPosition, room.playerPathImage);
         player.setOccupiedSquare(getMatrixSquare(player.position));
         setSquare(player);
-        
-        //changePlayerPosition(room.playerStarPosition);
+
     }
     
     public void loadObjectSquare(ObjectSquare obj){
@@ -106,8 +107,9 @@ public class EscapeRoom extends JPanel{
         if (newPostion.y > GRID_SIZE-1){newPostion.y = GRID_SIZE-1;}
         
         setSquare(player.occupiedSquare);
-        player.setOccupiedSquare( getMatrixSquare(newPostion).clone() );
+        player.setOccupiedSquare( getMatrixSquare(newPostion) );
         player.position = newPostion;
+        //player.add( player.occupiedSquare );
         setSquare(player);
         
         revalidate();
