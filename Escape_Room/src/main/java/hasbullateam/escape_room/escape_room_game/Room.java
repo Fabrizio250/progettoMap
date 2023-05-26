@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class Room {
     String backGroundPath;
-    Map<String,ObjectSquare> objects;
+    Map<Cord,ObjectSquare> objects;
     Cord playerStarPosition;
     String playerPathImage;
 
@@ -29,8 +29,15 @@ public class Room {
     }
     
     
-    public void addObject(String name, ObjectSquare obj){
-        objects.put(name, obj);
+    public void addObject(ObjectSquare obj){
+        objects.put(obj.position, obj);
     }
-   
+    
+    public ObjectSquare getObject(Cord cord){
+        return this.objects.get(cord);
+    }
+    
+    public boolean containsObject(Cord cord){
+        return this.objects.containsKey(cord);
+    }
 }

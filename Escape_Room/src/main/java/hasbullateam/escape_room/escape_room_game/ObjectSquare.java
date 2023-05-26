@@ -10,10 +10,14 @@ import hasbullateam.escape_room.type.Cord;
 public class ObjectSquare {
     Cord position;
     String pathImage;
+    String name;
+    boolean isPassable;
     
-    public ObjectSquare(Cord position, String pathImage) {
+    public ObjectSquare(String name, Cord position, String pathImage, boolean isPassable) {
+        this.name = name;
         this.position = position;
         this.pathImage = pathImage;
+        this.isPassable = isPassable;
     }
     
 }

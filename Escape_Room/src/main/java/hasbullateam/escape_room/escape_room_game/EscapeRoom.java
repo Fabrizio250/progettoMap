@@ -26,6 +26,7 @@ public class EscapeRoom extends JPanel{
     SquarePanel matrix[][];
     PlayerSquarePanel player;
     ImageManager backgroundImage;
+    Room room;
     
     public EscapeRoom() {
         //------------- init GridPanel -------------
@@ -38,9 +39,9 @@ public class EscapeRoom extends JPanel{
         this.addKeyListener(new KeyboardInput());
         
         //-------- stanza ------
-        Room atrio = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
-        atrio.addObject("lol", new ObjectSquare(new Cord( 4,4 ), "images\\player.png" )  );
-        loadRoom(atrio);
+        room = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
+        room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player.png" , false)  );
+        loadRoom(room);
         
         setSquare(new SquarePanel(new Cord(6,6), Color.red));
 
@@ -105,6 +106,12 @@ public class EscapeRoom extends JPanel{
         if (newPostion.y < 0){newPostion.y = 0;}
         if (newPostion.x > GRID_SIZE-1){newPostion.x = GRID_SIZE-1;}
         if (newPostion.y > GRID_SIZE-1){newPostion.y = GRID_SIZE-1;}
+        
+        if ( this.room.containsObject(newPostion) &&
+             !this.room.getObject(newPostion).isPassable){
+         
+            newPostion = player.position;
+        }
         
         setSquare(player.occupiedSquare);
         player.setOccupiedSquare( getMatrixSquare(newPostion) );
