@@ -26,7 +26,7 @@ public class EscapeRoom extends JPanel{
     ImageManager backgroundImage;
     
     public EscapeRoom() {
-        //------------- non toccare -------------
+        //------------- init GridPanel -------------
         super();
         matrix = new SquarePanel[GRID_SIZE][GRID_SIZE];
         this.setLayout(new GridLayout(GRID_SIZE,GRID_SIZE));
@@ -34,15 +34,9 @@ public class EscapeRoom extends JPanel{
         this.setFocusable(true);
         this.addAncestorListener(new RequestFocusListener());
         this.addKeyListener(new KeyboardInput());
-        //---------------- player ------------------
-        player = new PlayerSquarePanel( new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png" );
-        player.setOccupiedSquare(getMatrixSquare(player.position));
-        setSquare(player);
-        //---------------- background image ----------
-        backgroundImage = new ImageManager("images\\prigione.jpg");
         
         //-------- stanza ------
-        Room atrio = new Room("images\\prigione.jpg");
+        Room atrio = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
         atrio.addObject("lol", new ObjectSquare(new Cord( 4,4 ), "images\\player.png" )  );
         loadRoom(atrio);
         
@@ -64,7 +58,11 @@ public class EscapeRoom extends JPanel{
         }
         
         // carica player
-        changePlayerPosition(room.playerStarPosition);
+        player = new PlayerSquarePanel( room.playerStarPosition, room.playerPathImage);
+        player.setOccupiedSquare(getMatrixSquare(player.position));
+        setSquare(player);
+        
+        //changePlayerPosition(room.playerStarPosition);
     }
     
     public void loadObjectSquare(ObjectSquare obj){

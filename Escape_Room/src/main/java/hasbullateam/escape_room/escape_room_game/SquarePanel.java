@@ -25,10 +25,15 @@ public class SquarePanel extends JPanel implements Cloneable{
         super();
         this.position = position;
         this.setBackground( new Color(0,0,0,0) );
-    }
+    } 
     
     public SquarePanel(Cord position, String pathImage){
         this(position);
+        backgroundImage = new ImageManager(pathImage);
+    }
+    
+    public SquarePanel(Cord position, Color color, String pathImage){
+        this(position, color);
         backgroundImage = new ImageManager(pathImage);
     }
     
@@ -44,7 +49,11 @@ public class SquarePanel extends JPanel implements Cloneable{
 
     @Override
     public SquarePanel clone(){
-        return new SquarePanel(this.position, this.getBackground() );
+        if(this.backgroundImage == null){
+            return new SquarePanel(this.position, this.getBackground());
+        }else{
+            return new SquarePanel(this.position, this.getBackground(), this.backgroundImage.pathImage );
+        }
     }
 
 }

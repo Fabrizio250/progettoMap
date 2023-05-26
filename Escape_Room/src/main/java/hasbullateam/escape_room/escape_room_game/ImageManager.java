@@ -10,9 +10,11 @@ import javax.swing.ImageIcon;
  */
 public class ImageManager extends ImageIcon{
     private boolean firstDraw = true;
+    public String pathImage;
     
     public ImageManager(String path){
         super(path);
+        this.pathImage = path;
     }
     
     public void resizeOnFirstDrawn(int width, int height){
