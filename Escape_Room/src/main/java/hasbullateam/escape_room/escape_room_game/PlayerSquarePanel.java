@@ -27,10 +27,6 @@ public class PlayerSquarePanel extends SquarePanel{
         this.occupiedSquare = square.clone();
         this.setBackground(this.occupiedSquare.getBackground());
         
-    
-        //this.add(this.occupiedSquare, BorderLayout.CENTER);
-        //this.occupiedSquare.setSize(this.getWidth(), this.getHeight());
-        //revalidate();
     }
     
     @Override

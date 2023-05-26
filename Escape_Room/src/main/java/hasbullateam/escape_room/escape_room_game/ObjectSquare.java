@@ -12,6 +12,12 @@ public class ObjectSquare {
     String pathImage;
     String name;
     boolean isPassable;
+    /*
+    interagibile
+    raccoglibile
+    frugabile
+    
+    */
     
     public ObjectSquare(String name, Cord position, String pathImage, boolean isPassable) {
         this.name = name;

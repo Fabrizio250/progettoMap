@@ -67,6 +67,15 @@ public class GridPanel extends JPanel{
         this.matrix[ square.position.y ][ square.position.x ] = square;
     }
     
+    // imposta l'indirizzo newPanel nel matrix e lo aggiunge al gridLayout nelle posizione newPanel.position
+    public void setSquare(SquarePanel newPanel){
+        int indx = newPanel.position.getIndex(this.size);
+        this.remove(indx);
+        this.add(newPanel, indx); 
+        setMatrixSquare(newPanel);
+        this.repaint();
+    }
+    
     
     private static class RequestFocusListener implements javax.swing.event.AncestorListener {
         @Override

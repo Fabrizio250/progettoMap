@@ -25,12 +25,13 @@ public class EscapeRoom extends GridPanel{
         
 
         room = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
-        room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player.png" , false)  );
+        room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
         room.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
         loadRoom(room);
         
         // TODO: levare sto coso
         setSquare(new SquarePanel(new Cord(6,6), Color.red));
+        
 
     }
     
@@ -80,33 +81,31 @@ public class EscapeRoom extends GridPanel{
     
     
     private void changePlayerPosition(Cord newPostion){
+        boolean vaildChange;
         
-        if (newPostion.x < 0){newPostion.x = 0;}
-        if (newPostion.y < 0){newPostion.y = 0;}
-        if (newPostion.x > GRID_SIZE-1){newPostion.x = GRID_SIZE-1;}
-        if (newPostion.y > GRID_SIZE-1){newPostion.y = GRID_SIZE-1;}
         
-        if ( this.room.containsObject(newPostion) &&
-             !this.room.getObject(newPostion).isPassable){
-         
-            newPostion = player.position;
+        if ((newPostion.x < 0) || (newPostion.y < 0) || 
+           (newPostion.x > GRID_SIZE-1)|| (newPostion.y > GRID_SIZE-1) ||
+           ( this.room.containsObject(newPostion) && !this.room.getObject(newPostion).isPassable)){
+
+            
+        }else{
+            
+            // metti dove sta adesso il player lo square che sta occupando
+            setSquare(player.occupiedSquare);
+            
+            // salva lo square in cui dovrà andare
+            player.setOccupiedSquare( getMatrixSquare(newPostion) );
+            
+            // metti il player nel nuovo square
+            player.position = newPostion;
+            setSquare(player);
+
+            revalidate();
         }
         
-        setSquare(player.occupiedSquare);
-        player.setOccupiedSquare( getMatrixSquare(newPostion) );
-        player.position = newPostion;
-        setSquare(player);
         
-        revalidate();
-    }
-    
-    
-    // imposta l'indirizzo newPanel nel matrix e lo aggiunge al gridLayout nelle posizione newPanel.position
-    private void setSquare(SquarePanel newPanel){
-        int indx = newPanel.position.getIndex(GRID_SIZE);
-        this.remove(indx);
-        this.add(newPanel, indx); 
-        setMatrixSquare(newPanel);
+        
     }
     
     
@@ -135,6 +134,16 @@ public class EscapeRoom extends GridPanel{
             }
             if (key == 'd'){
                 cmd = Command.Move.RIGHT;
+            }
+            
+            if (key == 'f'){
+                EscapeRoom.this.setSquare(new SquarePanel(new Cord(6,6), "images\\player2.png"));
+                EscapeRoom.this.revalidate();
+                /*
+                EscapeRoom.this.room.objects.put(new Cord(4,4),
+                new ObjectSquare("lol", new Cord(4,4), "images\\player2.png", false));
+                EscapeRoom.this.loadObjectSquare( EscapeRoom.this.room.getObject(new Cord(4,4)));
+                */
             }
             
             movePlayer(cmd);
