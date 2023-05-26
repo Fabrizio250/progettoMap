@@ -8,16 +8,23 @@ package hasbullateam.escape_room.type;
  *
  * @author giuse
  */
-public enum Command {
-    NONE,
+
+
+public class Command{
     
-    MOVE_UP,
-    MOVE_DOWN,
-    MOVE_LEFT,
-    MOVE_RIGHT,
+    public enum Move{
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+    }
     
-    FACING_UP,
-    FACING_DOWN,
-    FACING_LEFT,
-    FACING_RIGHT;
+    public enum Facing{
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT;
+    }
 }

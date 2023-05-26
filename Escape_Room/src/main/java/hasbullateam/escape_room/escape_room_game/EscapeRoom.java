@@ -4,45 +4,32 @@ package hasbullateam.escape_room.escape_room_game;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Random;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
+
 
 /**
  *
  * @author giuse
  */
 
-//TODO: creare GridPanel
-public class EscapeRoom extends JPanel{
+
+public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
-    SquarePanel matrix[][];
     PlayerSquarePanel player;
-    ImageManager backgroundImage;
     Room room;
     
     public EscapeRoom() {
-        //------------- init GridPanel -------------
-        super();
-        matrix = new SquarePanel[GRID_SIZE][GRID_SIZE];
-        this.setLayout(new GridLayout(GRID_SIZE,GRID_SIZE));
-        initMatrix();
-        this.setFocusable(true);
-        this.addAncestorListener(new RequestFocusListener());
+        super(GRID_SIZE);
         this.addKeyListener(new KeyboardInput());
         
-        //-------- stanza ------
+
         room = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
         room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player.png" , false)  );
+        room.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
         loadRoom(room);
         
+        // TODO: levare sto coso
         setSquare(new SquarePanel(new Cord(6,6), Color.red));
 
     }
@@ -53,7 +40,7 @@ public class EscapeRoom extends JPanel{
     
     public void loadRoom(Room room){
         // carica background
-        this.backgroundImage = new ImageManager(room.backGroundPath);
+        this.setBackgroundImage(room.backGroundPath);
         
         // carica object
         for(ObjectSquare obj: room.objects.values()){
@@ -71,28 +58,20 @@ public class EscapeRoom extends JPanel{
         this.setSquare(new SquarePanel(obj.position, obj.pathImage) );
     }
     
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        //------- disegna background ---------
-        this.backgroundImage.resizeOnFirstDrawn(this.getWidth(), this.getHeight());
-        g.drawImage(backgroundImage.getImage(), 0, 0, null);
-        //------------------------------------
-    }
     
-    private void movePlayer(Command command){
+    private void movePlayer(Command.Move command){
         Cord newPosition = player.position.clone();
         
-        if( command == Command.MOVE_UP ){
+        if( command == Command.Move.UP ){
             newPosition.y--;
         }
-        if( command == Command.MOVE_DOWN ){
+        if( command == Command.Move.DOWN ){
             newPosition.y++;
         }
-        if( command == Command.MOVE_LEFT ){
+        if( command == Command.Move.LEFT){
             newPosition.x--;
         }
-        if( command == Command.MOVE_RIGHT ){
+        if( command == Command.Move.RIGHT ){
             newPosition.x++;
         }
         
@@ -116,7 +95,6 @@ public class EscapeRoom extends JPanel{
         setSquare(player.occupiedSquare);
         player.setOccupiedSquare( getMatrixSquare(newPostion) );
         player.position = newPostion;
-        //player.add( player.occupiedSquare );
         setSquare(player);
         
         revalidate();
@@ -129,32 +107,6 @@ public class EscapeRoom extends JPanel{
         this.remove(indx);
         this.add(newPanel, indx); 
         setMatrixSquare(newPanel);
-    }
-    
-    private void initMatrix(){
-        Random rd = new Random();
-        for(int y = 0; y<GRID_SIZE; y++){
-            for(int x = 0; x<GRID_SIZE; x++){
-                
-                setMatrixSquare(  new SquarePanel( new Cord(x,y)));
-                //new Color( rd.nextInt(100), rd.nextInt(100), rd.nextInt(100) ) ));
-                
-                this.add( getMatrixSquare(x, y), getMatrixSquare(x, y).position.getIndex(GRID_SIZE) );
-            }
-        }
-    }
-    
-    // ritorna l'indirizzo dello SquarePanel presente nel matrix a cord
-    private SquarePanel getMatrixSquare(Cord cord){
-        return getMatrixSquare(cord.x, cord.y);
-    }
-    private SquarePanel getMatrixSquare(int x, int y){
-        return this.matrix[y][x];
-    }
-    
-    // setta nel matrix l'indirizzo di square alla posizione square.position
-    private void setMatrixSquare(SquarePanel square){
-        this.matrix[ square.position.y ][ square.position.x ] = square;
     }
     
     
@@ -170,19 +122,19 @@ public class EscapeRoom extends JPanel{
             char key = e.getKeyChar();
             System.out.println(key);
             
-            Command cmd = Command.NONE;
+            Command.Move cmd = Command.Move.NONE;
             
             if(key == 'w'){
-                cmd = Command.MOVE_UP;
+                cmd = Command.Move.UP;
             }
             if (key == 's'){
-                cmd = Command.MOVE_DOWN;
+                cmd = Command.Move.DOWN;
             }
             if (key == 'a'){
-                cmd = Command.MOVE_LEFT;
+                cmd = Command.Move.LEFT;
             }
             if (key == 'd'){
-                cmd = Command.MOVE_RIGHT;
+                cmd = Command.Move.RIGHT;
             }
             
             movePlayer(cmd);
@@ -193,22 +145,5 @@ public class EscapeRoom extends JPanel{
 
         }
         
-    }
-    
-    
-    private static class RequestFocusListener implements javax.swing.event.AncestorListener {
-        @Override
-        public void ancestorAdded(javax.swing.event.AncestorEvent e) {
-            JComponent component = e.getComponent();
-            component.requestFocusInWindow();
-            component.removeAncestorListener(this);
-        }
-
-        @Override
-        public void ancestorMoved(javax.swing.event.AncestorEvent e) {}
-
-        @Override
-        public void ancestorRemoved(javax.swing.event.AncestorEvent e) {}
-    }   
-    
+    }  
 }
