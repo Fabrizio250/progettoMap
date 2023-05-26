@@ -4,8 +4,15 @@ package hasbullateam.escape_room.escape_room_game;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 
 /**
@@ -13,28 +20,72 @@ import java.awt.event.KeyListener;
  * @author giuse
  */
 
+// TODO: facing player
+// TODO: interagire con oggetti
+// TODO: dialog
+// TODO: mettere il keylistener in un altro file e passargli un espressione lambda
+
 
 public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
     PlayerSquarePanel player;
     Room room;
+    JDialog dialog;
     
     public EscapeRoom() {
         super(GRID_SIZE);
         this.addKeyListener(new KeyboardInput());
         
+        SwingUtilities.invokeLater(()->{ ((JFrame) getTopLevelAncestor()).
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                if( EscapeRoom.this.dialog != null ){
+                    EscapeRoom.this.dialog.setLocationRelativeTo( EscapeRoom.this );
+                }
+            }
+        }); });
+        
+        
+        
 
         room = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
-        //room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
-        //room.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
+        room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
+        room.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
         loadRoom(room);
-        
         
 
     }
     
+    
+    
+    
+    
     public void startGame(){
         
+        
+        JFrame frame = (JFrame) getTopLevelAncestor();
+        
+        
+        
+        dialog = new JDialog(frame, "ZIOPERA", false);
+        JLabel label = new JLabel("asgarra graff  emoendjisnc isnsd\n adihiusdahudasids\n daday!!!");
+        dialog.setUndecorated(true);
+
+        dialog.setBackground(new Color(0,0,255,128));
+        label.setForeground(Color.RED);
+
+        
+        
+        dialog.add(label);
+        
+        dialog.setSize(200, 200);
+        dialog.setLocationRelativeTo(frame);
+        
+        
+        dialog.setVisible(true);
+        
+       
     }
     
     public void loadRoom(Room newRoom){
@@ -153,6 +204,10 @@ public class EscapeRoom extends GridPanel{
                 room.addObject(new ObjectSquare("lol", new Cord( 1,4 ), "images\\player.png" , true)  );
                 EscapeRoom.this.loadRoom( rm);
 
+            }
+            
+            if (key == 'g'){
+                EscapeRoom.this.startGame();
             }
             
             movePlayer(cmd);
