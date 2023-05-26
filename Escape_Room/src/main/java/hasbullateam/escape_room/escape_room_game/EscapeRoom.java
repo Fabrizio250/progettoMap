@@ -25,12 +25,10 @@ public class EscapeRoom extends GridPanel{
         
 
         room = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
-        room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
-        room.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
+        //room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
+        //room.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
         loadRoom(room);
         
-        // TODO: levare sto coso
-        setSquare(new SquarePanel(new Cord(6,6), Color.red));
         
 
     }
@@ -39,19 +37,33 @@ public class EscapeRoom extends GridPanel{
         
     }
     
-    public void loadRoom(Room room){
+    public void loadRoom(Room newRoom){
+        
+        // rimuovi vecchio player se presente
+        if(this.player != null){
+            setSquare( player.occupiedSquare );
+        }
+        
+        // rimuovere tutti gli Oggeti della stanza precendete
+        for(ObjectSquare obj: this.room.objects.values()){
+            this.setSquare(new SquarePanel(obj.position));
+        }
+        
         // carica background
-        this.setBackgroundImage(room.backGroundPath);
+        this.setBackgroundImage(newRoom.backGroundPath);
         
         // carica object
-        for(ObjectSquare obj: room.objects.values()){
+        for(ObjectSquare obj: newRoom.objects.values()){
             loadObjectSquare(obj);
         }
         
         // carica player
-        player = new PlayerSquarePanel( room.playerStarPosition, room.playerPathImage);
+        player = new PlayerSquarePanel( newRoom.playerStarPosition, newRoom.playerPathImage);
         player.setOccupiedSquare(getMatrixSquare(player.position));
         setSquare(player);
+        
+        // aggiorna il riferimento a room
+        this.room = newRoom;
 
     }
     
@@ -81,13 +93,12 @@ public class EscapeRoom extends GridPanel{
     
     
     private void changePlayerPosition(Cord newPostion){
-        boolean vaildChange;
         
         
         if ((newPostion.x < 0) || (newPostion.y < 0) || 
            (newPostion.x > GRID_SIZE-1)|| (newPostion.y > GRID_SIZE-1) ||
            ( this.room.containsObject(newPostion) && !this.room.getObject(newPostion).isPassable)){
-
+            // spostamento non valido
             
         }else{
             
@@ -103,9 +114,7 @@ public class EscapeRoom extends GridPanel{
 
             revalidate();
         }
-        
-        
-        
+           
     }
     
     
@@ -119,7 +128,6 @@ public class EscapeRoom extends GridPanel{
         @Override
         public void keyPressed(KeyEvent e) {
             char key = e.getKeyChar();
-            System.out.println(key);
             
             Command.Move cmd = Command.Move.NONE;
             
@@ -137,13 +145,14 @@ public class EscapeRoom extends GridPanel{
             }
             
             if (key == 'f'){
-                EscapeRoom.this.setSquare(new SquarePanel(new Cord(6,6), "images\\player2.png"));
-                EscapeRoom.this.revalidate();
-                /*
-                EscapeRoom.this.room.objects.put(new Cord(4,4),
-                new ObjectSquare("lol", new Cord(4,4), "images\\player2.png", false));
-                EscapeRoom.this.loadObjectSquare( EscapeRoom.this.room.getObject(new Cord(4,4)));
-                */
+                //EscapeRoom.this.setSquare(new SquarePanel(new Cord(6,6), "images\\player2.png"));
+                //EscapeRoom.this.revalidate();
+                
+                Room rm = new Room("images\\sfondo2.jpg", new Cord(0,0),"images\\player.png");
+                room.addObject(new ObjectSquare("ll", new Cord( 4,2 ), "images\\player2.png" , false)  );
+                room.addObject(new ObjectSquare("lol", new Cord( 1,4 ), "images\\player.png" , true)  );
+                EscapeRoom.this.loadRoom( rm);
+
             }
             
             movePlayer(cmd);
