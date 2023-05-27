@@ -30,15 +30,18 @@ public class TextDialog {
     JDialog dialog;
     JLabel label;
     
-    static final Color backGroundColor = new Color(0,0,255,128);
+    
+    static final Color backGroundColor = new Color(40,200,255,208);
+    static final Color textColor = Color.DARK_GRAY;
 
     public TextDialog(JPanel parent) {
         
         this.parent = parent;
         
-        // fixa la posizione al centro del frame
+        
         SwingUtilities.invokeLater(()->{ 
             this.frame = (JFrame) parent.getTopLevelAncestor();
+            // fixa la posizione al centro del frame quando si muove
             this.frame.addComponentListener(new java.awt.event.ComponentAdapter() {
                 @Override
                 public void componentMoved(ComponentEvent e) {
@@ -47,30 +50,34 @@ public class TextDialog {
                     }
                 }
             }); 
-            this.setText();
+            dialog = new JDialog(this.frame, false);
+            dialog.setSize(500, 200);
+            
+            dialog.setUndecorated(true);
+            dialog.setBackground(this.backGroundColor); 
+            dialog.setLocationRelativeTo(this.parent);
+            dialog.setFocusableWindowState(false);
+            
+            label = new JLabel();
+            setText(this.text);
+            label.setForeground(this.textColor); 
+            dialog.add(label);
+            
         });
 
     }
     
-    public void setText(){
-        dialog = new JDialog(this.frame, false);
-        dialog.setSize(200, 200);
-        this.text = "";
-        label = new JLabel(String.format("<html><body style='width: %dpx'>%s</body></html>",this.dialog.getWidth()-50,this.text));
-        
-        dialog.setUndecorated(true);
-        dialog.setBackground(new Color(0,0,255,128));
-        label.setForeground(Color.RED); 
-        dialog.add(label);
-        
-        dialog.setLocationRelativeTo(frame);
-        dialog.setVisible(true);
-        
-    }
-    
-    public void changeText(String str){
+    public void setText(String str){
         this.text = str;
         label.setText(String.format("<html><body style='width: %dpx'>%s</body></html>",this.dialog.getWidth()-50,this.text));
+    }
+    
+    public void show( boolean  val){
+        this.dialog.setVisible(val);
+    }
+    
+    public boolean isVisible(){
+        return this.dialog.isVisible();
     }
     
     
