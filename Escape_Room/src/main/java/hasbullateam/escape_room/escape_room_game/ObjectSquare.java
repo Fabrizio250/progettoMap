@@ -2,6 +2,7 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
+import java.awt.Color;
 
 /**
  *
@@ -11,6 +12,7 @@ public class ObjectSquare {
     Cord position;
     String pathImage;
     String name;
+    Color backgroundColor;
     boolean isPassable;
     /*
     interagibile
@@ -24,6 +26,11 @@ public class ObjectSquare {
         this.position = position;
         this.pathImage = pathImage;
         this.isPassable = isPassable;
+    }
+    
+    public ObjectSquare(String name, Cord position, Color backgroundColor, String pathImage, boolean isPassable) {
+        this(name,position,pathImage,isPassable);
+        this.backgroundColor = backgroundColor;
     }
     
 }

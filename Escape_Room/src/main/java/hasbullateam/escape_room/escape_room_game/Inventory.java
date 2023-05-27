@@ -7,6 +7,7 @@ package hasbullateam.escape_room.escape_room_game;
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -15,23 +16,34 @@ import java.util.Map;
  * @author giuse
  */
 public class Inventory {
-    List<SquarePanel> items;
+    List<ObjectSquare> items;
+    List<SquarePanel> itemPanels;
+ 
     int selected;
     static final Color selectionColor = new Color(10,10,255,128);
     
-    public Inventory(SquarePanel... items) {
+    public Inventory(ObjectSquare... items) {
         this.items = new ArrayList<>(items.length);
-        for(SquarePanel item: items){
-            this.items.add(item);
+        this.items.addAll(Arrays.asList(items));
+        
+        this.itemPanels = new ArrayList<>(items.length);
+        
+        for( ObjectSquare item: this.items ){
+            this.itemPanels.add( new SquarePanel(item.position, item.backgroundColor,item.pathImage) );
         }
+        
+        
         this.select(0);
     }
     
     public void select(int n){
-        items.get(this.selected).setBackground(new Color(0,0,0,0));
+        itemPanels.get(this.selected).setBackground(new Color(0,0,0,0));
         this.selected = n;
-        items.get(this.selected).setBackground(selectionColor);
+        itemPanels.get(this.selected).setBackground(selectionColor);
         
+    }
+    public List<SquarePanel> getItemPanels(){
+        return this.itemPanels;
     }
     
 }

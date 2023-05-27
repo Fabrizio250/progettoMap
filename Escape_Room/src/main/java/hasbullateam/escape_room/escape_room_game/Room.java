@@ -40,4 +40,5 @@ public class Room {
     public boolean containsObject(Cord cord){
         return this.objects.containsKey(cord);
     }
+ 
 }

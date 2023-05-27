@@ -30,11 +30,12 @@ import javax.swing.SwingUtilities;
 
 public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
-    PlayerSquarePanel player;
-    Room room;
+    public PlayerSquarePanel player;
+    public Room room;
+    Room rm;
+    Room rm2;
     TextDialog dialog;
     Inventory inventory;
-    //JDialog dialog;
     
     public EscapeRoom() {
         super(GRID_SIZE);
@@ -42,38 +43,23 @@ public class EscapeRoom extends GridPanel{
         
         this.dialog = new TextDialog(this);
         
-        inventory = new Inventory( new SquarePanel(new Cord(3,GRID_SIZE-1)),
-                                   new SquarePanel(new Cord(4,GRID_SIZE-1)),
-                                   new SquarePanel(new Cord(5,GRID_SIZE-1)),
-                                   new SquarePanel(new Cord(6,GRID_SIZE-1)));
-        loadInventory();
+        inventory = new Inventory( new ObjectSquare("1",new Cord(3,GRID_SIZE-1), null, false),
+                                   new ObjectSquare("2",new Cord(4,GRID_SIZE-1), null, false),
+                                   new ObjectSquare("3",new Cord(5,GRID_SIZE-1), null, false),
+                                   new ObjectSquare("4",new Cord(6,GRID_SIZE-1), null, false)
+                                 );
+        //loadInventory();
 
-        room = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
-        room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
-        room.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
-        loadRoom(room);
+        rm2 = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
+        rm2.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
+        rm2.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
         
         
-        
-        
-
-    }
-    
-    
-    
-    
-    
-    
-    public void startGame(){
-        
-        this.dialog.setText("<u>sottolineatura</u> io lo so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
-        this.dialog.show(!this.dialog.isVisible());
-    }
-    
-    public void loadInventory(){
-        for( SquarePanel item: this.inventory.items ){
-            this.setSquare(item);
-        }
+        rm = new Room("images\\sfondo2.jpg", new Cord(0,0),"images\\player.png");
+        rm.addObject(new ObjectSquare("ll", new Cord( 4,2 ), "images\\player2.png" , false)  );
+        rm.addObject(new ObjectSquare("lol", new Cord( 1,4 ), "images\\player.png" , true)  );
+         
+        this.loadRoom(rm);
     }
     
     
@@ -84,18 +70,31 @@ public class EscapeRoom extends GridPanel{
             setSquare( player.occupiedSquare );
         }
         
-        // rimuovere tutti gli Oggeti della stanza precendete
-        for(ObjectSquare obj: this.room.objects.values()){
-            this.setSquare(new SquarePanel(obj.position));
+        // rimuovere tutti gli Oggeti della stanza precendete se presenti
+        if(this.room != null){
+            for(ObjectSquare obj: this.room.objects.values()){
+                this.setSquare(new SquarePanel(obj.position));
+            }
         }
+        
         
         // carica background
         this.setBackgroundImage(newRoom.backGroundPath);
         
         // carica object
         for(ObjectSquare obj: newRoom.objects.values()){
-            System.err.println("aoooo");
             loadObjectSquare(obj);
+        }
+        
+        
+        // aggiungi gli item dell'inventario alla room
+        for( ObjectSquare item: this.inventory.items ){
+            newRoom.addObject(item );
+        }
+        
+        // aggiungi i panel dell'inventario
+        for(SquarePanel panel: this.inventory.getItemPanels()){
+            this.setSquare(panel);
         }
         
         // carica player
@@ -109,8 +108,17 @@ public class EscapeRoom extends GridPanel{
     }
     
     public void loadObjectSquare(ObjectSquare obj){
-        this.setSquare(new SquarePanel(obj.position, obj.pathImage) );
+        this.setSquare(new SquarePanel(obj.position, obj.backgroundColor,obj.pathImage) );
     }
+    
+    
+    
+    public void startGame(){
+        
+        this.dialog.setText("<u>sottolineatura</u> io lo so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
+        this.dialog.show(!this.dialog.isVisible());
+    }
+    
     
     
     private void movePlayer(Command.Move command){
@@ -200,18 +208,17 @@ public class EscapeRoom extends GridPanel{
             }
             
             if (key == 'f'){
-                //EscapeRoom.this.setSquare(new SquarePanel(new Cord(6,6), "images\\player2.png"));
-                //EscapeRoom.this.revalidate();
+                EscapeRoom.this.loadRoom(EscapeRoom.this.rm);
                 
-                Room rm = new Room("images\\sfondo2.jpg", new Cord(0,0),"images\\player.png");
-                rm.addObject(new ObjectSquare("ll", new Cord( 4,2 ), "images\\player2.png" , false)  );
-                rm.addObject(new ObjectSquare("lol", new Cord( 1,4 ), "images\\player.png" , true)  );
-                EscapeRoom.this.loadRoom( rm);
-
             }
             
             if (key == 'g'){
                 EscapeRoom.this.startGame();
+            }
+            
+            if (key == 'h'){
+                EscapeRoom.this.loadRoom(EscapeRoom.this.rm2);
+                
             }
             
             movePlayer(cmd);

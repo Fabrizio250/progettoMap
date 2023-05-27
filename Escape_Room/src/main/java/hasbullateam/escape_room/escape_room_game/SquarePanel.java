@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.prefs.BackingStoreException;
 import javax.swing.JPanel;
 
 /**
@@ -19,28 +20,34 @@ public class SquarePanel extends JPanel implements Cloneable{
     ImageManager backgroundImage;
     
     public SquarePanel(Cord position, Color color){
-        super();
-        this.setBackground(color);
-        this.position = position;
-        
+        this(position, color, null);
     }
     
     public SquarePanel(Cord position){
-        super();
-        this.position = position;
-        this.setBackground( new Color(0,0,0,0) );
-        
+        this(position, null, null);
     } 
     
     public SquarePanel(Cord position, String pathImage){
-        this(position);
-        backgroundImage = new ImageManager(pathImage);
+        this(position, null, pathImage);
     }
     
     public SquarePanel(Cord position, Color color, String pathImage){
-        this(position, color);
-        backgroundImage = new ImageManager(pathImage);
+        super();
+        this.position = position;
         
+        if(color != null){
+            this.setBackground(color);
+        }else{
+            this.setBackground( new Color(0,0,0,0) );
+        }
+        
+        if(pathImage != null){
+            backgroundImage = new ImageManager(pathImage);
+        }
+    }
+    
+    public void setBackgroundImage(String pathImage){
+        this.backgroundImage = new ImageManager(pathImage);
     }
     
     

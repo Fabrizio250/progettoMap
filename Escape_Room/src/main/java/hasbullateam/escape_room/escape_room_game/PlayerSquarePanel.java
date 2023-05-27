@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -17,10 +19,31 @@ import javax.swing.JLabel;
  */
 public class PlayerSquarePanel extends SquarePanel{
     SquarePanel occupiedSquare;
+    Direction direction;
+    Map<Direction, String> directionImages;
+    
+    public static enum Direction{
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT;
+    }
+    
+    public PlayerSquarePanel(Cord position, String pathImageUP, 
+            String pathImageDOWN, String pathImageLEFT, String pathImageRIGHT, Direction defaultDir){
+        super(position);
+        this.directionImages = new HashMap(4);
+        this.directionImages.put(Direction.UP, pathImageUP);
+        this.directionImages.put(Direction.DOWN, pathImageDOWN);
+        this.directionImages.put(Direction.LEFT, pathImageLEFT);
+        this.directionImages.put(Direction.RIGHT, pathImageRIGHT);
+        
+        this.setBackgroundImage(this.directionImages.get(defaultDir));
+    }
 
     public PlayerSquarePanel(Cord position, String pathImage) {
         super(position, pathImage);
-        //this.setLayout( new BorderLayout() );
+        
     }
     
     public void setOccupiedSquare( SquarePanel square ){
