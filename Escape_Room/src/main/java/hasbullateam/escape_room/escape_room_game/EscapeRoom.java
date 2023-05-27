@@ -30,12 +30,14 @@ public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
     PlayerSquarePanel player;
     Room room;
-    JDialog dialog;
+    TextDialog dialog;
+    //JDialog dialog;
     
     public EscapeRoom() {
         super(GRID_SIZE);
         this.addKeyListener(new KeyboardInput());
         
+        /*
         SwingUtilities.invokeLater(()->{ ((JFrame) getTopLevelAncestor()).
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -45,9 +47,9 @@ public class EscapeRoom extends GridPanel{
                 }
             }
         }); });
+        */
         
-        
-        
+        this.dialog = new TextDialog(this);
 
         room = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
         room.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
@@ -63,7 +65,9 @@ public class EscapeRoom extends GridPanel{
     
     public void startGame(){
         
+        this.dialog.changeText("io lo so che non sono solo anche quando sono solo e rido e piango");
         
+        /*
         JFrame frame = (JFrame) getTopLevelAncestor();
         
         
@@ -85,7 +89,7 @@ public class EscapeRoom extends GridPanel{
         
         dialog.setVisible(true);
         
-       
+       */
     }
     
     public void loadRoom(Room newRoom){
