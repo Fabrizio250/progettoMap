@@ -76,6 +76,9 @@ public class GridPanel extends JPanel{
         this.repaint();
     }
     
+    public void clearSquare(Cord cord){
+        this.setSquare(new SquarePanel(cord) );
+    }
     
     private static class RequestFocusListener implements javax.swing.event.AncestorListener {
         @Override

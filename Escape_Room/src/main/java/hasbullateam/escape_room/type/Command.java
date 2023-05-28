@@ -45,4 +45,10 @@ public interface Command{
         SELECT_8,
         SELECT_9;
     }
+    
+    public enum Test implements Command{
+        LOAD,
+        BACKUP,
+        MOD_ROOM;
+    }
 }

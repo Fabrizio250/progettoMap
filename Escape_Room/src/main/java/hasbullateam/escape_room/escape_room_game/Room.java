@@ -3,6 +3,7 @@ package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.Direction;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,8 @@ import org.json.JSONObject;
  *
  * @author giuse
  */
-public class Room {
+public class Room implements Serializable{
+    String name;
     String backGroundPath;
     Map<Cord,ObjectSquare> objects;
     Cord playerStarPosition;
@@ -23,17 +25,18 @@ public class Room {
     String playerPathImageRIGHT;
     Direction playerStartDirection;
 
-    public Room( String backGroundPath, String playerPathImage ) {
-        this(backGroundPath, new Cord(0,0), playerPathImage);
+    public Room( String name, String backGroundPath, String playerPathImage ) {
+        this(name, backGroundPath, new Cord(0,0), playerPathImage);
     }
     
-    public Room(String backGroundPath, Cord playerStartPosition, String playerPathImage){
-        this(backGroundPath, playerStartPosition, playerPathImage, 
+    public Room(String name, String backGroundPath, Cord playerStartPosition, String playerPathImage){
+        this(name, backGroundPath, playerStartPosition, playerPathImage, 
                 playerPathImage, playerPathImage, playerPathImage, Direction.UP);
     }
     
-    public Room(String backGroundPath, Cord playerStartPosition,
+    public Room(String name, String backGroundPath, Cord playerStartPosition,
     String playerPathImageUP, String playerPathImageDOWN, String playerPathImageLEFT, String playerPathImageRIGHT, Direction playerStartDirection){
+        this.name = name;
         this.backGroundPath = backGroundPath;
         this.playerStarPosition = playerStartPosition;
         this.playerPathImageUP = playerPathImageUP;
@@ -47,7 +50,8 @@ public class Room {
     
     public Room( JSONObject jsonObj ){
         
-        this( jsonObj.getString("backGroundPath"),
+        this(   jsonObj.getString("name"),
+                jsonObj.getString("backGroundPath"),
                 new Cord(jsonObj.getJSONObject("playerStartPosition").getInt("x"),
                 jsonObj.getJSONObject("playerStartPosition").getInt("y")),
                 jsonObj.getString("playerPathImageUP"),
@@ -76,6 +80,10 @@ public class Room {
     
     public boolean containsObject(Cord cord){
         return this.objects.containsKey(cord);
+    }
+    
+    public void removeObject(Cord cord){
+        this.objects.remove(cord);
     }
     
  

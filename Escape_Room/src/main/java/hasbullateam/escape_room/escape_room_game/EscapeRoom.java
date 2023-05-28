@@ -11,9 +11,17 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,11 +33,8 @@ import org.json.*;
  * @author giuse
  */
 
-// TODO: facing player
+
 // TODO: interagire con oggetti
-// TODO: dialog
-// TODO: mettere il keylistener in un altro file e passargli un espressione lambda
-// TODO: inventario
 
 
 public class EscapeRoom extends GridPanel{
@@ -38,6 +43,8 @@ public class EscapeRoom extends GridPanel{
     public Room room;
     TextDialog dialog;
     Inventory inventory;
+    
+    private static int _backupFileCounter = 0;
     
     public EscapeRoom() {
         super(GRID_SIZE);
@@ -49,11 +56,62 @@ public class EscapeRoom extends GridPanel{
         this.inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);
         
         // carica room, player e inventario
-        this.loadRoom("rooms\\atrio.json");
+        this.loadRoomFromJSON("rooms\\atrio.json");
     }
     
     
-    public void loadRoom(String jsonPathRoom){
+    public void backupRoom(String pathBackupFile, Room room){
+        
+        try{
+            ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(pathBackupFile));
+            outStream.writeObject(this._backupFileCounter++);
+            outStream.writeObject(room);
+            outStream.close();
+        }catch (IOException e){
+            System.err.println(pathBackupFile+" path non valido");
+        }
+    }
+    
+    
+    public void loadRoomFromBackupFile(String pathBackupFile, String roomName){
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(pathBackupFile));
+            Room searchedRoom = null;
+            Room currentRoom = null;
+            int maxCounterBackup = 0;
+            int counter;
+            try{
+                while(true){
+                    try {
+                        counter = (Integer) inputStream.readObject();
+                        currentRoom = (Room) inputStream.readObject();
+                        
+                        if(currentRoom.name.equals(roomName) && (counter >= maxCounterBackup)){
+                            maxCounterBackup = counter;
+                            searchedRoom = currentRoom;
+                        }
+  
+                    } catch (ClassNotFoundException ex) {
+                        return;
+                    }
+                }
+            }catch (EOFException e){
+                
+            }
+            if(searchedRoom != null){
+                loadRoom(searchedRoom);
+            }else{
+                System.err.println(roomName+" non trovata");
+            }
+            
+            
+        } catch (IOException e) {
+            System.err.println(pathBackupFile+" path non valido");
+        }
+    }
+    
+    
+    public void loadRoomFromJSON(String jsonPathRoom){
         try{
             JSONObject jsonObj = new JSONObject(new String(Files.readAllBytes(Paths.get(jsonPathRoom))));
             this.loadRoom(new Room( jsonObj ));
@@ -179,6 +237,29 @@ public class EscapeRoom extends GridPanel{
         }else if (cmd instanceof Command.InventorySelection){
             int indx = ((Command.InventorySelection)cmd).ordinal()-1;
             this.inventory.select(   indx );
+        }else if (cmd instanceof Command.Test){ //TODO: da levare
+            
+            Command.Test cmd2 = (Command.Test)cmd;
+            
+            if(cmd2 == Command.Test.MOD_ROOM){
+                this.room.getObject(new Cord(4,4)).position = new Cord(1,1);
+                this.room.addObject( this.room.getObject(new Cord(4,4)) );
+                this.room.removeObject(new Cord(4,4));
+
+                this.loadObjectSquare(this.room.getObject(new Cord(1,1)));
+                this.clearSquare(new Cord(4,4));
+                this.room.addObject(new ObjectSquare("palle",new Cord(0,0),"images\\player2.png",false));
+                this.loadObjectSquare(this.room.getObject(new Cord(0,0)));
+            
+            }else if(cmd2 == Command.Test.BACKUP){
+                this.backupRoom("rooms\\roomsBackup.dat", this.room);
+            
+            }else if(cmd2 == Command.Test.LOAD){
+                this.loadRoomFromBackupFile("rooms\\roomsBackup.dat", "atrio" );
+            }
+            
+            
+            
         }
         
         this.revalidate();
@@ -243,6 +324,16 @@ public class EscapeRoom extends GridPanel{
                     break;
                 case 'd':
                     cmd = Command.Move.RIGHT;
+                    break;
+                    
+                case 'f'://TODO: da levare
+                    cmd = Command.Test.MOD_ROOM;
+                    break;
+                case 'g'://TODO: da levare
+                    cmd = Command.Test.BACKUP;
+                    break;
+                case 'h'://TODO: da levare
+                    cmd = Command.Test.LOAD;
                     break;
                 
             }

@@ -1,11 +1,13 @@
 
 package hasbullateam.escape_room.type;
 
+import java.io.Serializable;
+
 /**
  *
  * @author giuse
  */
-public class Cord implements Cloneable{
+public class Cord implements Cloneable, Serializable{
     public int x;
     public int y;
     

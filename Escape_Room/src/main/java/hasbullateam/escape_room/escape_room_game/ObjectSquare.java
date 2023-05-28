@@ -3,13 +3,14 @@ package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
+import java.io.Serializable;
 import org.json.JSONObject;
 
 /**
  *
  * @author giuse
  */
-public class ObjectSquare {
+public class ObjectSquare implements Serializable{
     Cord position;
     String pathImage;
     String name;
