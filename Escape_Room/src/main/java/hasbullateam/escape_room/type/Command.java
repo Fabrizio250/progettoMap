@@ -10,21 +10,39 @@ package hasbullateam.escape_room.type;
  */
 
 
-public class Command{
+public interface Command{
     
-    public enum Move{
-        NONE,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
+    public enum Invalid implements Command{
+        NONE;
     }
     
-    public enum Facing{
+    public enum Move implements Command{
         NONE,
         UP,
         DOWN,
         LEFT,
         RIGHT;
+    }
+    
+    public enum Facing implements Command{
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT;
+    }
+    
+    public enum InventorySelection implements Command{
+        NONE,
+        SELECT_0,
+        SELECT_1,
+        SELECT_2,
+        SELECT_3,
+        SELECT_4,
+        SELECT_5,
+        SELECT_6,
+        SELECT_7,
+        SELECT_8,
+        SELECT_9;
     }
 }

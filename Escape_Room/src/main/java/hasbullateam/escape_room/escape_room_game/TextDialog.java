@@ -31,8 +31,8 @@ public class TextDialog {
     JLabel label;
     
     
-    static final Color backGroundColor = new Color(40,200,255,208);
-    static final Color textColor = Color.DARK_GRAY;
+    static final Color BACKGROUNDCOLOR = new Color(40,200,255,208);
+    static final Color TEXTCOLOR = Color.DARK_GRAY;
 
     public TextDialog(JPanel parent) {
         
@@ -54,13 +54,13 @@ public class TextDialog {
             dialog.setSize(500, 200);
             
             dialog.setUndecorated(true);
-            dialog.setBackground(this.backGroundColor); 
+            dialog.setBackground(this.BACKGROUNDCOLOR); 
             dialog.setLocationRelativeTo(this.parent);
             dialog.setFocusableWindowState(false);
             
             label = new JLabel();
             setText(this.text);
-            label.setForeground(this.textColor); 
+            label.setForeground(this.TEXTCOLOR); 
             dialog.add(label);
             
         });

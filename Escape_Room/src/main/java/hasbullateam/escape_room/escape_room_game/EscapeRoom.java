@@ -11,6 +11,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.JDialog;
@@ -28,7 +29,6 @@ import org.json.*;
 // TODO: interagire con oggetti
 // TODO: dialog
 // TODO: mettere il keylistener in un altro file e passargli un espressione lambda
-// TODO: room parser
 // TODO: inventario
 
 
@@ -36,30 +36,19 @@ public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
     public PlayerSquarePanel player;
     public Room room;
-    Room rm;
-    Room rm2;
     TextDialog dialog;
     Inventory inventory;
     
     public EscapeRoom() {
         super(GRID_SIZE);
+        
         this.addKeyListener(new KeyboardInput());
         
         this.dialog = new TextDialog(this);
         
-        inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);
-
-        rm2 = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),
-                "images\\player2_UP.png","images\\player2_DOWN.png",
-                "images\\player2_LEFT.png","images\\player2_RIGHT.png",Direction.UP);
-        rm2.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
-        rm2.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
+        this.inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);
         
-        
-        rm = new Room("images\\sfondo2.jpg", new Cord(0,0),"images\\player.png");
-        rm.addObject(new ObjectSquare("ll", new Cord( 4,2 ), "images\\player2.png" , false)  );
-        rm.addObject(new ObjectSquare("lol", new Cord( 1,4 ), "images\\player.png" , true)  );
-         
+        // carica room, player e inventario
         this.loadRoom("rooms\\atrio.json");
     }
     
@@ -68,7 +57,7 @@ public class EscapeRoom extends GridPanel{
         try{
             JSONObject jsonObj = new JSONObject(new String(Files.readAllBytes(Paths.get(jsonPathRoom))));
             this.loadRoom(new Room( jsonObj ));
-        }catch (Exception e){
+        }catch (IOException e){
             System.err.println(jsonPathRoom+ " non valido");
         }
         
@@ -129,43 +118,33 @@ public class EscapeRoom extends GridPanel{
     }
     
     
-    public void startGame(){
-        
-        this.dialog.setText("<u>sottolineatura</u> io lo so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
-        this.dialog.show(!this.dialog.isVisible());
-    }
-    
-    public void changePanel(){
-        JFrame frame = (JFrame) this.getTopLevelAncestor();
-        this.dialog.dialog.dispose();
-        frame.setContentPane(new Tris());
-        frame.revalidate();
-        frame.repaint();
-    }
-    
     
     private void movePlayer(Command.Move command){
-        Cord newPosition = player.position.clone();
+        if(command != Command.Move.NONE){
+            
+            Cord newPosition = player.position.clone();
         
-        if( command == Command.Move.UP ){
-            newPosition.y--;
-            this.player.setFaceDirection(Direction.UP);
-        }
-        if( command == Command.Move.DOWN ){
-            newPosition.y++;
-            this.player.setFaceDirection(Direction.DOWN);
-        }
-        if( command == Command.Move.LEFT){
-            newPosition.x--;
-            this.player.setFaceDirection(Direction.LEFT);
-        }
-        if( command == Command.Move.RIGHT ){
-            newPosition.x++;
-            this.player.setFaceDirection(Direction.RIGHT);
+            if( command == Command.Move.UP ){
+                newPosition.y--;
+                this.player.setFaceDirection(Direction.UP);
+            }
+            if( command == Command.Move.DOWN ){
+                newPosition.y++;
+                this.player.setFaceDirection(Direction.DOWN);
+            }
+            if( command == Command.Move.LEFT){
+                newPosition.x--;
+                this.player.setFaceDirection(Direction.LEFT);
+            }
+            if( command == Command.Move.RIGHT ){
+                newPosition.x++;
+                this.player.setFaceDirection(Direction.RIGHT);
+            }
+
+            changePlayerPosition(newPosition);
+            repaint();
         }
         
-        changePlayerPosition(newPosition);
-        repaint();
     }
     
     
@@ -194,6 +173,18 @@ public class EscapeRoom extends GridPanel{
            
     }
     
+    public void executeCommand(Command cmd){
+        if( cmd instanceof Command.Move){
+            movePlayer( (Command.Move) cmd);
+        }else if (cmd instanceof Command.InventorySelection){
+            int indx = ((Command.InventorySelection)cmd).ordinal()-1;
+            this.inventory.select(   indx );
+        }
+        
+        this.revalidate();
+        this.repaint();
+    }
+    
     
     private class KeyboardInput implements KeyListener{
 
@@ -206,54 +197,60 @@ public class EscapeRoom extends GridPanel{
         public void keyPressed(KeyEvent e) {
             char key = e.getKeyChar();
             
-            if(key == '1'){
-                EscapeRoom.this.inventory.select(0);
-            }
-            if(key == '2'){
-                EscapeRoom.this.inventory.select(1);
-            }
-            if(key == '3'){
-                EscapeRoom.this.inventory.select(2);
-            }
-            if(key == '4'){
-                EscapeRoom.this.inventory.select(3);
-            }
+            Command cmd = Command.Invalid.NONE;
             
-            
-            Command.Move cmd = Command.Move.NONE;
-            
-            if(key == 'w'){
-                cmd = Command.Move.UP;
-            }
-            if (key == 's'){
-                cmd = Command.Move.DOWN;
-            }
-            if (key == 'a'){
-                cmd = Command.Move.LEFT;
-            }
-            if (key == 'd'){
-                cmd = Command.Move.RIGHT;
-            }
-            
-            if (key == 'f'){
-                EscapeRoom.this.loadRoom(EscapeRoom.this.rm);
+            switch (key) {
+                case '1':
+                    cmd = Command.InventorySelection.SELECT_0;
+                    break;
+                case '2':
+                    cmd = Command.InventorySelection.SELECT_1;
+                    break;
+                case '3':
+                    cmd = Command.InventorySelection.SELECT_2;
+                    break;
+                case '4':
+                    cmd = Command.InventorySelection.SELECT_3;
+                    break;
+                case '5':
+                    cmd = Command.InventorySelection.SELECT_4;
+                    break;
+                case '6':
+                    cmd = Command.InventorySelection.SELECT_5;
+                    break;
+                case '7':
+                    cmd = Command.InventorySelection.SELECT_6;
+                    break;
+                case '8':
+                    cmd = Command.InventorySelection.SELECT_7;
+                    break;
+                case '9':
+                    cmd = Command.InventorySelection.SELECT_8;
+                    break;
+                case '0':
+                    cmd = Command.InventorySelection.SELECT_9;
+                    break;
+                
+                    
+                case 'w':
+                    cmd = Command.Move.UP;
+                    break;
+                case 's':
+                    cmd = Command.Move.DOWN;
+                    break;
+                case 'a':
+                    cmd = Command.Move.LEFT;
+                    break;
+                case 'd':
+                    cmd = Command.Move.RIGHT;
+                    break;
                 
             }
             
-            if (key == 'g'){
-                EscapeRoom.this.startGame();
+            if(cmd != Command.Invalid.NONE){
+                EscapeRoom.this.executeCommand(cmd);
             }
-            
-            if (key == 'h'){
-                EscapeRoom.this.loadRoom(EscapeRoom.this.rm2);
-                
-            }
-            
-            if (key == 'i'){
-                EscapeRoom.this.changePanel();
-            }
-            
-            movePlayer(cmd);
+
         }
 
         @Override
@@ -263,3 +260,22 @@ public class EscapeRoom extends GridPanel{
         
     }  
 }
+
+
+
+
+/*
+    public void startGame(){
+        
+        this.dialog.setText("<u>sottolineatura</u> io lo so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
+        this.dialog.show(!this.dialog.isVisible());
+    }
+    
+    public void changePanel(){
+        JFrame frame = (JFrame) this.getTopLevelAncestor();
+        this.dialog.dialog.dispose();
+        frame.setContentPane(new Tris());
+        frame.revalidate();
+        frame.repaint();
+    }
+    */

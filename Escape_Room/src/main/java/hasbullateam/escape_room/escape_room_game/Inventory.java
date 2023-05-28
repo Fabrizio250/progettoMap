@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
@@ -20,8 +17,8 @@ public class Inventory {
     List<SquarePanel> itemPanels;
  
     int selected;
-    static final Color selectionColor = new Color(10,10,255,128);
-    static final Color defaultColor = new Color(10,10,10,128);
+    static final Color SELECTIONCOLOR = new Color(10,10,255,128);
+    static final Color DEFAULTCOLOR = new Color(10,10,10,128);
     
     public Inventory(ObjectSquare... items) {
         this.items = new ArrayList<>(items.length);
@@ -44,7 +41,7 @@ public class Inventory {
         Integer c=0;
         for(int col = startColumn; col<=endColumn; col++){
             this.items.add(new ObjectSquare( ("INVENTORY_"+(c++).toString()),
-                                            new Cord(col,row),defaultColor,
+                                            new Cord(col,row),DEFAULTCOLOR,
                                             null,false) );
             
         }
@@ -61,9 +58,9 @@ public class Inventory {
     }
     
     public void select(int n){
-        itemPanels.get(this.selected).setBackground(defaultColor);
+        itemPanels.get(this.selected).setBackground(DEFAULTCOLOR);
         this.selected = n;
-        itemPanels.get(this.selected).setBackground(selectionColor);
+        itemPanels.get(this.selected).setBackground(SELECTIONCOLOR);
         
     }
     public List<SquarePanel> getItemPanels(){
