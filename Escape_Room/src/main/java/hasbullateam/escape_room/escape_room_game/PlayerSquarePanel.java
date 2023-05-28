@@ -2,6 +2,7 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
+import hasbullateam.escape_room.type.Direction;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -22,12 +23,6 @@ public class PlayerSquarePanel extends SquarePanel{
     Direction direction;
     Map<Direction, String> directionImages;
     
-    public static enum Direction{
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT;
-    }
     
     public PlayerSquarePanel(Cord position, String pathImageUP, 
             String pathImageDOWN, String pathImageLEFT, String pathImageRIGHT, Direction defaultDir){
@@ -42,7 +37,7 @@ public class PlayerSquarePanel extends SquarePanel{
     }
 
     public PlayerSquarePanel(Cord position, String pathImage) {
-        super(position, pathImage);
+        this(position, pathImage, pathImage,pathImage,pathImage, Direction.UP);
         
     }
     
@@ -50,6 +45,11 @@ public class PlayerSquarePanel extends SquarePanel{
         this.occupiedSquare = square.clone();
         this.setBackground(this.occupiedSquare.getBackground());
         
+    }
+    
+    public void setFaceDirection(Direction dir){
+        this.setBackgroundImage(this.directionImages.get(dir));
+        this.direction = dir;
     }
     
     @Override

@@ -2,6 +2,7 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
+import hasbullateam.escape_room.type.Direction;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,18 +15,32 @@ public class Room {
     String backGroundPath;
     Map<Cord,ObjectSquare> objects;
     Cord playerStarPosition;
-    String playerPathImage;
+    String playerPathImageUP;
+    String playerPathImageDOWN;
+    String playerPathImageLEFT;
+    String playerPathImageRIGHT;
+    Direction playerStartDirection;
 
     public Room( String backGroundPath, String playerPathImage ) {
-        this.backGroundPath = backGroundPath;
-        this.playerPathImage = playerPathImage;
-        this.playerStarPosition = new Cord(0,0);
-        objects = new HashMap<>();
+        this(backGroundPath, new Cord(0,0), playerPathImage);
     }
     
     public Room(String backGroundPath, Cord playerStartPosition, String playerPathImage){
-        this(backGroundPath, playerPathImage);
+        this(backGroundPath, playerStartPosition, playerPathImage, 
+                playerPathImage, playerPathImage, playerPathImage, Direction.UP);
+    }
+    
+    public Room(String backGroundPath, Cord playerStartPosition,
+    String playerPathImageUP, String playerPathImageDOWN, String playerPathImageLEFT, String playerPathImageRIGHT, Direction playerStartDirection){
+        this.backGroundPath = backGroundPath;
         this.playerStarPosition = playerStartPosition;
+        this.playerPathImageUP = playerPathImageUP;
+        this.playerPathImageDOWN = playerPathImageDOWN;
+        this.playerPathImageLEFT = playerPathImageLEFT;
+        this.playerPathImageRIGHT = playerPathImageRIGHT;
+        this.playerStartDirection = playerStartDirection;
+        
+        objects = new HashMap<>();
     }
     
     

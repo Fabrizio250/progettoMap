@@ -3,6 +3,7 @@ package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
+import hasbullateam.escape_room.type.Direction;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
@@ -48,9 +49,10 @@ public class EscapeRoom extends GridPanel{
                                    new ObjectSquare("3",new Cord(5,GRID_SIZE-1), null, false),
                                    new ObjectSquare("4",new Cord(6,GRID_SIZE-1), null, false)
                                  );
-        //loadInventory();
 
-        rm2 = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),"images\\player2.png");
+        rm2 = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),
+                "images\\player2_UP.png","images\\player2_DOWN.png",
+                "images\\player2_LEFT.png","images\\player2_RIGHT.png",Direction.UP);
         rm2.addObject(new ObjectSquare("lol", new Cord( 4,4 ), "images\\player2.png" , false)  );
         rm2.addObject(new ObjectSquare("lol", new Cord( 2,2 ), "images\\player.png" , true)  );
         
@@ -98,7 +100,8 @@ public class EscapeRoom extends GridPanel{
         }
         
         // carica player
-        player = new PlayerSquarePanel( newRoom.playerStarPosition, newRoom.playerPathImage);
+        player = new PlayerSquarePanel( newRoom.playerStarPosition, newRoom.playerPathImageUP, newRoom.playerPathImageDOWN,
+        newRoom.playerPathImageLEFT, newRoom.playerPathImageRIGHT, newRoom.playerStartDirection);
         player.setOccupiedSquare(getMatrixSquare(player.position));
         setSquare(player);
         
@@ -126,15 +129,19 @@ public class EscapeRoom extends GridPanel{
         
         if( command == Command.Move.UP ){
             newPosition.y--;
+            this.player.setFaceDirection(Direction.UP);
         }
         if( command == Command.Move.DOWN ){
             newPosition.y++;
+            this.player.setFaceDirection(Direction.DOWN);
         }
         if( command == Command.Move.LEFT){
             newPosition.x--;
+            this.player.setFaceDirection(Direction.LEFT);
         }
         if( command == Command.Move.RIGHT ){
             newPosition.x++;
+            this.player.setFaceDirection(Direction.RIGHT);
         }
         
         changePlayerPosition(newPosition);
