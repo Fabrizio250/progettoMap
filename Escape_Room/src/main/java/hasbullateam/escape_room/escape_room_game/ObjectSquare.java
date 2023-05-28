@@ -3,6 +3,7 @@ package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
+import org.json.JSONObject;
 
 /**
  *
@@ -31,6 +32,16 @@ public class ObjectSquare {
     public ObjectSquare(String name, Cord position, Color backgroundColor, String pathImage, boolean isPassable) {
         this(name,position,pathImage,isPassable);
         this.backgroundColor = backgroundColor;
+    }
+    
+    public ObjectSquare( JSONObject jsonObj ){
+        this(
+                jsonObj.getString("name"),
+                new Cord(jsonObj.getJSONObject("position").getInt("x"),
+                jsonObj.getJSONObject("position").getInt("y")),
+                jsonObj.getString("pathImage"),
+                jsonObj.getBoolean("isPassable")
+        );
     }
     
 }

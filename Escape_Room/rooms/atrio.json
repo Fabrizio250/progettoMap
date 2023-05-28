@@ -1,0 +1,24 @@
+{
+    "name": "atrio",
+    "backGroundPath": "images\\prigione.jpg",
+    "playerPathImageUP": "images\\player2_UP.png",
+    "playerPathImageDOWN": "images\\player2_DOWN.png",
+    "playerPathImageLEFT": "images\\player2_LEFT.png",
+    "playerPathImageRIGHT": "images\\player2_RIGHT.png",
+    "playerStartDirection": "DOWN",
+    "playerStartPosition": {
+        "x": 3,
+        "y": 3
+    },
+    "objects" : [
+        {
+            "name": "lol",
+            "position": {
+                "x": 4,
+                "y": 4
+            },
+            "pathImage": "images\\player.png",
+            "isPassable": false
+        }
+    ]
+}

@@ -1,6 +1,7 @@
 
 package hasbullateam.escape_room.escape_room_game;
 
+import hasbullateam.escape_room.Tris;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.Direction;
@@ -10,11 +11,13 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-
+import org.json.*;
 
 /**
  *
@@ -44,11 +47,7 @@ public class EscapeRoom extends GridPanel{
         
         this.dialog = new TextDialog(this);
         
-        inventory = new Inventory( new ObjectSquare("1",new Cord(3,GRID_SIZE-1), null, false),
-                                   new ObjectSquare("2",new Cord(4,GRID_SIZE-1), null, false),
-                                   new ObjectSquare("3",new Cord(5,GRID_SIZE-1), null, false),
-                                   new ObjectSquare("4",new Cord(6,GRID_SIZE-1), null, false)
-                                 );
+        inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);
 
         rm2 = new Room("images\\prigione.jpg", new Cord(GRID_SIZE/2, GRID_SIZE/2),
                 "images\\player2_UP.png","images\\player2_DOWN.png",
@@ -61,10 +60,21 @@ public class EscapeRoom extends GridPanel{
         rm.addObject(new ObjectSquare("ll", new Cord( 4,2 ), "images\\player2.png" , false)  );
         rm.addObject(new ObjectSquare("lol", new Cord( 1,4 ), "images\\player.png" , true)  );
          
-        this.loadRoom(rm);
+        this.loadRoom("rooms\\atrio.json");
     }
     
     
+    public void loadRoom(String jsonPathRoom){
+        try{
+            JSONObject jsonObj = new JSONObject(new String(Files.readAllBytes(Paths.get(jsonPathRoom))));
+            this.loadRoom(new Room( jsonObj ));
+        }catch (Exception e){
+            System.err.println(jsonPathRoom+ " non valido");
+        }
+        
+    }
+    
+    // carica nella Griglia newRoom, il player e l'inventario
     public void loadRoom(Room newRoom){
         
         // rimuovi vecchio player se presente
@@ -87,17 +97,7 @@ public class EscapeRoom extends GridPanel{
         for(ObjectSquare obj: newRoom.objects.values()){
             loadObjectSquare(obj);
         }
-        
-        
-        // aggiungi gli item dell'inventario alla room
-        for( ObjectSquare item: this.inventory.items ){
-            newRoom.addObject(item );
-        }
-        
-        // aggiungi i panel dell'inventario
-        for(SquarePanel panel: this.inventory.getItemPanels()){
-            this.setSquare(panel);
-        }
+         
         
         // carica player
         player = new PlayerSquarePanel( newRoom.playerStarPosition, newRoom.playerPathImageUP, newRoom.playerPathImageDOWN,
@@ -107,6 +107,8 @@ public class EscapeRoom extends GridPanel{
         
         // aggiorna il riferimento a room
         this.room = newRoom;
+        
+        this.loadInventory();
 
     }
     
@@ -114,6 +116,17 @@ public class EscapeRoom extends GridPanel{
         this.setSquare(new SquarePanel(obj.position, obj.backgroundColor,obj.pathImage) );
     }
     
+    public void loadInventory(){
+        // aggiungi gli item dell'inventario alla room
+        for( ObjectSquare item: this.inventory.items ){
+            this.room.addObject(item );
+        }
+        
+        // aggiungi i panel dell'inventario
+        for(SquarePanel panel: this.inventory.getItemPanels()){
+            this.setSquare(panel);
+        }
+    }
     
     
     public void startGame(){
@@ -122,6 +135,13 @@ public class EscapeRoom extends GridPanel{
         this.dialog.show(!this.dialog.isVisible());
     }
     
+    public void changePanel(){
+        JFrame frame = (JFrame) this.getTopLevelAncestor();
+        this.dialog.dialog.dispose();
+        frame.setContentPane(new Tris());
+        frame.revalidate();
+        frame.repaint();
+    }
     
     
     private void movePlayer(Command.Move command){
@@ -145,6 +165,7 @@ public class EscapeRoom extends GridPanel{
         }
         
         changePlayerPosition(newPosition);
+        repaint();
     }
     
     
@@ -226,6 +247,10 @@ public class EscapeRoom extends GridPanel{
             if (key == 'h'){
                 EscapeRoom.this.loadRoom(EscapeRoom.this.rm2);
                 
+            }
+            
+            if (key == 'i'){
+                EscapeRoom.this.changePanel();
             }
             
             movePlayer(cmd);

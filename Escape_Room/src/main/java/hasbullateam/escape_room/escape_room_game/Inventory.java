@@ -21,6 +21,7 @@ public class Inventory {
  
     int selected;
     static final Color selectionColor = new Color(10,10,255,128);
+    static final Color defaultColor = new Color(10,10,10,128);
     
     public Inventory(ObjectSquare... items) {
         this.items = new ArrayList<>(items.length);
@@ -36,8 +37,31 @@ public class Inventory {
         this.select(0);
     }
     
+    public Inventory( int row, int startColumn, int endColumn ){
+        
+        this.items = new ArrayList<>();
+        
+        Integer c=0;
+        for(int col = startColumn; col<=endColumn; col++){
+            this.items.add(new ObjectSquare( ("INVENTORY_"+(c++).toString()),
+                                            new Cord(col,row),defaultColor,
+                                            null,false) );
+            
+        }
+        
+        this.itemPanels = new ArrayList<>();
+        
+        for( ObjectSquare item: this.items ){
+            this.itemPanels.add( new SquarePanel(item.position, item.backgroundColor,item.pathImage) );
+        }
+        
+        
+        this.select(0);
+        
+    }
+    
     public void select(int n){
-        itemPanels.get(this.selected).setBackground(new Color(0,0,0,0));
+        itemPanels.get(this.selected).setBackground(defaultColor);
         this.selected = n;
         itemPanels.get(this.selected).setBackground(selectionColor);
         
