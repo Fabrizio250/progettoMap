@@ -162,8 +162,10 @@ public class EscapeRoom extends GridPanel{
          
         
         // carica player
-        player = new PlayerSquarePanel( newRoom.playerPosition, newRoom.playerPathImageUP, newRoom.playerPathImageDOWN,
-        newRoom.playerPathImageLEFT, newRoom.playerPathImageRIGHT, newRoom.playerDirection);
+        player = new PlayerSquarePanel( newRoom.playerPosition, 
+                newRoom.playerPathImageUP_0, newRoom.playerPathImageDOWN_0, newRoom.playerPathImageLEFT_0, newRoom.playerPathImageRIGHT_0, 
+                newRoom.playerPathImageUP_1, newRoom.playerPathImageDOWN_1, newRoom.playerPathImageLEFT_1, newRoom.playerPathImageRIGHT_1,
+                newRoom.playerPathImageUP_2, newRoom.playerPathImageDOWN_2, newRoom.playerPathImageLEFT_2, newRoom.playerPathImageRIGHT_2,newRoom.playerDirection);
         player.setOccupiedSquare(getMatrixSquare(player.position));
         setSquare(player);
         
@@ -201,6 +203,7 @@ public class EscapeRoom extends GridPanel{
                 
                 if(this.player.direction.equals(Direction.UP)){
                     newPosition.y--;
+                    this.player.setFaceDirection(this.player.direction);
                 }else{
                     
                     this.player.setFaceDirection(Direction.UP);
@@ -211,6 +214,7 @@ public class EscapeRoom extends GridPanel{
                 
                 if(this.player.direction.equals(Direction.DOWN)){
                     newPosition.y++;
+                    this.player.setFaceDirection(this.player.direction);
                 }else{
                     
                     this.player.setFaceDirection(Direction.DOWN);
@@ -221,6 +225,7 @@ public class EscapeRoom extends GridPanel{
                 
                 if(this.player.direction.equals(Direction.LEFT)){
                     newPosition.x--;
+                    this.player.setFaceDirection(this.player.direction);
                 }else{
                     
                     this.player.setFaceDirection(Direction.LEFT);
@@ -231,6 +236,7 @@ public class EscapeRoom extends GridPanel{
                 
                 if(this.player.direction.equals(Direction.RIGHT)){
                     newPosition.x++;
+                    this.player.setFaceDirection(this.player.direction);
                     
                 }else{
                     this.player.setFaceDirection(Direction.RIGHT);

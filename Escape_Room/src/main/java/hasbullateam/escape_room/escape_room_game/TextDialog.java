@@ -42,6 +42,9 @@ public class TextDialog {
     static final Color TEXTCOLOR = Color.DARK_GRAY;
     static final int DEFAULT_WIDTH = 500;
     static final int DEFAULT_HEIGHT = 200;
+    
+    static final int MAX_WIDTH = 500;
+    static final int MAX_HEIGHT = 200;
 
     public TextDialog(JPanel parent) {
         
@@ -73,6 +76,7 @@ public class TextDialog {
             dialog.add(label);
             
             setText(this.text);
+            //this.dialog.pack();
             this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             
         });
@@ -131,8 +135,8 @@ public class TextDialog {
     }
     
     private void setLabelText(String str){
-        label.setText(String.format("<html><body style='width: %dpx'>%s</body></html>",
-                            this.dialog.getWidth()-50,str));
+        label.setText(String.format("<html><body><pre>   %s</pre></body></html>",
+                            str));
     }
     
     public void show( boolean  val){
