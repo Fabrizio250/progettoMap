@@ -32,6 +32,7 @@ public class PlayerSquarePanel extends SquarePanel{
         this.directionImages.put(Direction.DOWN, pathImageDOWN);
         this.directionImages.put(Direction.LEFT, pathImageLEFT);
         this.directionImages.put(Direction.RIGHT, pathImageRIGHT);
+        this.direction = defaultDir;
         
         this.setBackgroundImage(this.directionImages.get(defaultDir));
     }

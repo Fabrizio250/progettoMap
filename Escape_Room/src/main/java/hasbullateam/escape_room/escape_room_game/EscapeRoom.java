@@ -183,23 +183,50 @@ public class EscapeRoom extends GridPanel{
             Cord newPosition = player.position.clone();
         
             if( command == Command.Move.UP ){
-                newPosition.y--;
-                this.player.setFaceDirection(Direction.UP);
+                
+                if(this.player.direction.equals(Direction.UP)){
+                    newPosition.y--;
+                }else{
+                    
+                    this.player.setFaceDirection(Direction.UP);
+                }
+                
             }
             if( command == Command.Move.DOWN ){
-                newPosition.y++;
-                this.player.setFaceDirection(Direction.DOWN);
+                
+                if(this.player.direction.equals(Direction.DOWN)){
+                    newPosition.y++;
+                }else{
+                    
+                    this.player.setFaceDirection(Direction.DOWN);
+                }
+                
             }
             if( command == Command.Move.LEFT){
-                newPosition.x--;
-                this.player.setFaceDirection(Direction.LEFT);
+                
+                if(this.player.direction.equals(Direction.LEFT)){
+                    newPosition.x--;
+                }else{
+                    
+                    this.player.setFaceDirection(Direction.LEFT);
+                }
+                
             }
             if( command == Command.Move.RIGHT ){
-                newPosition.x++;
-                this.player.setFaceDirection(Direction.RIGHT);
+                
+                if(this.player.direction.equals(Direction.RIGHT)){
+                    newPosition.x++;
+                    
+                }else{
+                    this.player.setFaceDirection(Direction.RIGHT);
+                }
+                
             }
-
-            changePlayerPosition(newPosition);
+            
+            if(!newPosition.equals(this.player.position)){
+                changePlayerPosition(newPosition);
+            }
+            
             repaint();
         }
         
