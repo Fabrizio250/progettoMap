@@ -24,14 +24,6 @@ public interface Command{
         RIGHT;
     }
     
-    public enum Facing implements Command{
-        NONE,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT;
-    }
-    
     public enum InventorySelection implements Command{
         NONE,
         SELECT_0,

@@ -18,12 +18,12 @@ public class Room implements Serializable{
     String name;
     String backGroundPath;
     Map<Cord,ObjectSquare> objects;
-    Cord playerStarPosition;
+    Cord playerPosition;
     String playerPathImageUP;
     String playerPathImageDOWN;
     String playerPathImageLEFT;
     String playerPathImageRIGHT;
-    Direction playerStartDirection;
+    Direction playerDirection;
 
     public Room( String name, String backGroundPath, String playerPathImage ) {
         this(name, backGroundPath, new Cord(0,0), playerPathImage);
@@ -38,12 +38,12 @@ public class Room implements Serializable{
     String playerPathImageUP, String playerPathImageDOWN, String playerPathImageLEFT, String playerPathImageRIGHT, Direction playerStartDirection){
         this.name = name;
         this.backGroundPath = backGroundPath;
-        this.playerStarPosition = playerStartPosition;
+        this.playerPosition = playerStartPosition;
         this.playerPathImageUP = playerPathImageUP;
         this.playerPathImageDOWN = playerPathImageDOWN;
         this.playerPathImageLEFT = playerPathImageLEFT;
         this.playerPathImageRIGHT = playerPathImageRIGHT;
-        this.playerStartDirection = playerStartDirection;
+        this.playerDirection = playerStartDirection;
         
         objects = new HashMap<>();
     }

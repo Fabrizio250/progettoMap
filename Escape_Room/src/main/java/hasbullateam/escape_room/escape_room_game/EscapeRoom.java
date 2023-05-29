@@ -147,8 +147,8 @@ public class EscapeRoom extends GridPanel{
          
         
         // carica player
-        player = new PlayerSquarePanel( newRoom.playerStarPosition, newRoom.playerPathImageUP, newRoom.playerPathImageDOWN,
-        newRoom.playerPathImageLEFT, newRoom.playerPathImageRIGHT, newRoom.playerStartDirection);
+        player = new PlayerSquarePanel( newRoom.playerPosition, newRoom.playerPathImageUP, newRoom.playerPathImageDOWN,
+        newRoom.playerPathImageLEFT, newRoom.playerPathImageRIGHT, newRoom.playerDirection);
         player.setOccupiedSquare(getMatrixSquare(player.position));
         setSquare(player);
         
@@ -225,6 +225,13 @@ public class EscapeRoom extends GridPanel{
             
             if(!newPosition.equals(this.player.position)){
                 changePlayerPosition(newPosition);
+                // aggiorna la posizione del player nella room
+                this.room.playerPosition = this.player.position;
+            }
+            
+            // aggiorna la direzione del player nella room
+            if(!this.player.direction.equals(this.room.playerDirection)){
+                this.room.playerDirection = this.player.direction;
             }
             
             repaint();
@@ -252,6 +259,7 @@ public class EscapeRoom extends GridPanel{
             // metti il player nel nuovo square
             player.position = newPostion;
             setSquare(player);
+            
 
             revalidate();
         }
