@@ -35,13 +35,14 @@ import org.json.*;
 
 
 // TODO: interagire con oggetti
+// TODO: pulire il backup delle stanze ad ogni avvio
 
 
 public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
     public PlayerSquarePanel player;
     public Room room;
-    TextDialog dialog;
+    MultipleChoiceDialog dialog;
     Inventory inventory;
     
     private static int _backupFileCounter = 0;
@@ -51,12 +52,19 @@ public class EscapeRoom extends GridPanel{
         
         this.addKeyListener(new KeyboardInput());
         
-        this.dialog = new TextDialog(this);
+        this.dialog = new MultipleChoiceDialog(this);//new TextDialog(this);
+        dialog.setBrief("le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle ");
+        dialog.setChoices("Palle1","Palle2","Palle3","Palle4");
+        
         
         this.inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);
         
         // carica room, player e inventario
         this.loadRoomFromJSON("rooms\\atrio.json");
+        
+        SwingUtilities.invokeLater(()->{ 
+            this.dialog.setSize(200, 600);
+        });
     }
     
     public void startGame(){
@@ -110,8 +118,10 @@ public class EscapeRoom extends GridPanel{
             }
             
             
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.err.println(pathBackupFile+" path non valido");
+        } catch (IOException e){
+            System.out.println("io exception");
         }
     }
     
@@ -301,17 +311,41 @@ public class EscapeRoom extends GridPanel{
                 this.loadRoomFromBackupFile("rooms\\roomsBackup.dat", "atrio" );
             
             }else if(cmd2 == Command.Test.SET_TEXT){
-                
                 this.dialog.show(!this.dialog.isVisible());
                 if(this.dialog.isVisible()){ 
-                    this.dialog.setText("<u>sottolineatura</u> io lo dahadhhdhas adh ha haa a  adha h agay yda gfyag fagag yayf yuaga aggfygsgygyaufyugafgyfgyuafygfagyufasygufas afg aygagf uaga gyfayu afyg yuaf aygayu asf gfy ayug uyaffuguag uasgu so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
+                    this.dialog.assembleText();
+                    this.dialog.reWriteText(true);
+                    //this.dialog.setText("<pre>   lollol oll <br>   le mie palle</pre>");
+                    //this.dialog.setText("<u>sottolineatura</u> io lo dahadhhdhas adh ha haa a  adha h agay yda gfyag fagag yayf yuaga aggfygsgygyaufyugafgyfgyuafygfagyufasygufas afg aygagf uaga gyfayu afyg yuaf aygayu asf gfy ayug uyaffuguag uasgu so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
                 }else{
                     this.dialog.setText("");
                 }
                 
+            }else if(cmd2 == Command.Test.SET_TEXT_SIZE){
+                this.dialog.setSize(200, 600);
+                this.dialog.reWriteText(true);
             }
+        } else if (cmd instanceof Command.Dialog){
+            Command.Dialog cmd2 = (Command.Dialog)cmd;
             
-            
+            if(cmd2 == Command.Dialog.ESC){
+                this.dialog.show(false);
+                
+            }else if(this.dialog instanceof MultipleChoiceDialog){
+                MultipleChoiceDialog _dialog = (MultipleChoiceDialog)this.dialog;
+                
+                if(cmd2 == Command.Dialog.UP){
+                    _dialog.select(_dialog.selectedIndx-1);
+                    
+                }else if(cmd2 == Command.Dialog.DOWN){
+                    _dialog.select(_dialog.selectedIndx+1);
+                    
+                }else if(cmd2 == Command.Dialog.ENTER){
+                    System.out.println(_dialog.getChoice());
+                }
+            }
+                
+                
         }
         
         this.revalidate();
@@ -329,6 +363,8 @@ public class EscapeRoom extends GridPanel{
         @Override
         public void keyPressed(KeyEvent e) {
             char key = e.getKeyChar();
+            int keyCode = e.getKeyCode();
+            
             
             Command cmd = Command.Invalid.NONE;
             
@@ -390,7 +426,25 @@ public class EscapeRoom extends GridPanel{
                 case 'i':
                     cmd = Command.Test.SET_TEXT;
                     break;
+                case 'l':
+                    cmd = Command.Test.SET_TEXT_SIZE;
+                    break;
                 
+            }
+            
+            switch (keyCode){
+                case KeyEvent.VK_UP:
+                    cmd = Command.Dialog.UP;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    cmd = Command.Dialog.DOWN;
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    cmd = Command.Dialog.ESC;
+                    break;
+                case KeyEvent.VK_ENTER:
+                    cmd = Command.Dialog.ENTER;
+                    break;
             }
             
             if(cmd != Command.Invalid.NONE){
@@ -411,11 +465,7 @@ public class EscapeRoom extends GridPanel{
 
 
 /*
-    public void startGame(){
-        
-        this.dialog.setText("<u>sottolineatura</u> io lo so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
-        this.dialog.show(!this.dialog.isVisible());
-    }
+
     
     public void changePanel(){
         JFrame frame = (JFrame) this.getTopLevelAncestor();

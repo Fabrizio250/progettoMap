@@ -38,10 +38,19 @@ public interface Command{
         SELECT_9;
     }
     
+    public enum Dialog implements Command{
+        NONE,
+        ESC,
+        ENTER,
+        UP,
+        DOWN;
+    }
+    
     public enum Test implements Command{
         LOAD,
         BACKUP,
         MOD_ROOM,
-        SET_TEXT;
+        SET_TEXT,
+        SET_TEXT_SIZE;
     }
 }

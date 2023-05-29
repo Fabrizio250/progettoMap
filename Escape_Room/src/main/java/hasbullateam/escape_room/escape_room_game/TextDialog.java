@@ -31,12 +31,17 @@ public class TextDialog {
     String text;
     JDialog dialog;
     JLabel label;
+    int width;
+    int height;
+    
     
     Thread _writeTextThread;
     
     
     static final Color BACKGROUNDCOLOR = new Color(40,200,255,208);
     static final Color TEXTCOLOR = Color.DARK_GRAY;
+    static final int DEFAULT_WIDTH = 500;
+    static final int DEFAULT_HEIGHT = 200;
 
     public TextDialog(JPanel parent) {
         
@@ -56,20 +61,40 @@ public class TextDialog {
                 }
             }); 
             dialog = new JDialog(this.frame, false);
-            dialog.setSize(500, 200);
-            
+            //dialog.setSize(this.width, this.height);
+            //this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             dialog.setUndecorated(true);
             dialog.setBackground(this.BACKGROUNDCOLOR); 
             dialog.setLocationRelativeTo(this.parent);
             dialog.setFocusableWindowState(false);
             
             label = new JLabel();
-            setText(this.text);
             label.setForeground(this.TEXTCOLOR); 
             dialog.add(label);
             
+            setText(this.text);
+            this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            
         });
 
+    }
+    
+    public void reWriteText(boolean withDelay){
+        if(withDelay){
+           this.setText(this.text); 
+        }else{
+            this.setLabelText(this.text);
+        }   
+    }
+
+    
+    public void setSize(int width, int height){
+        this.dialog.setSize(width, height);
+        this.label.setSize(width, height);
+        this.width = width;
+        this.height = height;
+        this.dialog.setLocationRelativeTo(this.parent);
+        this.reWriteText(false);
     }
     
     public void setText(String str){
