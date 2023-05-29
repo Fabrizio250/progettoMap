@@ -59,6 +59,11 @@ public class EscapeRoom extends GridPanel{
         this.loadRoomFromJSON("rooms\\atrio.json");
     }
     
+    public void startGame(){
+        // quando viene eseguito un comando verifica lo stato della stanza e se è passato apri la porta
+        
+    }
+    
     
     public void backupRoom(String pathBackupFile, Room room){
         
@@ -225,11 +230,14 @@ public class EscapeRoom extends GridPanel{
             
             if(!newPosition.equals(this.player.position)){
                 changePlayerPosition(newPosition);
-                // aggiorna la posizione del player nella room
-                this.room.playerPosition = this.player.position;
+                
+                // aggiorna la posizione del player nella room se è stata cambiata
+                if(!this.player.position.equals(this.room.playerPosition)){
+                    this.room.playerPosition = this.player.position;
+                }
             }
             
-            // aggiorna la direzione del player nella room
+            // aggiorna la direzione del player nella room se è stata cambiata
             if(!this.player.direction.equals(this.room.playerDirection)){
                 this.room.playerDirection = this.player.direction;
             }
@@ -291,8 +299,17 @@ public class EscapeRoom extends GridPanel{
             
             }else if(cmd2 == Command.Test.LOAD){
                 this.loadRoomFromBackupFile("rooms\\roomsBackup.dat", "atrio" );
-            }
             
+            }else if(cmd2 == Command.Test.SET_TEXT){
+                
+                this.dialog.show(!this.dialog.isVisible());
+                if(this.dialog.isVisible()){ 
+                    this.dialog.setText("<u>sottolineatura</u> io lo dahadhhdhas adh ha haa a  adha h agay yda gfyag fagag yayf yuaga aggfygsgygyaufyugafgyfgyuafygfagyufasygufas afg aygagf uaga gyfayu afyg yuaf aygayu asf gfy ayug uyaffuguag uasgu so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
+                }else{
+                    this.dialog.setText("");
+                }
+                
+            }
             
             
         }
@@ -369,6 +386,9 @@ public class EscapeRoom extends GridPanel{
                     break;
                 case 'h'://TODO: da levare
                     cmd = Command.Test.LOAD;
+                    break;
+                case 'i':
+                    cmd = Command.Test.SET_TEXT;
                     break;
                 
             }

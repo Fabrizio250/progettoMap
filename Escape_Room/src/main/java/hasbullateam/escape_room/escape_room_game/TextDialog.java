@@ -7,6 +7,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
@@ -30,6 +32,8 @@ public class TextDialog {
     JDialog dialog;
     JLabel label;
     
+    Thread _writeTextThread;
+    
     
     static final Color BACKGROUNDCOLOR = new Color(40,200,255,208);
     static final Color TEXTCOLOR = Color.DARK_GRAY;
@@ -37,6 +41,7 @@ public class TextDialog {
     public TextDialog(JPanel parent) {
         
         this.parent = parent;
+        this.text = "";
         
         
         SwingUtilities.invokeLater(()->{ 
@@ -68,8 +73,41 @@ public class TextDialog {
     }
     
     public void setText(String str){
-        this.text = str;
-        label.setText(String.format("<html><body style='width: %dpx'>%s</body></html>",this.dialog.getWidth()-50,this.text));
+        
+        if( (_writeTextThread == null) || (!_writeTextThread.isAlive())  ){
+            
+            _writeTextThread = new Thread(
+                ()->{
+                    try{
+                        this.text = "";
+                        for(char c: str.toCharArray()){
+                            this.text += c;
+
+                            setLabelText(this.text);
+                            
+                            Thread.sleep(5);
+                        }
+                    
+                    }catch (InterruptedException e){
+                        this.text = "";
+                        setLabelText(this.text);
+                    }
+                }
+            );
+            
+            _writeTextThread.start();
+           
+            
+        }else{
+            _writeTextThread.interrupt();
+            System.out.println("interrotto");
+        }
+        
+    }
+    
+    private void setLabelText(String str){
+        label.setText(String.format("<html><body style='width: %dpx'>%s</body></html>",
+                            this.dialog.getWidth()-50,str));
     }
     
     public void show( boolean  val){

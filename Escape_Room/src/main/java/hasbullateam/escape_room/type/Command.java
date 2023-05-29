@@ -41,6 +41,7 @@ public interface Command{
     public enum Test implements Command{
         LOAD,
         BACKUP,
-        MOD_ROOM;
+        MOD_ROOM,
+        SET_TEXT;
     }
 }
