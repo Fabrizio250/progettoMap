@@ -45,17 +45,21 @@ public class EscapeRoom extends GridPanel{
     MultipleChoiceDialog dialog;
     Inventory inventory;
     
+    Command cmd;
+    
     private static int _backupFileCounter = 0;
+    
+    private Boolean _showDialog = false;
     
     public EscapeRoom() {
         super(GRID_SIZE);
         
         this.addKeyListener(new KeyboardInput());
         
-        this.dialog = new MultipleChoiceDialog(this);//new TextDialog(this);
-        dialog.setBrief("le mie palle le mie palle le <br>mie palle le mie palle le mie palle le <br>mie palle le mie palle le mie palle le mie palle le mie <br>palle le mie palle le mie palle le mie palle le mie palle ");
-        dialog.setChoices("Palle1","Palle2","Palle3","Palle4");
-        dialog.assembleText();
+        //this.dialog = new MultipleChoiceDialog(this);//new TextDialog(this);
+        //dialog.setBrief("le mie palle le mie palle le <br>mie palle le mie palle le mie palle le <br>mie palle le mie palle le mie palle le mie palle le mie <br>palle le mie palle le mie palle le mie palle le mie palle ");
+        //dialog.setChoices("Palle1","Palle2","Palle3","Palle4");
+        //dialog.assembleText();
         
         
         this.inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);
@@ -78,6 +82,51 @@ public class EscapeRoom extends GridPanel{
                 while(true){
                     
                    _highlightFacingObject();
+                   
+                   ObjectSquare obj = this.room.getFacingObject();
+                   
+                   
+                    if(obj != null){
+                    
+                        if(obj instanceof ContainerObjectSquare){
+                            ContainerObjectSquare _obj = (ContainerObjectSquare)obj;
+                           
+                           
+                            if(this.cmd instanceof Command.Player){
+                                Command.Player _cmd = (Command.Player)this.cmd;
+                                if(_cmd == Command.Player.INTERACT){
+                                    if(!this._showDialog){ // TODO levare sta roba e trovare una soluzione migliore
+                                        
+                                        System.out.println(_obj.getBrief());
+                                        System.out.println(_obj.getObjectsString());
+                                        
+                                        
+                                        this._showDialog = true;
+                                    }
+                                    //dialog = new MultipleChoiceDialog(this);
+                                    //System.out.println(dialog.text);
+                                    //dialog.setBrief( _obj.getBrief() );
+                                    //dialog.setChoices( _obj.getObjectsString().toArray(new String[_obj.objectList.size()]) );
+                                    //dialog.assembleText();
+                                    //dialog.show(true);
+                                    //dialog.reWriteText(true);
+                                }
+                            }
+                           
+                           
+                        }
+                       
+                       
+                       
+                       
+                       
+                       
+                    }
+                   
+                   
+                   
+                   
+                   
                     Thread.sleep(100);
                 }
             }catch(InterruptedException e){
@@ -97,14 +146,6 @@ public class EscapeRoom extends GridPanel{
         
         static ObjectSquare facingObj = null;
         static ObjectSquare previousObject = null;
-
-        public static void setSelectedObj(Boolean selectedObj) {
-            HighlightFacingObjectManger.selectedObj = selectedObj;
-        }
-
-        public static void setPreviousBackground(Color previousBackground) {
-            HighlightFacingObjectManger.previousBackground = previousBackground;
-        }
 
         public static void setFacingObj(ObjectSquare facingObj) {
             HighlightFacingObjectManger.facingObj = facingObj;
@@ -126,9 +167,10 @@ public class EscapeRoom extends GridPanel{
                     previousObject.setBackgroundColor(previousBackground);
                     EscapeRoom.this.loadObjectSquare(previousObject);
                     selectedObj = false;
-
-                    EscapeRoom.this.repaint();
+                    
                     EscapeRoom.this.revalidate();
+                    EscapeRoom.this.repaint();
+                    
                 }
                 if(facingObj.isInteractable){
 
@@ -138,8 +180,8 @@ public class EscapeRoom extends GridPanel{
                         facingObj.backgroundColor = selectedBackground ;
                         EscapeRoom.this.loadObjectSquare(facingObj);
                         selectedObj = true;
-                        revalidate();
-                        repaint();
+                        EscapeRoom.this.revalidate();
+                        EscapeRoom.this.repaint();
                     }
                 }
             }else{
@@ -464,6 +506,10 @@ public class EscapeRoom extends GridPanel{
                 case 'd':
                     cmd = Command.Move.RIGHT;
                     break;
+                    
+                case 'e':
+                    cmd = Command.Player.INTERACT;
+                    break;
             }
             
             switch (keyCode){
@@ -484,6 +530,8 @@ public class EscapeRoom extends GridPanel{
             if(cmd != Command.Invalid.NONE){
                 EscapeRoom.this.executeCommand(cmd);
             }
+            
+            EscapeRoom.this.cmd = cmd;
 
         }
 

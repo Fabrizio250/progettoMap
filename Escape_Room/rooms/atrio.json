@@ -26,6 +26,7 @@
     "objects" : [
         {
             "name": "lol",
+            "tag": "basic",
             "position": {
                 "x": 4,
                 "y": 4
@@ -42,6 +43,7 @@
         },
         {
             "name": "lol",
+            "tag": "basic",
             "position": {
                 "x": 5,
                 "y": 5
@@ -58,6 +60,7 @@
         },
         {
             "name": "lol",
+            "tag": "basic",
             "position": {
                 "x": 2,
                 "y": 2
@@ -74,6 +77,7 @@
         },
         {
             "name": "lol",
+            "tag": "basic",
             "position": {
                 "x": 8,
                 "y": 5
@@ -90,6 +94,7 @@
         },
         {
             "name": "lol",
+            "tag": "basic",
             "position": {
                 "x": 7,
                 "y": 5
@@ -103,6 +108,74 @@
             "pathImage": "images\\player2.png",
             "isPassable": true,
             "isInteractable": false
+        },
+
+        {
+            "name": "lol",
+            "tag": "container",
+            "position": {
+                "x": 8,
+                "y": 8
+            },
+            "pathImage": "images\\pic_UP_0.png",
+            "brief": "le mie palle sono palle le tue palle anche sono palle però...<br>LE MIE PALLE SONO LE PALLE DEFINITIVE",
+            "objects": [
+                {
+                    "name": "lol1",
+                    "tag": "basic",
+                    "position": {
+                        "x": 7,
+                        "y": 5
+                    },
+                    "color":{
+                        "r": 200,
+                        "g": 200,
+                        "b": 0,
+                        "a": 128
+                    },
+                    "pathImage": "images\\player2.png",
+                    "isPassable": true,
+                    "isInteractable": false
+                },
+                {
+                    "name": "lo2",
+                    "tag": "basic",
+                    "position": {
+                        "x": 7,
+                        "y": 5
+                    },
+                    "color":{
+                        "r": 200,
+                        "g": 200,
+                        "b": 0,
+                        "a": 128
+                    },
+                    "pathImage": "images\\player2.png",
+                    "isPassable": true,
+                    "isInteractable": false
+                },
+                {
+                    "name": "lol3",
+                    "tag": "basic",
+                    "position": {
+                        "x": 7,
+                        "y": 5
+                    },
+                    "color":{
+                        "r": 200,
+                        "g": 200,
+                        "b": 0,
+                        "a": 128
+                    },
+                    "pathImage": "images\\player2.png",
+                    "isPassable": true,
+                    "isInteractable": false
+                }
+
+            ]
         }
+
+
+
     ]
 }

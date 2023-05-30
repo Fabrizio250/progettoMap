@@ -53,4 +53,8 @@ public interface Command{
         SET_TEXT,
         SET_TEXT_SIZE;
     }
+    
+    public enum Player implements Command{
+        INTERACT;
+    }
 }

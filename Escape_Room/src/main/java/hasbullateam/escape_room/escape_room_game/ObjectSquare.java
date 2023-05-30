@@ -4,7 +4,10 @@ package hasbullateam.escape_room.escape_room_game;
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -18,7 +21,6 @@ public class ObjectSquare implements Serializable{
     Color backgroundColor;
     boolean isPassable;
     boolean isInteractable;
-    boolean isContainer;
     
     public ObjectSquare(String name, Cord position, String pathImage, boolean isPassable, boolean isInteractable) {
         this.name = name;
@@ -34,6 +36,7 @@ public class ObjectSquare implements Serializable{
     }
     
     public ObjectSquare( JSONObject jsonObj ){
+        //TODO: levare che bisonga per forza mettere il color
         this(
                 jsonObj.getString("name"),
                 new Cord(jsonObj.getJSONObject("position").getInt("x"),
@@ -61,6 +64,10 @@ public class ObjectSquare implements Serializable{
         this.backgroundColor = color;
     }
 
+    
+    
+    
+    
     
     
     

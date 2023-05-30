@@ -99,8 +99,21 @@ public class Room implements Serializable{
         );
         
         JSONArray objArray = jsonObj.getJSONArray("objects");
+        JSONObject currentObj;
         for(int i=0; i<objArray.length(); i++){
-            this.addObject( new ObjectSquare(objArray.getJSONObject(i)) );
+            
+            currentObj = objArray.getJSONObject(i);
+            
+            if( currentObj.getString("tag").equals("container") ){
+                this.addObject(new ContainerObjectSquare(currentObj));
+            
+            }else if (currentObj.getString("tag").equals("basic")){
+               this.addObject( new ObjectSquare(currentObj) ); 
+            
+            }
+            
+            
+            
         }
             
         
