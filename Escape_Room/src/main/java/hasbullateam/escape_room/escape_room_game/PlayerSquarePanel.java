@@ -65,7 +65,6 @@ public class PlayerSquarePanel extends SquarePanel{
         }else{
             _animationIndx = 1;
         }
-        System.out.println(_animationIndx);
         this.setBackgroundImage(this.directionImages.get(dir).get(  _animationIndx-1 ));
         this.direction = dir;
     }

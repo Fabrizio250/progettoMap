@@ -123,5 +123,21 @@ public class Room implements Serializable{
         this.objects.remove(cord);
     }
     
+    public ObjectSquare getFacingObject(){
+        Cord cord = playerPosition.clone();
+        
+        if(playerDirection == Direction.UP){
+           cord.y--; 
+        }else if(playerDirection == Direction.DOWN){
+           cord.y++; 
+        }else if(playerDirection == Direction.LEFT){
+           cord.x--; 
+        }else if(playerDirection == Direction.RIGHT){
+           cord.x++; 
+        }
+        
+        return this.objects.get(cord);
+    }
+    
  
 }

@@ -4,6 +4,7 @@ package hasbullateam.escape_room.escape_room_game;
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Objects;
 import org.json.JSONObject;
 
 /**
@@ -16,22 +17,19 @@ public class ObjectSquare implements Serializable{
     String name;
     Color backgroundColor;
     boolean isPassable;
-    /*
-    interagibile
-    raccoglibile
-    frugabile
+    boolean isInteractable;
+    boolean isContainer;
     
-    */
-    
-    public ObjectSquare(String name, Cord position, String pathImage, boolean isPassable) {
+    public ObjectSquare(String name, Cord position, String pathImage, boolean isPassable, boolean isInteractable) {
         this.name = name;
         this.position = position;
         this.pathImage = pathImage;
         this.isPassable = isPassable;
+        this.isInteractable = isInteractable;
     }
     
-    public ObjectSquare(String name, Cord position, Color backgroundColor, String pathImage, boolean isPassable) {
-        this(name,position,pathImage,isPassable);
+    public ObjectSquare(String name, Cord position, Color backgroundColor, String pathImage, boolean isPassable, boolean isInteractable) {
+        this(name,position,pathImage,isPassable, isInteractable);
         this.backgroundColor = backgroundColor;
     }
     
@@ -39,10 +37,31 @@ public class ObjectSquare implements Serializable{
         this(
                 jsonObj.getString("name"),
                 new Cord(jsonObj.getJSONObject("position").getInt("x"),
-                jsonObj.getJSONObject("position").getInt("y")),
+                         jsonObj.getJSONObject("position").getInt("y")),
+                new Color(jsonObj.getJSONObject("color").getInt("r"), 
+                          jsonObj.getJSONObject("color").getInt("g"), 
+                          jsonObj.getJSONObject("color").getInt("b"), 
+                          jsonObj.getJSONObject("color").getInt("a")),
                 jsonObj.getString("pathImage"),
-                jsonObj.getBoolean("isPassable")
+                jsonObj.getBoolean("isPassable"),
+                jsonObj.getBoolean("isInteractable")
         );
     }
+    
+    
+    
+    public class DoorObjectSquare extends ObjectSquare implements Serializable{
+        public DoorObjectSquare(JSONObject jsonObj){
+            super(jsonObj);
+            
+        }
+    }
+    
+    public void setBackgroundColor( Color color ){
+        this.backgroundColor = color;
+    }
+
+    
+    
     
 }

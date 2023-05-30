@@ -53,22 +53,121 @@ public class EscapeRoom extends GridPanel{
         this.addKeyListener(new KeyboardInput());
         
         this.dialog = new MultipleChoiceDialog(this);//new TextDialog(this);
-        dialog.setBrief("le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle le mie palle ");
+        dialog.setBrief("le mie palle le mie palle le <br>mie palle le mie palle le mie palle le <br>mie palle le mie palle le mie palle le mie palle le mie <br>palle le mie palle le mie palle le mie palle le mie palle ");
         dialog.setChoices("Palle1","Palle2","Palle3","Palle4");
+        dialog.assembleText();
         
         
         this.inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);
         
-        // carica room, player e inventario
         this.loadRoomFromJSON("rooms\\atrio.json");
         
-        SwingUtilities.invokeLater(()->{ 
-            this.dialog.setSize(200, 600);
-        });
+        SwingUtilities.invokeLater( ()-> startGame() );
+        
     }
     
     public void startGame(){
-        // quando viene eseguito un comando verifica lo stato della stanza e se è passato apri la porta
+
+        // in base a dove si trova il player, l'inventario, e lo stato della stanza fai cose
+        (new Thread(()->{
+            
+            
+            
+            
+            try{
+                while(true){
+                    
+                   _highlightFacingObject();
+                    Thread.sleep(100);
+                }
+            }catch(InterruptedException e){
+                
+            }
+            
+            
+        })).start();
+        
+    }
+    
+    private class HighlightFacingObjectManger implements Runnable{
+        static Boolean selectedObj = false;
+            
+        static final Color selectedBackground = new Color(200,200,200,80);
+        static Color previousBackground = selectedBackground;
+        
+        static ObjectSquare facingObj = null;
+        static ObjectSquare previousObject = null;
+
+        public static void setSelectedObj(Boolean selectedObj) {
+            HighlightFacingObjectManger.selectedObj = selectedObj;
+        }
+
+        public static void setPreviousBackground(Color previousBackground) {
+            HighlightFacingObjectManger.previousBackground = previousBackground;
+        }
+
+        public static void setFacingObj(ObjectSquare facingObj) {
+            HighlightFacingObjectManger.facingObj = facingObj;
+        }
+        
+        public void setPreviousObject(ObjectSquare prevObj){
+            this.previousObject = prevObj;
+        }
+
+        @Override
+        public void run() {
+            if( facingObj != null ){
+
+                if(previousObject == null){
+                    previousObject = facingObj;
+                }
+
+                if(!facingObj.equals(previousObject) && selectedObj){
+                    previousObject.setBackgroundColor(previousBackground);
+                    EscapeRoom.this.loadObjectSquare(previousObject);
+                    selectedObj = false;
+
+                    EscapeRoom.this.repaint();
+                    EscapeRoom.this.revalidate();
+                }
+                if(facingObj.isInteractable){
+
+                    if(!selectedObj){
+                        previousBackground = facingObj.backgroundColor;
+                        previousObject = facingObj;
+                        facingObj.backgroundColor = selectedBackground ;
+                        EscapeRoom.this.loadObjectSquare(facingObj);
+                        selectedObj = true;
+                        revalidate();
+                        repaint();
+                    }
+                }
+            }else{
+
+                if(selectedObj){  
+
+                    previousObject.setBackgroundColor(previousBackground);
+                    EscapeRoom.this.loadObjectSquare(previousObject);
+                    selectedObj = false;
+
+                    EscapeRoom.this.revalidate();
+                    EscapeRoom.this.repaint();
+
+                }
+            }
+        }
+    }
+    
+    public void _highlightFacingObject(){
+        
+        HighlightFacingObjectManger h = new HighlightFacingObjectManger();
+        
+        if(h.previousObject == null){
+            h.setPreviousObject(this.room.getFacingObject());
+        }
+        h.setFacingObj(this.room.getFacingObject());
+        
+        h.run();
         
     }
     
@@ -96,6 +195,7 @@ public class EscapeRoom extends GridPanel{
             try{
                 while(true){
                     try {
+ 
                         counter = (Integer) inputStream.readObject();
                         currentRoom = (Room) inputStream.readObject();
                         
@@ -105,7 +205,7 @@ public class EscapeRoom extends GridPanel{
                         }
   
                     } catch (ClassNotFoundException ex) {
-                        return;
+                        
                     }
                 }
             }catch (EOFException e){
@@ -192,7 +292,7 @@ public class EscapeRoom extends GridPanel{
         }
     }
     
-    
+  
     
     private void movePlayer(Command.Move command){
         if(command != Command.Move.NONE){
@@ -291,69 +391,14 @@ public class EscapeRoom extends GridPanel{
     }
     
     public void executeCommand(Command cmd){
-        if( cmd instanceof Command.Move){
-            movePlayer( (Command.Move) cmd);
-        }else if (cmd instanceof Command.InventorySelection){
-            int indx = ((Command.InventorySelection)cmd).ordinal()-1;
-            this.inventory.select(   indx );
-        }else if (cmd instanceof Command.Test){ //TODO: da levare
-            
-            Command.Test cmd2 = (Command.Test)cmd;
-            
-            if(cmd2 == Command.Test.MOD_ROOM){
-                this.room.getObject(new Cord(4,4)).position = new Cord(1,1);
-                this.room.addObject( this.room.getObject(new Cord(4,4)) );
-                this.room.removeObject(new Cord(4,4));
-
-                this.loadObjectSquare(this.room.getObject(new Cord(1,1)));
-                this.clearSquare(new Cord(4,4));
-                this.room.addObject(new ObjectSquare("palle",new Cord(0,0),"images\\player2.png",false));
-                this.loadObjectSquare(this.room.getObject(new Cord(0,0)));
-            
-            }else if(cmd2 == Command.Test.BACKUP){
-                this.backupRoom("rooms\\roomsBackup.dat", this.room);
-            
-            }else if(cmd2 == Command.Test.LOAD){
-                this.loadRoomFromBackupFile("rooms\\roomsBackup.dat", "atrio" );
-            
-            }else if(cmd2 == Command.Test.SET_TEXT){
-                this.dialog.show(!this.dialog.isVisible());
-                if(this.dialog.isVisible()){ 
-                    this.dialog.assembleText();
-                    this.dialog.reWriteText(true);
-                    //this.dialog.setText("<pre>   lollol oll <br>   le mie palle</pre>");
-                    //this.dialog.setText("<u>sottolineatura</u> io lo dahadhhdhas adh ha haa a  adha h agay yda gfyag fagag yayf yuaga aggfygsgygyaufyugafgyfgyuafygfagyufasygufas afg aygagf uaga gyfayu afyg yuaf aygayu asf gfy ayug uyaffuguag uasgu so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
-                }else{
-                    this.dialog.setText("");
-                }
-                
-            }else if(cmd2 == Command.Test.SET_TEXT_SIZE){
-                this.dialog.setSize(200, 600);
-                this.dialog.reWriteText(true);
-            }
-        } else if (cmd instanceof Command.Dialog){
-            Command.Dialog cmd2 = (Command.Dialog)cmd;
-            
-            if(cmd2 == Command.Dialog.ESC){
-                this.dialog.show(false);
-                
-            }else if(this.dialog instanceof MultipleChoiceDialog){
-                MultipleChoiceDialog _dialog = (MultipleChoiceDialog)this.dialog;
-                
-                if(cmd2 == Command.Dialog.UP){
-                    _dialog.select(_dialog.selectedIndx-1);
-                    
-                }else if(cmd2 == Command.Dialog.DOWN){
-                    _dialog.select(_dialog.selectedIndx+1);
-                    
-                }else if(cmd2 == Command.Dialog.ENTER){
-                    System.out.println(_dialog.getChoice());
-                }
-            }
-                
-                
-        }
+        if( cmd instanceof Command.Move move){    
+            movePlayer(move);
         
+        }else if (cmd instanceof Command.InventorySelection inventorySelection){
+            int indx = inventorySelection.ordinal()-1; // -1 perchè l'indice 0 è NONE
+            this.inventory.select(   indx );
+        }
+
         this.revalidate();
         this.repaint();
     }
@@ -419,23 +464,6 @@ public class EscapeRoom extends GridPanel{
                 case 'd':
                     cmd = Command.Move.RIGHT;
                     break;
-                    
-                case 'f'://TODO: da levare
-                    cmd = Command.Test.MOD_ROOM;
-                    break;
-                case 'g'://TODO: da levare
-                    cmd = Command.Test.BACKUP;
-                    break;
-                case 'h'://TODO: da levare
-                    cmd = Command.Test.LOAD;
-                    break;
-                case 'i':
-                    cmd = Command.Test.SET_TEXT;
-                    break;
-                case 'l':
-                    cmd = Command.Test.SET_TEXT_SIZE;
-                    break;
-                
             }
             
             switch (keyCode){
@@ -481,3 +509,175 @@ public class EscapeRoom extends GridPanel{
         frame.repaint();
     }
     */
+
+
+
+
+
+
+/*
+        else if (cmd instanceof Command.Test){ //TODO: da levare
+            
+            Command.Test cmd2 = (Command.Test)cmd;
+            
+            if(cmd2 == Command.Test.MOD_ROOM){
+                this.room.getObject(new Cord(4,4)).position = new Cord(1,1);
+                this.room.addObject( this.room.getObject(new Cord(4,4)) );
+                this.room.removeObject(new Cord(4,4));
+
+                this.loadObjectSquare(this.room.getObject(new Cord(1,1)));
+                this.clearSquare(new Cord(4,4));
+                this.room.addObject(new ObjectSquare("palle",new Cord(0,0),"images\\player2.png",false));
+                this.loadObjectSquare(this.room.getObject(new Cord(0,0)));
+            
+            }else if(cmd2 == Command.Test.BACKUP){
+                this.backupRoom("rooms\\roomsBackup.dat", this.room);
+            
+            }else if(cmd2 == Command.Test.LOAD){
+                this.loadRoomFromBackupFile("rooms\\roomsBackup.dat", "atrio" );
+            
+            }else if(cmd2 == Command.Test.SET_TEXT){
+                this.dialog.show(!this.dialog.isVisible());
+                if(this.dialog.isVisible()){ 
+                    this.dialog.assembleText();
+                    this.dialog.reWriteText(true);
+                    //this.dialog.setText("<pre>   lollol oll <br>   le mie palle</pre>");
+                    //this.dialog.setText("<u>sottolineatura</u> io lo dahadhhdhas adh ha haa a  adha h agay yda gfyag fagag yayf yuaga aggfygsgygyaufyugafgyfgyuafygfagyufasygufas afg aygagf uaga gyfayu afyg yuaf aygayu asf gfy ayug uyaffuguag uasgu so che <em>corsivo</em> non sono solo anche quando sono solo e rido e piango e mi confondo con il cielo e con il fango eeeeeee la vita la vita e la vita è bella");
+                }else{
+                    this.dialog.setText("");
+                }
+                
+            }else if(cmd2 == Command.Test.SET_TEXT_SIZE){
+                this.dialog.setSize(200, 600);
+                this.dialog.reWriteText(true);
+            }
+        } else if (cmd instanceof Command.Dialog){
+            Command.Dialog cmd2 = (Command.Dialog)cmd;
+            
+            if(cmd2 == Command.Dialog.ESC){
+                this.dialog.show(false);
+                
+            }else if(this.dialog instanceof MultipleChoiceDialog){
+                MultipleChoiceDialog _dialog = (MultipleChoiceDialog)this.dialog;
+                
+                if(cmd2 == Command.Dialog.UP){
+                    _dialog.select(_dialog.selectedIndx-1);
+                    
+                }else if(cmd2 == Command.Dialog.DOWN){
+                    _dialog.select(_dialog.selectedIndx+1);
+                    
+                }else if(cmd2 == Command.Dialog.ENTER){
+                    System.out.println(_dialog.getChoice());
+                }
+            }
+                
+                
+        }
+        */
+
+
+
+
+                    
+                /*
+                    
+                case 'f'://TODO: da levare
+                    cmd = Command.Test.MOD_ROOM;
+                    break;
+                case 'g'://TODO: da levare
+                    cmd = Command.Test.BACKUP;
+                    break;
+                case 'h'://TODO: da levare
+                    cmd = Command.Test.LOAD;
+                    break;
+                case 'i':
+                    cmd = Command.Test.SET_TEXT;
+                    break;
+                case 'l':
+                    cmd = Command.Test.SET_TEXT_SIZE;
+                    break;
+                */
+
+
+
+
+
+
+
+
+
+/*
+
+public void startGame(){
+
+        // in base a dove si trova il player, l'inventario, e lo stato della stanza fai cose
+        (new Thread(()->{
+            Boolean selectedObj = false;
+            
+            Color selectedBackground = new Color(200,200,200,80);
+            Color previousBackground = selectedBackground;
+            
+            ObjectSquare facingObj;
+            ObjectSquare previousObject =this.room.getFacingObject();
+            
+            
+            
+            try{
+                while(true){
+                    facingObj = this.room.getFacingObject();
+                    
+                    
+                    
+                    if( facingObj != null ){
+
+                        if(previousObject == null){
+                            previousObject = facingObj;
+                        }
+
+                        if(!facingObj.equals(previousObject) && selectedObj){
+                            previousObject.setBackgroundColor(previousBackground);
+                            this.loadObjectSquare(previousObject);
+                            selectedObj = false;
+
+                            this.repaint();
+                            this.revalidate();
+                        }
+                        if(facingObj.isInteractable){
+
+                            if(!selectedObj){
+                                previousBackground = facingObj.backgroundColor;
+                                previousObject = facingObj;
+                                facingObj.backgroundColor = selectedBackground ;
+                                this.loadObjectSquare(facingObj);
+                                selectedObj = true;
+                                revalidate();
+                                repaint();
+                            }
+                        }
+                    }else{
+
+                        if(selectedObj){  
+
+                            previousObject.setBackgroundColor(previousBackground);
+                            this.loadObjectSquare(previousObject);
+                            selectedObj = false;
+
+                            this.revalidate();
+                            this.repaint();
+
+                        }
+                    }
+                   
+                    Thread.sleep(100);
+                }
+            }catch(InterruptedException e){
+                
+            }
+            
+            
+        })).start();
+        
+    }
+
+
+*/

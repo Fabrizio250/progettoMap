@@ -24,9 +24,9 @@ public class MultipleChoiceDialog extends TextDialog{
     
     public void assembleText(){
         this.text = "";
-        this.text = "<p>"+this.brief+"</p>";
+        this.text = "<pre>"+this.brief+"<br>";
         for(int i=0; i<this.choices.size(); i++){
-            this.text += "<p><pre>";
+
             if(selectedIndx == i){
                 this.text += " > <em>";
             }else{
@@ -36,8 +36,9 @@ public class MultipleChoiceDialog extends TextDialog{
             if(selectedIndx == i){
                 this.text+="</em>";
             }
-            this.text += "</pre></p>";
+            this.text += "<br>";
         }
+        this.text += "</pre>";
     }
     
     public void setBrief(String brief){
@@ -51,7 +52,7 @@ public class MultipleChoiceDialog extends TextDialog{
     }
     
     public void select(int indx){
-        if(indx>=0 && indx<this.choices.size()){
+        if( (!_writeTextThread.isAlive() || _writeTextThread == null) && indx>=0 && indx<this.choices.size()){
             this.selectedIndx = indx;
             this.assembleText();
             this.reWriteText(false);
@@ -62,7 +63,5 @@ public class MultipleChoiceDialog extends TextDialog{
     public String getChoice(){
         return this.choices.get(this.selectedIndx);
     }
-    
-    
-    
+ 
 }

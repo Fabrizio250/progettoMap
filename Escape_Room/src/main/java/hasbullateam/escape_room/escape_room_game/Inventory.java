@@ -42,7 +42,7 @@ public class Inventory {
         for(int col = startColumn; col<=endColumn; col++){
             this.items.add(new ObjectSquare( ("INVENTORY_"+(c++).toString()),
                                             new Cord(col,row),DEFAULTCOLOR,
-                                            null,false) );
+                                            null,false,false) );
             
         }
         
