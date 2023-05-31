@@ -7,6 +7,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
@@ -47,34 +48,32 @@ public class TextDialog {
         
         this.parent = parent;
         this.text = "";
-        
-        
-        SwingUtilities.invokeLater(()->{ 
-            this.frame = (JFrame) parent.getTopLevelAncestor();
-            // fixa la posizione al centro del frame quando si muove
-            this.frame.addComponentListener(new java.awt.event.ComponentAdapter() {
-                @Override
-                public void componentMoved(ComponentEvent e) {
-                    if(TextDialog.this.dialog != null){
-                        TextDialog.this.dialog.setLocationRelativeTo(TextDialog.this.parent);
-                    }
+
+        this.frame = (JFrame) parent.getTopLevelAncestor();
+        // fixa la posizione al centro del frame quando si muove
+        this.frame.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                if(TextDialog.this.dialog != null){
+                    TextDialog.this.dialog.setLocationRelativeTo(TextDialog.this.parent);
                 }
-            }); 
-            dialog = new JDialog(this.frame, false);
-            
-            dialog.setUndecorated(true);
-            dialog.setBackground(this.BACKGROUNDCOLOR); 
-            dialog.setLocationRelativeTo(this.parent);
-            dialog.setFocusableWindowState(false);
-            
-            label = new JLabel();
-            label.setForeground(this.TEXTCOLOR); 
-            dialog.add(label);
-            
-            setText(this.text);
-            this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            
+            }
         });
+        dialog = new JDialog(this.frame, false);
+
+        dialog.setUndecorated(true);
+        dialog.setBackground(this.BACKGROUNDCOLOR);
+        dialog.setLocationRelativeTo(this.parent);
+        dialog.setFocusableWindowState(false);
+
+        label = new JLabel();
+        label.setForeground(this.TEXTCOLOR);
+        dialog.add(label);
+
+        setText(this.text);
+        this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                
+
 
     }
     
@@ -120,6 +119,7 @@ public class TextDialog {
                 }
             );
             
+            
             _writeTextThread.start();
            
             
@@ -143,5 +143,8 @@ public class TextDialog {
         return this.dialog.isVisible();
     }
     
+    public void dispose(){
+        this.dialog.dispose();
+    }
     
 }

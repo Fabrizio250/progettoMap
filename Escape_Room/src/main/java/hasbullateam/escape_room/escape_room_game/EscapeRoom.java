@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
@@ -42,10 +43,11 @@ public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
     public PlayerSquarePanel player;
     public Room room;
-    MultipleChoiceDialog dialog;
-    Inventory inventory;
+    TextDialog dialog;
+    Inventory inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);;
+    Thread loopThread;
     
-    Command cmd;
+    Command cmd = Command.Invalid.NONE;
     
     private static int _backupFileCounter = 0;
     
@@ -54,91 +56,51 @@ public class EscapeRoom extends GridPanel{
     public EscapeRoom() {
         super(GRID_SIZE);
         
-        this.addKeyListener(new KeyboardInput());
-        
-        //this.dialog = new MultipleChoiceDialog(this);//new TextDialog(this);
-        //dialog.setBrief("le mie palle le mie palle le <br>mie palle le mie palle le mie palle le <br>mie palle le mie palle le mie palle le mie palle le mie <br>palle le mie palle le mie palle le mie palle le mie palle ");
-        //dialog.setChoices("Palle1","Palle2","Palle3","Palle4");
-        //dialog.assembleText();
-        
-        
-        this.inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);
-        
-        this.loadRoomFromJSON("rooms\\atrio.json");
-        
-        SwingUtilities.invokeLater( ()-> startGame() );
+        this.addKeyListener(new KeyboardInput());        
         
     }
     
+    
+    public void gameLoop(){
+        
+    }
+    
+    
     public void startGame(){
+        this.loopThread = new Thread(()->{
 
-        // in base a dove si trova il player, l'inventario, e lo stato della stanza fai cose
-        (new Thread(()->{
-            
-            
-            
-            
             try{
                 while(true){
                     
-                   _highlightFacingObject();
-                   
-                   ObjectSquare obj = this.room.getFacingObject();
-                   
-                   
-                    if(obj != null){
+                    SwingUtilities.invokeAndWait(
+                        ()->{gameLoop(); }
                     
-                        if(obj instanceof ContainerObjectSquare){
-                            ContainerObjectSquare _obj = (ContainerObjectSquare)obj;
-                           
-                           
-                            if(this.cmd instanceof Command.Player){
-                                Command.Player _cmd = (Command.Player)this.cmd;
-                                if(_cmd == Command.Player.INTERACT){
-                                    if(!this._showDialog){ // TODO levare sta roba e trovare una soluzione migliore
-                                        
-                                        System.out.println(_obj.getBrief());
-                                        System.out.println(_obj.getObjectsString());
-                                        
-                                        
-                                        this._showDialog = true;
-                                    }
-                                    //dialog = new MultipleChoiceDialog(this);
-                                    //System.out.println(dialog.text);
-                                    //dialog.setBrief( _obj.getBrief() );
-                                    //dialog.setChoices( _obj.getObjectsString().toArray(new String[_obj.objectList.size()]) );
-                                    //dialog.assembleText();
-                                    //dialog.show(true);
-                                    //dialog.reWriteText(true);
-                                }
-                            }
-                           
-                           
-                        }
-                       
-                       
-                       
-                       
-                       
-                       
-                    }
-                   
-                   
-                   
-                   
-                   
-                    Thread.sleep(100);
+                    );
+
+                    Thread.sleep(50);
+                    
                 }
             }catch(InterruptedException e){
                 
-            }
-            
-            
-        })).start();
-        
+            } catch (InvocationTargetException ex) {
+                
+            }  
+        });
+        this.loopThread.start();
     }
     
-    private class HighlightFacingObjectManger implements Runnable{
+    
+    
+    
+    
+    public void refresh(){
+        this.revalidate();
+        this.repaint();
+    }
+    
+    
+    //TODO: mettere in una classe a parte e passargli la lamda di refresh e loadObj
+    protected class HighlightFacingObjectManger implements Runnable{
         static Boolean selectedObj = false;
             
         static final Color selectedBackground = new Color(200,200,200,80);
@@ -200,7 +162,7 @@ public class EscapeRoom extends GridPanel{
         }
     }
     
-    public void _highlightFacingObject(){
+    public void highlightFacingObject(){
         
         HighlightFacingObjectManger h = new HighlightFacingObjectManger();
         
@@ -336,7 +298,7 @@ public class EscapeRoom extends GridPanel{
     
   
     
-    private void movePlayer(Command.Move command){
+    public void movePlayer(Command.Move command){
         if(command != Command.Move.NONE){
             
             Cord newPosition = player.position.clone();
@@ -405,6 +367,11 @@ public class EscapeRoom extends GridPanel{
         
     }
     
+    public void selectInventory(Command.InventorySelection inventorySelection){
+        int indx = inventorySelection.ordinal()-1; // -1 perchè l'indice 0 è NONE
+        this.inventory.select(   indx );
+    }
+    
     
     private void changePlayerPosition(Cord newPostion){
         
@@ -430,19 +397,6 @@ public class EscapeRoom extends GridPanel{
             revalidate();
         }
            
-    }
-    
-    public void executeCommand(Command cmd){
-        if( cmd instanceof Command.Move move){    
-            movePlayer(move);
-        
-        }else if (cmd instanceof Command.InventorySelection inventorySelection){
-            int indx = inventorySelection.ordinal()-1; // -1 perchè l'indice 0 è NONE
-            this.inventory.select(   indx );
-        }
-
-        this.revalidate();
-        this.repaint();
     }
     
     
@@ -514,22 +468,19 @@ public class EscapeRoom extends GridPanel{
             
             switch (keyCode){
                 case KeyEvent.VK_UP:
-                    cmd = Command.Dialog.UP;
+                    cmd = Command.Generic.UP;
                     break;
                 case KeyEvent.VK_DOWN:
-                    cmd = Command.Dialog.DOWN;
+                    cmd = Command.Generic.DOWN;
                     break;
                 case KeyEvent.VK_ESCAPE:
-                    cmd = Command.Dialog.ESC;
+                    cmd = Command.Generic.ESC;
                     break;
                 case KeyEvent.VK_ENTER:
-                    cmd = Command.Dialog.ENTER;
+                    cmd = Command.Generic.ENTER;
                     break;
             }
             
-            if(cmd != Command.Invalid.NONE){
-                EscapeRoom.this.executeCommand(cmd);
-            }
             
             EscapeRoom.this.cmd = cmd;
 

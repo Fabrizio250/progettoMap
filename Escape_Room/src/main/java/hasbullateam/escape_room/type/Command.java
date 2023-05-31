@@ -38,7 +38,7 @@ public interface Command{
         SELECT_9;
     }
     
-    public enum Dialog implements Command{
+    public enum Generic implements Command{
         NONE,
         ESC,
         ENTER,
