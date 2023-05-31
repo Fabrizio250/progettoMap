@@ -86,6 +86,8 @@ public class Inventory {
                 _panel.setBackgroundImage(obj.pathImage);
                 _panel.setBackground(obj.backgroundColor);
                 
+                this.select(this.selected);
+                
                 return;
             } 
         }
