@@ -55,6 +55,7 @@ public interface Command{
     }
     
     public enum Player implements Command{
-        INTERACT;
+        INTERACT,
+        DROP_OBJECT;
     }
 }

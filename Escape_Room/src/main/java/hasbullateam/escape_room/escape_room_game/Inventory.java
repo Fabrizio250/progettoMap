@@ -95,4 +95,16 @@ public class Inventory {
         throw new InventoryFullException();
     }
     
+    public ObjectSquare getSelected(){
+        return this.items.get(selected);
+    }
+    
+    public void removeObject(int indx){
+        ObjectSquare voidObj = new ObjectSquare( FREE_CONSTANT,
+                this.items.get(indx).position,DEFAULTCOLOR,null,false,false);
+        this.items.set(indx, voidObj);
+        this.itemPanels.set(indx,new SquarePanel(voidObj.position, 
+                voidObj.backgroundColor,voidObj.pathImage) );
+    }
+    
 }

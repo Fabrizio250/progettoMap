@@ -93,6 +93,10 @@ public class GridPanel extends JPanel{
 
         @Override
         public void ancestorRemoved(javax.swing.event.AncestorEvent e) {}
-    } 
+    }
+    
+    public boolean isCordInGrid(Cord cord){
+        return !((cord.x < 0) || (cord.y < 0) || (cord.x > this.size-1) || (cord.y > this.size-1));
+    }
     
 }

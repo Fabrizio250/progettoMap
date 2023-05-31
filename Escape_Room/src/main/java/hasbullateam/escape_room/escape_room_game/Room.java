@@ -137,8 +137,13 @@ public class Room implements Serializable{
     }
     
     public ObjectSquare getFacingObject(){
-        Cord cord = playerPosition.clone();
+        Cord cord = getFacingCord();
         
+        return this.objects.get(cord);
+    }
+    
+    public Cord getFacingCord(){
+        Cord cord = playerPosition.clone();
         if(playerDirection == Direction.UP){
            cord.y--; 
         }else if(playerDirection == Direction.DOWN){
@@ -148,8 +153,7 @@ public class Room implements Serializable{
         }else if(playerDirection == Direction.RIGHT){
            cord.x++; 
         }
-        
-        return this.objects.get(cord);
+        return cord;
     }
     
  

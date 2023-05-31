@@ -376,8 +376,7 @@ public class EscapeRoom extends GridPanel{
     private void changePlayerPosition(Cord newPostion){
         
         
-        if ((newPostion.x < 0) || (newPostion.y < 0) || 
-           (newPostion.x > GRID_SIZE-1)|| (newPostion.y > GRID_SIZE-1) ||
+        if (!this.isCordInGrid(newPostion)||
            ( this.room.containsObject(newPostion) && !this.room.getObject(newPostion).isPassable)){
             // spostamento non valido
             
@@ -464,6 +463,8 @@ public class EscapeRoom extends GridPanel{
                 case 'e':
                     cmd = Command.Player.INTERACT;
                     break;
+                case 'q':
+                    cmd = Command.Player.DROP_OBJECT;
             }
             
             switch (keyCode){

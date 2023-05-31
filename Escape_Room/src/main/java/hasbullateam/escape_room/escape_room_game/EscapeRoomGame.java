@@ -2,7 +2,9 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Command;
+import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.InventoryFullException;
+import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +14,13 @@ import javax.swing.SwingUtilities;
  *
  * @author giuse
  */
+
+// TODO: spostarsi tra le stanze
+// TODO: porte
+// TODO: aprire le porte raccogliendo oggetti dai Container
+// TODO: chiave
+// TODO: droppare oggetti dall'inventario
+
 public class EscapeRoomGame extends EscapeRoom{
     Thread _thread = null;
     Object lock = new Object();
@@ -19,6 +28,7 @@ public class EscapeRoomGame extends EscapeRoom{
     ObjectSquare obj;
     ContainerObjectSquare containerObj;
     MultipleChoiceDialog _dialog = null;
+    Cord dropObjCord;
 
     public EscapeRoomGame() {
         super();
@@ -54,10 +64,20 @@ public class EscapeRoomGame extends EscapeRoom{
                 
                 if(genericCommand == Command.Generic.ESC){
                     
+                    if(_dialog != null){
+                        _dialog.dispose();
+                        if(_dialog instanceof MultipleChoiceDialog){
+                            containerObj = null;
+                            dropObjCord = null;
+                        }
+                        _dialog = null;
+                    }
+                    
                     if(this.dialog != null){
                         this.dialog.dispose();
                         if(this.dialog instanceof MultipleChoiceDialog){
                             containerObj = null;
+                            dropObjCord = null;
                         }
                         this.dialog = null;
                     }else{
@@ -100,17 +120,86 @@ public class EscapeRoomGame extends EscapeRoom{
                             
                             
                             containerObj = null;
+                        
+                        
+                        }else{
+                            
+                            System.out.println(_dialog.getChoice());
+                            
+                            if(_dialog.getChoice().equalsIgnoreCase("sì")){
+                                
+                                // se è selezionato effettivamente un oggetto
+                                if( !(this.inventory.getSelected().name.equalsIgnoreCase(Inventory.FREE_CONSTANT)) ){
+                                    
+                                    ObjectSquare selectedObj = this.inventory.getSelected().clone();
+                                    selectedObj.position = dropObjCord;
+                                    selectedObj.backgroundColor = new Color(0,0,0,0);
+                                    selectedObj.isInteractable = true;
+                                    
+                                    // rendi selectedObj un oggetto raccoglibile
+
+                                    this.room.addObject( selectedObj );
+                                    this.loadObjectSquare( this.room.getObject(dropObjCord) );
+
+                                    this.inventory.removeObject( this.inventory.selected );
+                                    loadInventory();       
+                                            
+                                            
+                                }else{
+                                    System.out.println("nessun oggetto da droppare");
+                                }
+                                
+                                
+                            }
+                            
+                            _dialog.dispose();
+                            _dialog = null;
+                            this.dialog = null;
+                            dropObjCord = null;
                         }
                         
                         
                         
                     }
+                
                 }
             }
             
             else{
                 // ottiene l'oggetto che il player ha difronte
                 obj = this.room.getFacingObject();
+                
+                
+                if(this.cmd instanceof Command.Player _cmd){
+                    if(_cmd == Command.Player.DROP_OBJECT){
+                        
+                        if(_dialog != null){
+                            _dialog.dispose();
+                            _dialog = null;
+                        }
+                        if(this.dialog != null){
+                            this.dialog.dispose();
+                            this.dialog = null;
+                        }
+                        
+                        if( isCordInGrid( this.room.getFacingCord()) && obj==null ){ // se è possibile droppare l'oggetto
+                            _dialog = new MultipleChoiceDialog(this);
+                            _dialog.setBrief("Desideri lasciare l'oggetto selezionato davanti a te?");
+                            _dialog.setChoices("Sì","No");
+                            _dialog.assembleText();
+                            _dialog.show(true);
+                            _dialog.reWriteText(true);
+                            dropObjCord = this.room.getFacingCord();
+                        }else{
+                            dialog = new TextDialog(this);
+                            dialog.show(true);
+                            dialog.setText("non è possibile lasciare l'oggetto davanti a te perchè sembra ci sia un ostacolo ....");
+                        }
+                        
+                        
+                    }
+                }
+                
 
                 if(obj != null){
                     
@@ -137,6 +226,7 @@ public class EscapeRoomGame extends EscapeRoom{
                             }
                         }
                     }
+                
                 }
             }
             

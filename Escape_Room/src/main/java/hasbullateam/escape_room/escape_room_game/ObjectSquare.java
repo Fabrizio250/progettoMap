@@ -14,7 +14,7 @@ import org.json.JSONObject;
  *
  * @author giuse
  */
-public class ObjectSquare implements Serializable{
+public class ObjectSquare implements Serializable, Cloneable{
     Cord position;
     String pathImage;
     String name;
@@ -62,6 +62,11 @@ public class ObjectSquare implements Serializable{
     
     public void setBackgroundColor( Color color ){
         this.backgroundColor = color;
+    }
+
+    public ObjectSquare clone(){
+        return new ObjectSquare(this.name,this.position.clone(),this.backgroundColor,
+                this.pathImage,this.isPassable,this.isInteractable);
     }
 
     
