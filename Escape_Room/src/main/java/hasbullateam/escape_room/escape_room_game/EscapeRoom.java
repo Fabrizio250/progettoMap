@@ -81,9 +81,9 @@ public class EscapeRoom extends GridPanel{
                     
                 }
             }catch(InterruptedException e){
-                
+                System.err.println(e.getMessage());
             } catch (InvocationTargetException ex) {
-                
+                System.err.println(ex.getMessage());
             }  
         });
         this.loopThread.start();

@@ -2,6 +2,7 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
+import hasbullateam.escape_room.type.InventoryFullException;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ public class Inventory {
     int selected;
     static final Color SELECTIONCOLOR = new Color(10,10,255,128);
     static final Color DEFAULTCOLOR = new Color(10,10,10,128);
+    static final String FREE_CONSTANT = "FREE";
     
     public Inventory(ObjectSquare... items) {
         this.items = new ArrayList<>(items.length);
@@ -37,10 +39,9 @@ public class Inventory {
     public Inventory( int row, int startColumn, int endColumn ){
         
         this.items = new ArrayList<>();
-        
-        Integer c=0;
+
         for(int col = startColumn; col<=endColumn; col++){
-            this.items.add(new ObjectSquare( ("INVENTORY_"+(c++).toString()),
+            this.items.add(new ObjectSquare( FREE_CONSTANT,
                                             new Cord(col,row),DEFAULTCOLOR,
                                             null,false,false) );
             
@@ -65,6 +66,31 @@ public class Inventory {
     }
     public List<SquarePanel> getItemPanels(){
         return this.itemPanels;
+    }
+    
+    public void putObjectSquare(ObjectSquare obj) throws InventoryFullException{
+        for(int i=0; i<items.size(); i++){
+            
+            if( items.get(i).name.contains(FREE_CONSTANT) ){
+                ObjectSquare _obj = this.items.get(i);
+                
+                obj.position = _obj.position;
+                obj.backgroundColor = _obj.backgroundColor;
+                obj.isInteractable = false;
+                obj.isPassable = false;
+                
+                this.items.set(i, obj);
+                
+                SquarePanel _panel = this.itemPanels.get(i);
+                
+                _panel.setBackgroundImage(obj.pathImage);
+                _panel.setBackground(obj.backgroundColor);
+                
+                return;
+            } 
+        }
+        
+        throw new InventoryFullException();
     }
     
 }

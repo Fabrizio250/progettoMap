@@ -16,7 +16,7 @@ import org.json.JSONObject;
  */
 public class ContainerObjectSquare extends ObjectSquare{
         
-    List<ObjectSquare> objectList;
+    public List<ObjectSquare> objectList;
 
     String brief;
 
@@ -51,6 +51,18 @@ public class ContainerObjectSquare extends ObjectSquare{
 
     public String getBrief(){
         return this.brief;
+    }
+    
+    public ObjectSquare getFromName(String name){
+        
+        
+        for(ObjectSquare ele: this.objectList){
+            if(ele.name.equals(name)){
+                
+               return ele;
+            }
+        }
+        return null;
     }
 
 

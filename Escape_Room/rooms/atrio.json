@@ -145,10 +145,10 @@
                         "y": 5
                     },
                     "color":{
-                        "r": 200,
-                        "g": 200,
+                        "r": 0,
+                        "g": 0,
                         "b": 0,
-                        "a": 128
+                        "a": 0
                     },
                     "pathImage": "images\\player2.png",
                     "isPassable": true,

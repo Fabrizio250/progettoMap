@@ -2,6 +2,7 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Command;
+import hasbullateam.escape_room.type.InventoryFullException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ public class EscapeRoomGame extends EscapeRoom{
     Object lock = new Object();
     
     ObjectSquare obj;
+    ContainerObjectSquare containerObj;
     MultipleChoiceDialog _dialog = null;
 
     public EscapeRoomGame() {
@@ -52,25 +54,56 @@ public class EscapeRoomGame extends EscapeRoom{
                 
                 if(genericCommand == Command.Generic.ESC){
                     
-                    if(this.dialog != null && this.dialog.isVisible()){
+                    if(this.dialog != null){
                         this.dialog.dispose();
+                        if(this.dialog instanceof MultipleChoiceDialog){
+                            containerObj = null;
+                        }
                         this.dialog = null;
                     }else{
                         // .... tutti gli altri casi in cui viene premuto ESC
                     }
                     
-                }else if(_dialog != null){
+                }else if(_dialog != null){ // se c'è una dialog di tipo container aperta
                     
                     if(genericCommand == Command.Generic.UP){
                         _dialog.select(_dialog.selectedIndx-1);
 
                     }else if(genericCommand == Command.Generic.DOWN){
                         _dialog.select(_dialog.selectedIndx+1);
-                    }else if(genericCommand == Command.Generic.ENTER){
+                    
+                    // se è stato scelto un elemto dalla multiple choiche dialog
+                    }else if(genericCommand == Command.Generic.ENTER){ 
 
-                        System.out.println(_dialog.getChoice());                            
-                        _dialog.dispose();
-                        this.dialog = null; // => _dialog = null
+                        if( containerObj != null){
+                            // se la dialog è associata ad un oggeto di tipo container
+                            
+                            
+                            try {
+                                
+                                this.inventory.putObjectSquare(containerObj.getFromName(_dialog.getChoice() ));
+                                this.loadInventory();
+                                _dialog.dispose();
+                                _dialog = null;
+                                this.dialog = null;
+                                
+                            } catch (InventoryFullException ex) {
+                                
+                                _dialog.dispose();
+                                _dialog = null;
+                                this.dialog = null;
+                                this.dialog = new TextDialog(this);
+                                this.dialog.show(true);
+                                this.dialog.setText("   Inventario pieno .... <br>   libera uno spazio");
+                            }
+                            
+                            
+                            
+                            containerObj = null;
+                        }
+                        
+                        
+                        
                     }
                 }
             }
@@ -82,11 +115,13 @@ public class EscapeRoomGame extends EscapeRoom{
                 if(obj != null){
                     
                     if(obj instanceof ContainerObjectSquare _obj){
+                        
 
                         if(this.cmd instanceof Command.Player _cmd){
                             if(_cmd == Command.Player.INTERACT){
                                 
                                 if(this.dialog == null){
+                                    containerObj = _obj;
                                     this.dialog = new MultipleChoiceDialog(this);
                                     _dialog = (MultipleChoiceDialog)dialog;
 
