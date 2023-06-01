@@ -142,6 +142,7 @@ public class EscapeRoomGame extends EscapeRoom{
                                     this.loadObjectSquare( this.room.getObject(dropObjCord) );
 
                                     this.inventory.removeObject( this.inventory.selected );
+                                    this.inventory.select(this.inventory.selected);
                                     loadInventory();       
                                             
                                             
