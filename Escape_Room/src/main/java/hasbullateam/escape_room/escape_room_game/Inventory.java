@@ -107,4 +107,13 @@ public class Inventory {
                 voidObj.backgroundColor,voidObj.pathImage) );
     }
     
+    public Integer containObject(String name){
+        for(int i=0; i<this.items.size(); i++){
+            if(items.get(i).name.equalsIgnoreCase(name)){
+                return i;
+            }
+        }
+        return null;
+    }
+    
 }

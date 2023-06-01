@@ -64,6 +64,19 @@ public class ContainerObjectSquare extends ObjectSquare{
         }
         return null;
     }
+    
+    public void removeFromName(String name){
+        
+        for(int i=0; i<this.objectList.size(); i++){
+            
+            if(this.objectList.get(i).name.equalsIgnoreCase(name)){
+                
+                this.objectList.remove(i);
+                return;
+            }
+                
+        }
+    }
 
 
 

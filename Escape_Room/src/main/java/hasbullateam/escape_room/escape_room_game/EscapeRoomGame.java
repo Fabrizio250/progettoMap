@@ -19,7 +19,6 @@ import javax.swing.SwingUtilities;
 // TODO: porte
 // TODO: aprire le porte raccogliendo oggetti dai Container
 // TODO: chiave
-// TODO: droppare oggetti dall'inventario
 
 public class EscapeRoomGame extends EscapeRoom{
     Thread _thread = null;
@@ -103,9 +102,11 @@ public class EscapeRoomGame extends EscapeRoom{
                                 
                                 this.inventory.putObjectSquare(containerObj.getFromName(_dialog.getChoice() ));
                                 this.loadInventory();
+                                containerObj.removeFromName( containerObj.getFromName(_dialog.getChoice()).name );
                                 _dialog.dispose();
                                 _dialog = null;
                                 this.dialog = null;
+                                
                                 
                             } catch (InventoryFullException ex) {
                                 
