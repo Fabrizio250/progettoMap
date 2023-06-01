@@ -51,15 +51,6 @@ public class ObjectSquare implements Serializable, Cloneable{
         );
     }
     
-    
-    
-    public class DoorObjectSquare extends ObjectSquare implements Serializable{
-        public DoorObjectSquare(JSONObject jsonObj){
-            super(jsonObj);
-            
-        }
-    }
-    
     public void setBackgroundColor( Color color ){
         this.backgroundColor = color;
     }

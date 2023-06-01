@@ -414,12 +414,16 @@ public class EscapeRoom extends GridPanel{
     */
     
     public void loadRoomFromJSON(String jsonPathRoom){
+        System.out.println(jsonPathRoom);
         try{
             JSONObject jsonObj = new JSONObject(new String(Files.readAllBytes(Paths.get(jsonPathRoom))));
             this.loadRoom(new Room( jsonObj ));
         }catch (IOException e){
             System.err.println(jsonPathRoom+ " non valido");
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        
         
     }
     

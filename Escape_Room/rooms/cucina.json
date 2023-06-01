@@ -32,6 +32,22 @@
     },
     "objects" : [
         {
+            "name": "exit_door",
+            "tag": "door",
+            "position": {
+                "x": 7,
+                "y": 7
+            },
+
+            "pathImage": "images\\pic_RIGHT_1.png",
+            "isOpen": true,
+            "isExit": false,
+            "message": "la porta sembra chiusa<br>  trova la chiave ...",
+            "closed_door_path_image": "images\\pic_UP_1.png"
+            
+
+        },
+        {
             "name": "lol",
             "tag": "basic",
             "position": {

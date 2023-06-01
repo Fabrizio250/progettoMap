@@ -29,6 +29,7 @@ public class EscapeRoomGame extends EscapeRoom{
     ContainerObjectSquare containerObj;
     MultipleChoiceDialog _dialog = null;
     Cord dropObjCord;
+    DoorObjectSquare doorObj;
 
     public EscapeRoomGame() {
         super();
@@ -79,6 +80,7 @@ public class EscapeRoomGame extends EscapeRoom{
                         try {
                             loadRoomFromBackupFile("rooms\\roomsBackup.dat", this.room.nextRoomName);
                         } catch (RoomNotFoundException ex) {
+                            
                             loadRoomFromJSON(this.room.nextRoomPath);
                         }
                         
@@ -273,11 +275,52 @@ public class EscapeRoomGame extends EscapeRoom{
                                     _dialog.reWriteText(true);  
                                 }
                                 
-                                
+                                    
+                            }
+                        }
+                    
+                    }else if(obj instanceof DoorObjectSquare _obj){
+                        if(!_obj.isOpen){
+                            
+                            if(this.cmd instanceof Command.Player _cmd){
+                                if(_cmd == Command.Player.INTERACT){
+                                    
+                                    if(this.dialog == null){
+                                        
+                                        this.dialog = new TextDialog(this);
+                                        this.dialog.show(true);
+                                        
+                                        this.dialog.setText(_obj.message);
+                                        
+                                    }
+                                }
+                            }
+                            
+                            
+                        }else{
+                            
+                            if(this.cmd instanceof Command.Player _cmd){
+                                if(_cmd == Command.Player.INTERACT){
+                                    backupRoom("rooms\\roomsBackup.dat", this.room);
+                                    if(_obj.isExit){
+                                        
+                                        try {
+                                            loadRoomFromBackupFile("rooms\\roomsBackup.dat", this.room.nextRoomName);
+                                        } catch (RoomNotFoundException ex) {
+                                            loadRoomFromJSON(this.room.nextRoomPath);
+                                            
+                                        }
+                                    }else{
+                                        try {
+                                            loadRoomFromBackupFile("rooms\\roomsBackup.dat", this.room.previousRoomName);
+                                        } catch (RoomNotFoundException ex) {
+                                            loadRoomFromJSON(this.room.previousRoomPath);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                
                 }
             }
             
