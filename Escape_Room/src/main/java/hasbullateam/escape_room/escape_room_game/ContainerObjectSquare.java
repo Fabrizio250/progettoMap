@@ -1,10 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
@@ -14,7 +12,7 @@ import org.json.JSONObject;
  *
  * @author giuse
  */
-public class ContainerObjectSquare extends ObjectSquare{
+public class ContainerObjectSquare extends ObjectSquare implements Serializable{
         
     public List<ObjectSquare> objectList;
 

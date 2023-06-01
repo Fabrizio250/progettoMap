@@ -1,0 +1,53 @@
+{
+    "name": "cucina",
+
+    "previous_room_path": "rooms\\atrio.json",
+    "next_room_path": "null",
+
+    "previous_room_name": "atrio",
+    "next_room_name": "null",
+
+    "backGroundPath": "images\\sfondo2.jpg",
+
+    "playerPathImageUP_0": "images\\pic_UP_0.png",
+    "playerPathImageDOWN_0": "images\\pic_DOWN_0.png",
+    "playerPathImageLEFT_0": "images\\pic_LEFT_0.png",
+    "playerPathImageRIGHT_0": "images\\pic_RIGHT_0.png",
+
+    "playerPathImageUP_1": "images\\pic_UP_1.png",
+    "playerPathImageDOWN_1": "images\\pic_DOWN_1.png",
+    "playerPathImageLEFT_1": "images\\pic_LEFT_1.png",
+    "playerPathImageRIGHT_1": "images\\pic_RIGHT_1.png",
+
+    "playerPathImageUP_2": "images\\pic_UP_2.png",
+    "playerPathImageDOWN_2": "images\\pic_DOWN_2.png",
+    "playerPathImageLEFT_2": "images\\pic_LEFT_2.png",
+    "playerPathImageRIGHT_2": "images\\pic_RIGHT_2.png",
+
+
+    "playerStartDirection": "DOWN",
+    "playerStartPosition": {
+        "x": 3,
+        "y": 3
+    },
+    "objects" : [
+        {
+            "name": "lol",
+            "tag": "basic",
+            "position": {
+                "x": 8,
+                "y": 5
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\pic_RIGHT_0.png",
+            "isPassable": false,
+            "isInteractable": true
+        }
+
+    ]
+}

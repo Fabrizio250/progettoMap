@@ -1,11 +1,13 @@
 
 package hasbullateam.escape_room.type;
 
+import java.io.Serializable;
+
 /**
  *
  * @author giuse
  */
-public enum Direction {
+public enum Direction implements Serializable{
     NONE,
     UP,
     DOWN,

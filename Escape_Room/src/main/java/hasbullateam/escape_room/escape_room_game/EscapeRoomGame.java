@@ -4,6 +4,7 @@ package hasbullateam.escape_room.escape_room_game;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.InventoryFullException;
+import hasbullateam.escape_room.type.RoomNotFoundException;
 import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -59,7 +60,55 @@ public class EscapeRoomGame extends EscapeRoom{
             }else if (this.cmd instanceof Command.InventorySelection inventorySelection){
                 selectInventory(inventorySelection);
             
-            }else if(this.cmd instanceof Command.Generic genericCommand){
+            }else if(this.cmd instanceof Command.Test testCmd){ //TODO: da levare è solo per i test
+                // se il path è != "null"
+                // se è già presente nel file backup caricala
+                // altrimenti caricala dal json
+                
+                if(testCmd == Command.Test.NEXT_ROOM){
+                    
+                    if(this.room.nextRoomName.equalsIgnoreCase("null")||
+                        (this.room.nextRoomPath.equalsIgnoreCase("null"))){
+                        
+                        System.out.println("nessuna next room");
+                        
+                    }else{
+                        backupRoom("rooms\\roomsBackup.dat", this.room);
+                        
+                        
+                        try {
+                            loadRoomFromBackupFile("rooms\\roomsBackup.dat", this.room.nextRoomName);
+                        } catch (RoomNotFoundException ex) {
+                            loadRoomFromJSON(this.room.nextRoomPath);
+                        }
+                        
+                        
+                    }
+                    
+                }else if(testCmd == Command.Test.PREVIOUS_ROOM){
+                         
+                    if(this.room.previousRoomName.equalsIgnoreCase("null")||
+                    (this.room.previousRoomPath.equalsIgnoreCase("null"))){
+
+                        System.out.println("nessuna previous room");
+                    
+                    }else{
+                        backupRoom("rooms\\roomsBackup.dat", this.room);
+                        
+                        
+                        try {
+                            loadRoomFromBackupFile("rooms\\roomsBackup.dat", this.room.previousRoomName);
+                        } catch (RoomNotFoundException ex) {
+                            loadRoomFromJSON(this.room.previousRoomPath);
+                        }
+                        
+                        
+                    }
+                    
+                }
+            }
+            
+            else if(this.cmd instanceof Command.Generic genericCommand){
                 
                 if(genericCommand == Command.Generic.ESC){
                     

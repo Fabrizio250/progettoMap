@@ -1,5 +1,12 @@
 {
     "name": "atrio",
+
+    "previous_room_path": "null",
+    "next_room_path": "rooms\\cucina.json",
+
+    "previous_room_name": "null",
+    "next_room_name": "cucina",
+
     "backGroundPath": "images\\prigione.jpg",
 
     "playerPathImageUP_0": "images\\pic_UP_0.png",
@@ -109,7 +116,6 @@
             "isPassable": true,
             "isInteractable": false
         },
-
         {
             "name": "lol",
             "tag": "container",
@@ -174,6 +180,8 @@
 
             ]
         }
+
+        
 
 
 

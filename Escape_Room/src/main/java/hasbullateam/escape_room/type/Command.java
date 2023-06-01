@@ -51,7 +51,9 @@ public interface Command{
         BACKUP,
         MOD_ROOM,
         SET_TEXT,
-        SET_TEXT_SIZE;
+        SET_TEXT_SIZE,
+        NEXT_ROOM,
+        PREVIOUS_ROOM;
     }
     
     public enum Player implements Command{

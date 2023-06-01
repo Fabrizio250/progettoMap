@@ -5,6 +5,7 @@ import hasbullateam.escape_room.Tris;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.Direction;
+import hasbullateam.escape_room.type.RoomNotFoundException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
@@ -16,11 +17,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -49,7 +57,7 @@ public class EscapeRoom extends GridPanel{
     
     Command cmd = Command.Invalid.NONE;
     
-    private static int _backupFileCounter = 0;
+    public Integer _backupFileCounter = 0;
     
     private Boolean _showDialog = false;
     
@@ -176,59 +184,234 @@ public class EscapeRoom extends GridPanel{
     }
     
     
-    public void backupRoom(String pathBackupFile, Room room){
+    public void backupRoom(String filePath, Room room) {
+        Map<Integer,Room> rooms = new HashMap<>();
         
-        try{
-            ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(pathBackupFile));
-            outStream.writeObject(this._backupFileCounter++);
-            outStream.writeObject(room);
+        // leggi dal file tutti gli oggetti room e counter e mettili nell' hash map
+        try {
+            ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(filePath));
+
+            while (true) {
+                try {
+                    int counter = inStream.readInt();
+                    Room current_room = (Room) inStream.readObject();
+                    
+                    rooms.put(counter, current_room);
+                    
+
+                } catch (EOFException e) {
+                    break;
+                } catch (ClassNotFoundException e) {
+                    System.err.println("Classe non trovata durante la lettura dell'oggetto Room dal file: " + filePath);
+                    e.printStackTrace();
+                }
+            }
+
+            inStream.close();
+
+        } catch (FileNotFoundException e) {
+ 
+        } catch (IOException e) {
+            System.err.println("Errore durante la lettura dell'oggetto Room dal file: " + filePath);
+            e.printStackTrace();
+        }
+        
+        rooms.put(this._backupFileCounter++, room);
+        
+        // riscrvi rooms nel file
+        try {
+            ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(filePath));
+            
+            for( Integer counter: rooms.keySet() ){
+                outStream.writeInt(counter);
+                outStream.writeObject(rooms.get(counter));
+            }
+            
             outStream.close();
-        }catch (IOException e){
-            System.err.println(pathBackupFile+" path non valido");
+
+            System.out.println("Oggetto Room scritto con successo nel file: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Errore durante la scrittura dell'oggetto Room nel file: " + filePath);
+            e.printStackTrace();
         }
     }
     
     
-    public void loadRoomFromBackupFile(String pathBackupFile, String roomName){
+    public void loadRoomFromBackupFile(String filePath, String roomName) throws RoomNotFoundException {
+        Room searchedRoom = null;
+        int maxCounter = -1;
+
         try {
-            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(pathBackupFile));
-            Room searchedRoom = null;
-            Room currentRoom = null;
-            int maxCounterBackup = 0;
-            int counter;
-            try{
-                while(true){
-                    try {
- 
-                        counter = (Integer) inputStream.readObject();
-                        currentRoom = (Room) inputStream.readObject();
-                        
-                        if(currentRoom.name.equals(roomName) && (counter >= maxCounterBackup)){
-                            maxCounterBackup = counter;
-                            searchedRoom = currentRoom;
-                        }
-  
-                    } catch (ClassNotFoundException ex) {
-                        
+            ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(filePath));
+
+            while (true) {
+                try {
+                    int counter = inStream.readInt();
+                    Room current_room = (Room) inStream.readObject();
+
+                    if (current_room.name.equals(roomName) && counter > maxCounter) {
+                        maxCounter = counter;
+                        searchedRoom = current_room;
                     }
+                } catch (EOFException e) {
+                    break;
+                } catch (ClassNotFoundException e) {
+                    System.err.println("Classe non trovata durante la lettura dell'oggetto Room dal file: " + filePath);
+                    e.printStackTrace();
                 }
-            }catch (EOFException e){
-                
             }
-            if(searchedRoom != null){
-                loadRoom(searchedRoom);
-            }else{
-                System.err.println(roomName+" non trovata");
+
+            inStream.close();
+
+        } catch (FileNotFoundException e) {
+            System.err.println("File non trovato: " + filePath);
+            throw new RoomNotFoundException();
+        } catch (IOException e) {
+            System.err.println("Errore durante la lettura dell'oggetto Room dal file: " + filePath);
+            e.printStackTrace();
+        }
+
+        if(searchedRoom != null){
+            System.out.println("Room trovata!!"+" name:"+searchedRoom.name);
+            loadRoom(searchedRoom);
+        }else{
+            System.out.println("room non trovata");
+            throw new RoomNotFoundException();
+        }
+    }
+    
+    /*
+    public void backupRoom(String pathBackupFile, Room room){
+        ObjectOutputStream outStream = null;
+        
+        try{
+            outStream = new ObjectOutputStream(new FileOutputStream(pathBackupFile, true));
+            outStream.writeObject(this._backupFileCounter++);
+            outStream.writeObject(room);
+            System.out.println("backup fatto con successo\t name:"+room.name+"  counter:"+_backupFileCounter);
+            outStream.close();
+        
+        }catch (IOException e){
+            System.err.println(pathBackupFile+" path non valido");
+        
+        }
+        
+        finally {
+            if (outStream != null) {
+                try {
+                    outStream.close();
+                } catch (IOException e) {
+                    
+                }
             }
-            
+        }
+    }
+    
+    
+    public void loadRoomFromBackupFile(String pathBackupFile, String roomName) throws RoomNotFoundException{
+        ObjectInputStream inputStream;
+        Room searchedRoom = null;
+        Room currentRoom = null;
+        int maxCounterBackup = 0;
+        int counter;
+        
+        try {
+            inputStream = new ObjectInputStream(new FileInputStream(pathBackupFile));
             
         } catch (FileNotFoundException e) {
             System.err.println(pathBackupFile+" path non valido");
-        } catch (IOException e){
+            throw new RoomNotFoundException();
+        
+        } catch(IOException e){
             System.out.println("io exception");
+            throw new RoomNotFoundException();
         }
+
+        while(true){
+
+            try{
+                counter = (Integer) inputStream.readObject();
+                currentRoom = (Room) inputStream.readObject();
+
+            } catch(EOFException e){
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(EscapeRoom.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+
+            }catch (ClassNotFoundException ex) {
+                try {
+                    inputStream.close();
+                } catch (IOException esx) {
+                    Logger.getLogger(EscapeRoom.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("classe non trovata");
+                throw  new RoomNotFoundException();
+            } catch (OptionalDataException e){
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(EscapeRoom.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("dato primitivo trovato");
+                throw  new RoomNotFoundException();
+            
+            } catch (InvalidClassException e){
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(EscapeRoom.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("invalid class exception");
+                throw  new RoomNotFoundException();
+            
+            } catch (StreamCorruptedException e){
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(EscapeRoom.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("stream corrupted exception");
+                throw  new RoomNotFoundException();
+            
+            }catch (IOException e){
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(EscapeRoom.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("io exception generica");
+                throw  new RoomNotFoundException();
+            
+            }
+
+            System.out.println(currentRoom.name);
+            if(currentRoom.name.equals(roomName) && (counter >= maxCounterBackup)){
+                
+                maxCounterBackup = counter;
+                searchedRoom = currentRoom;
+            }
+
+        }
+        try {
+            inputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(EscapeRoom.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if(searchedRoom != null){
+            loadRoom(searchedRoom);
+        }else{
+            System.err.println(roomName+" non trovata");
+            throw new RoomNotFoundException();
+        }
+
+ 
+
     }
-    
+    */
     
     public void loadRoomFromJSON(String jsonPathRoom){
         try{
@@ -465,6 +648,14 @@ public class EscapeRoom extends GridPanel{
                     break;
                 case 'q':
                     cmd = Command.Player.DROP_OBJECT;
+                    break;
+                    
+                case 'n':
+                    cmd = Command.Test.NEXT_ROOM;
+                    break;
+                case 'p':
+                    cmd = Command.Test.PREVIOUS_ROOM;
+                    break;
             }
             
             switch (keyCode){

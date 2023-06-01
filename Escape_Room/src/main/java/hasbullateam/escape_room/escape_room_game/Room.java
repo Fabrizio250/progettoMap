@@ -35,24 +35,32 @@ public class Room implements Serializable{
     String playerPathImageLEFT_2;
     String playerPathImageRIGHT_2;
     
+    String previousRoomPath;
+    String nextRoomPath;
+    
+    String previousRoomName;
+    String nextRoomName;
     
     Direction playerDirection;
 
-    public Room( String name, String backGroundPath, String playerPathImage ) {
-        this(name, backGroundPath, new Cord(0,0), playerPathImage);
+    public Room( String name, String backGroundPath, String playerPathImage, String previousRoomPath, String nextRoomPath, String previousRoomName, String nextRoomName ) {
+        this(name, backGroundPath, new Cord(0,0), playerPathImage, previousRoomPath, nextRoomPath, previousRoomName, nextRoomName);
     }
     
-    public Room(String name, String backGroundPath, Cord playerStartPosition, String playerPathImage){
+    public Room(String name, String backGroundPath, Cord playerStartPosition, String playerPathImage, 
+            String previousRoomPath, String nextRoomPath, String previousRoomName, String nextRoomName){
         this(name, backGroundPath, playerStartPosition,
                 playerPathImage,playerPathImage,playerPathImage,playerPathImage,
                 playerPathImage, playerPathImage, playerPathImage, playerPathImage,
-                playerPathImage, playerPathImage, playerPathImage, playerPathImage, Direction.UP);
+                playerPathImage, playerPathImage, playerPathImage, playerPathImage, 
+                Direction.UP, previousRoomPath, nextRoomPath, previousRoomName, nextRoomName);
     }
     
     public Room(String name, String backGroundPath, Cord playerStartPosition,
     String playerPathImageUP_0, String playerPathImageDOWN_0, String playerPathImageLEFT_0, String playerPathImageRIGHT_0, 
     String playerPathImageUP_1, String playerPathImageDOWN_1, String playerPathImageLEFT_1, String playerPathImageRIGHT_1,
-    String playerPathImageUP_2, String playerPathImageDOWN_2, String playerPathImageLEFT_2, String playerPathImageRIGHT_2, Direction playerStartDirection){
+    String playerPathImageUP_2, String playerPathImageDOWN_2, String playerPathImageLEFT_2, String playerPathImageRIGHT_2, 
+    Direction playerStartDirection, String previosuRoomPath, String nextRoomPath, String previousRoomName, String nextRoomName){
         this.name = name;
         this.backGroundPath = backGroundPath;
         this.playerPosition = playerStartPosition;
@@ -73,6 +81,11 @@ public class Room implements Serializable{
         this.playerPathImageRIGHT_2 = playerPathImageRIGHT_2;
         
         this.playerDirection = playerStartDirection;
+        
+        this.previousRoomPath = previosuRoomPath;
+        this.nextRoomPath = nextRoomPath;
+        this.previousRoomName = previousRoomName;
+        this.nextRoomName = nextRoomName;
         
         objects = new HashMap<>();
     }
@@ -95,7 +108,11 @@ public class Room implements Serializable{
                 jsonObj.getString("playerPathImageDOWN_2"),
                 jsonObj.getString("playerPathImageLEFT_2"),
                 jsonObj.getString("playerPathImageRIGHT_2"),
-                Direction.fromString( jsonObj.getString("playerStartDirection") )
+                Direction.fromString( jsonObj.getString("playerStartDirection")),
+                jsonObj.getString("previous_room_path"),
+                jsonObj.getString("next_room_path"),
+                jsonObj.getString("previous_room_name"),
+                jsonObj.getString("next_room_name")
         );
         
         JSONArray objArray = jsonObj.getJSONArray("objects");
