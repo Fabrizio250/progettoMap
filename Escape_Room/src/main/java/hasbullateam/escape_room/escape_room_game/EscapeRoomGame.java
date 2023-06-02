@@ -3,6 +3,7 @@ package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
+import hasbullateam.escape_room.type.Direction;
 import hasbullateam.escape_room.type.InventoryFullException;
 import hasbullateam.escape_room.type.RoomNotFoundException;
 import java.awt.Color;
@@ -16,10 +17,9 @@ import javax.swing.SwingUtilities;
  * @author giuse
  */
 
-// TODO: spostarsi tra le stanze
-// TODO: porte
 // TODO: aprire le porte raccogliendo oggetti dai Container
 // TODO: chiave
+// TODO: sistemare gameLoop perchè non si capisce niente
 
 public class EscapeRoomGame extends EscapeRoom{
     Thread _thread = null;
@@ -301,11 +301,15 @@ public class EscapeRoomGame extends EscapeRoom{
                             
                             if(this.cmd instanceof Command.Player _cmd){
                                 if(_cmd == Command.Player.INTERACT){
+                                    _obj.setBackgroundColor(new Color(0,0,0,0));
+                                    Direction oldDirection = this.room.playerDirection;
                                     backupRoom("rooms\\roomsBackup.dat", this.room);
+                                    
                                     if(_obj.isExit){
                                         
                                         try {
                                             loadRoomFromBackupFile("rooms\\roomsBackup.dat", this.room.nextRoomName);
+                                            this.player.setFaceDirection(oldDirection);
                                         } catch (RoomNotFoundException ex) {
                                             loadRoomFromJSON(this.room.nextRoomPath);
                                             
@@ -313,10 +317,12 @@ public class EscapeRoomGame extends EscapeRoom{
                                     }else{
                                         try {
                                             loadRoomFromBackupFile("rooms\\roomsBackup.dat", this.room.previousRoomName);
+                                            this.player.setFaceDirection(oldDirection);
                                         } catch (RoomNotFoundException ex) {
                                             loadRoomFromJSON(this.room.previousRoomPath);
                                         }
                                     }
+                                    
                                 }
                             }
                         }
