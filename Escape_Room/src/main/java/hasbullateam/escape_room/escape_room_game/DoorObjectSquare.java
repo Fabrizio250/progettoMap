@@ -2,13 +2,14 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
+import java.io.Serializable;
 import org.json.JSONObject;
 
 /**
  *
  * @author giuse
  */
-public class DoorObjectSquare extends ObjectSquare{
+public class DoorObjectSquare extends ObjectSquare implements Serializable{
     String message;
     Boolean isExit;
     Boolean isOpen;

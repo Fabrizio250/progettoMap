@@ -7,9 +7,6 @@ import hasbullateam.escape_room.type.Direction;
 import hasbullateam.escape_room.type.InventoryFullException;
 import hasbullateam.escape_room.type.RoomNotFoundException;
 import java.awt.Color;
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**
@@ -19,17 +16,24 @@ import javax.swing.SwingUtilities;
 
 // TODO: aprire le porte raccogliendo oggetti dai Container
 // TODO: chiave
-// TODO: sistemare gameLoop perchè non si capisce niente
+
 
 public class EscapeRoomGame extends EscapeRoom{
-    Thread _thread = null;
-    Object lock = new Object();
     
-    ObjectSquare obj;
-    ContainerObjectSquare containerObj;
-    MultipleChoiceDialog _dialog = null;
-    Cord dropObjCord;
-    DoorObjectSquare doorObj;
+    CollectableObjectSquare obj_collectable = null;
+    MultipleChoiceDialog dialog_collectable = null;
+    
+    ContainerObjectSquare obj_container = null;
+    MultipleChoiceDialog dialog_container = null;
+    TextDialog dialog_invFull = null;
+    
+    TextDialog dialog_door = null;
+    
+    MultipleChoiceDialog dialog_drop_obj_chose = null;
+    TextDialog dialog_drop_obj_impossible = null;
+    Cord cord_drop_obj = null;
+    
+    
 
     public EscapeRoomGame() {
         super();
@@ -43,8 +47,358 @@ public class EscapeRoomGame extends EscapeRoom{
         });
     }
     
-    //@Override
+    @Override
     public void gameLoop(){
+        
+        highlightFacingObject();
+        
+        
+        switch(this.cmd){
+            
+            // ------------------------------------------------------------------
+            case Command.Invalid cmd_invalid -> {break;}
+            
+            case Command.Move cmd_move -> {
+            
+                this.movePlayer(cmd_move);
+                
+                break;
+            
+            }
+            
+            case Command.InventorySelection cmd_inventory -> {
+                
+                selectInventory(cmd_inventory);
+                break; 
+            }
+            // ----------------------------------------------------------- Generic
+            
+            case Command.Generic cmd_generic -> {
+                
+                switch (cmd_generic) {
+                    
+                    case ESC -> {
+                        
+                        // se c'è una dialog qualsiasi aperta chiudila
+                        // altrimenti ...
+                        
+                        if(this.dialog != null){
+                            // chiudi tutte le dialog
+                            removeAllDialog();
+
+                        }else{  
+                            // ... visualizza menu di uscita 
+                        }
+                        
+                        
+                        break;
+                    }
+                    
+                    case UP -> {
+                        
+                        MultipleChoiceDialog dialogMultiChoice_generic = getActiveMultiChoiceDialog();
+
+                        if(dialogMultiChoice_generic != null){
+                            dialogMultiChoice_generic.select(dialogMultiChoice_generic.selectedIndx-1);
+                        }
+                        
+                        break;
+                    }
+                    
+                    
+                    case DOWN -> {
+                        
+                        MultipleChoiceDialog dialogMultiChoice_generic = getActiveMultiChoiceDialog();
+
+                        if(dialogMultiChoice_generic != null){
+                            dialogMultiChoice_generic.select(dialogMultiChoice_generic.selectedIndx+1);
+                        }
+                        
+                        
+                        break;
+                    }
+                    
+                    
+                    case ENTER -> {
+                        if( dialog_collectable != null ){
+                            
+                            // TODO: 
+                            
+                            if( dialog_collectable.getChoice().equals("sì") ){
+                                // rimuovi dalla room
+                                this.room.removeObject(obj_collectable.position);
+                                this.setSquare(new SquarePanel(obj_collectable.position));
+
+                                try {
+                                    // metti nell'inventario
+                                    this.inventory.putObjectSquare(obj_collectable);
+
+                                } catch (InventoryFullException ex) {
+                                    System.out.println("inventario pieno");
+                                }
+                                
+                                loadInventory();
+                            }
+                            
+                            obj_collectable = null;
+                            removeAllDialog();
+                            
+                        }else if( dialog_container != null){ // --------------------------------------------------------- Enter Dialog Container
+                            // setta nell'inventario l'oggetto selezionato dal container
+                            try {
+                                
+                                this.inventory.putObjectSquare(obj_container.getFromName(dialog_container.getChoice() ));
+                                this.loadInventory();
+                                obj_container.removeFromName( obj_container.getFromName(dialog_container.getChoice()).name );
+                                removeAllDialog();
+                                
+                            } catch (InventoryFullException ex) {
+                                
+                                removeAllDialog();
+                                dialog_invFull = new TextDialog(this);
+                                dialog_invFull.setText("   Inventario pieno .... <br>   libera uno spazio");
+                                this.dialog = dialog_invFull;
+                            
+                            }
+                            
+                            
+                        }else if ( dialog_drop_obj_chose != null){ // ----------------------------------------------------------- Enter Dialog Drop Obj
+                            
+                            if(dialog_drop_obj_chose.getChoice().equalsIgnoreCase("sì")){
+                                
+                                // se è selezionato effettivamente un oggetto
+                                if( !(this.inventory.getSelected().name.equalsIgnoreCase(Inventory.FREE_CONSTANT)) ){
+                                    
+                                    ObjectSquare selectedObj = this.inventory.getSelected().clone();
+                                    selectedObj.position = cord_drop_obj;
+                                    selectedObj.backgroundColor = new Color(0,0,0,0);
+                                    selectedObj.isInteractable = true;
+                                    this.room.addObject( selectedObj );
+                                    this.loadObjectSquare( this.room.getObject(cord_drop_obj) );
+                                    this.inventory.removeObject( this.inventory.selected );
+                                    this.inventory.select(this.inventory.selected);
+                                    loadInventory();       
+                                            
+                                            
+                                }else{
+                                    System.out.println("nessun oggetto da droppare");
+                                }
+                            }
+                            removeAllDialog();  
+                        }
+                        
+                        break;
+                    }
+                    
+                    
+                }
+                
+                
+                
+                break;
+            }
+            // ----------------------------------------------------------- Player
+            case Command.Player cmd_player -> {
+                
+                switch (cmd_player) {
+                    
+                    // -------------------------------------------------- Intercat
+                    case INTERACT -> {
+                        
+                        switch( this.room.getFacingObject() ){
+                            
+                            case null -> {break;}
+
+                            case ContainerObjectSquare _containerObj -> {
+                                
+                                // --------------------------------------------------------------------------------------------- Container Interact
+                                /*
+                                    se non c'è nessuna dialog visibile
+                                    setta e mostra la dialog relativa al container
+                                    setta obj_container
+                                */
+                                
+                                
+                                if(this.dialog == null){
+                                    dialog_container = new MultipleChoiceDialog(this);
+                                    dialog_container.setBrief( _containerObj.getBrief() );
+                                    dialog_container.setChoices( _containerObj.getObjectsString().toArray(
+                                            new String[_containerObj.objectList.size()]) );
+                                    dialog_container.assembleText();
+                                    dialog_container.reWriteText(true);  
+                                    this.dialog = dialog_container;
+                                    obj_container = _containerObj;
+                                }
+                                break;
+                            }
+                            
+                            case DoorObjectSquare _doorObj -> { // ------------------------------------------------------------ Door Intercat
+                                
+                                // se porta aperta fallo passare alla prossima stanza
+                                // se la porta è chiusa mostra dialog_door
+                                
+                                if(_doorObj.isOpen){
+                                    // passa all'altra stanza
+                                    
+                                    _doorObj.setBackgroundColor(new Color(0,0,0,0));
+                                    Direction oldDirection = this.room.playerDirection;
+                                    backupRoom(this.BACKUP_FILE_PATH, this.room);
+                                    
+                                    if(_doorObj.isExit){
+                                        
+                                        try {
+                                            loadRoomFromBackupFile(this.BACKUP_FILE_PATH, this.room.nextRoomName);
+                                            this.player.setFaceDirection(oldDirection);
+                                        } catch (RoomNotFoundException ex) {
+                                            loadRoomFromJSON(this.room.nextRoomPath);
+                                            
+                                        }
+                                    }else{
+                                        try {
+                                            loadRoomFromBackupFile(this.BACKUP_FILE_PATH, this.room.previousRoomName);
+                                            this.player.setFaceDirection(oldDirection);
+                                        } catch (RoomNotFoundException ex) {
+                                            loadRoomFromJSON(this.room.previousRoomPath);
+                                        }
+                                    }
+ 
+                                
+                                }else{
+                                    // mostra dialog se non è già presente una
+                                    if(this.dialog == null){
+                                        dialog_door = new TextDialog(this);
+                                        dialog_door.setText(_doorObj.message);
+                                        this.dialog = dialog_door;
+                                    }
+                                }
+                                
+                                
+                                
+                                
+                                
+                                break;
+                            }
+                            
+                            case CollectableObjectSquare _collectableObj -> {
+                                
+                                // setta e mostra dialog_collectable
+                                // setta obj_collectable
+                                
+                                if(this.dialog == null){
+                                    dialog_collectable = new MultipleChoiceDialog(this);
+                                    dialog_collectable.setBrief("desidere raccogliere l'oggetto davanti a te?");
+                                    dialog_collectable.setChoices("sì","no");
+                                    dialog_collectable.assembleText();
+                                    dialog_collectable.reWriteText(true);
+
+
+                                    this.dialog = dialog_collectable;
+                                    obj_collectable = _collectableObj;
+                                }
+                                
+                                
+                                break;
+                            }
+                            
+                            default -> {break;}
+ 
+                        }
+                        
+                        
+                        break;
+                    }
+
+                    // ------------------------------------------------------------------------------------------------------ Drop Object Dialog
+                    case DROP_OBJECT -> {
+                        // setta dialog_drop_obj_chose
+                        if(this.dialog == null){
+                            
+                            
+                            if(isCordInGrid( this.room.getFacingCord()) && this.room.getFacingObject()==null){
+                                dialog_drop_obj_chose = new MultipleChoiceDialog(this);
+                                dialog_drop_obj_chose.setBrief("  Desideri lasciare l'oggetto selezionato davanti a te?");
+                                dialog_drop_obj_chose.setChoices("sì","no");
+                                dialog_drop_obj_chose.assembleText();
+                                dialog_drop_obj_chose.reWriteText(true);
+                                this.dialog = dialog_drop_obj_chose;
+                                cord_drop_obj = this.room.getFacingCord();
+                            }else{
+                                dialog_drop_obj_impossible = new TextDialog(this);
+                                dialog_drop_obj_impossible.setText("impossibile lasciare l'oggetto davanti a te perchè sembra esserci un'ostacolo");
+                                this.dialog = dialog_drop_obj_impossible;
+                            } 
+                        }
+                        break;
+                    }
+                       
+                }
+                
+                
+                break;
+            }
+            
+
+            default -> {break;} 
+        }
+        
+        
+        
+        this.cmd = Command.Invalid.NONE;
+        this.refresh();
+        
+    }
+    
+    private void removeAllDialog(){
+        if(this.dialog != null){
+            this.dialog.dispose();
+            this.dialog = null;
+        }
+
+        dialog_collectable = null;
+        dialog_container = null;
+        dialog_door = null;
+        dialog_drop_obj_chose = null;
+        dialog_drop_obj_impossible = null;
+        dialog_invFull = null;
+    }
+    
+    
+    private MultipleChoiceDialog getActiveMultiChoiceDialog(){
+        
+        if(this.dialog == null){
+            return null;
+            
+        }else if(dialog_collectable != null){
+            return dialog_collectable;
+
+        }else if(dialog_container != null){
+            return dialog_container;
+
+        }else if(dialog_drop_obj_chose != null){
+            return dialog_drop_obj_chose;
+        }
+        
+        return null;
+    }
+}
+    
+    /*
+    Thread _thread = null;
+    Object lock = new Object();
+    
+    ObjectSquare obj;
+    ContainerObjectSquare containerObj;
+    MultipleChoiceDialog _dialog = null;
+    MultipleChoiceDialog dialogCollectable = null;
+    Cord dropObjCord;
+    DoorObjectSquare doorObj;
+    CollectableObjectSquare collectableObj;
+    */
+    
+    
+    /*
+    //@Override
+    public void gamesLoop(){
         
         
         // se è stato premuto un comando valido
@@ -58,7 +412,7 @@ public class EscapeRoomGame extends EscapeRoom{
                 highlightFacingObject();
             
             // selezione inventario
-            }else if (this.cmd instanceof Command.InventorySelection inventorySelection){
+              }else if (this.cmd instanceof Command.InventorySelection inventorySelection){
                 selectInventory(inventorySelection);
             
             }else if(this.cmd instanceof Command.Test testCmd){ //TODO: da levare è solo per i test
@@ -134,6 +488,52 @@ public class EscapeRoomGame extends EscapeRoom{
                         // .... tutti gli altri casi in cui viene premuto ESC
                     }
                     
+                }else if(dialogCollectable != null){
+                    
+                    if(genericCommand == Command.Generic.UP){
+                        dialogCollectable.select(dialogCollectable.selectedIndx-1);
+                    
+                    }else if(genericCommand == Command.Generic.DOWN){
+                        dialogCollectable.select(dialogCollectable.selectedIndx+1);
+                        
+                    }else if(genericCommand == Command.Generic.ENTER){
+                        
+                        if( dialogCollectable.getChoice().equals("si") ){
+                            // rimuovi dalla room
+                            this.room.removeObject(collectableObj.position);
+                            this.setSquare(new SquarePanel(collectableObj.position));
+                            
+                            try {
+                                // metti nell'inventario
+                                
+                                this.inventory.putObjectSquare(collectableObj);
+                                
+                            } catch (InventoryFullException ex) {
+                                System.out.println("inventario pieno");
+                            }
+                            
+                            
+                            loadInventory();
+                            this.revalidate();
+                            this.repaint();
+                            
+                            dialogCollectable.dispose();
+                            dialogCollectable = null;
+                            this.dialog = null;
+                            
+                            collectableObj = null;
+                            
+                            
+                        }else if(dialogCollectable.getChoice().equals("no")){
+                            dialogCollectable.dispose();
+                            dialogCollectable = null;
+                            this.dialog = null;
+                            
+                            collectableObj = null;
+                        }
+                        
+                    }
+                    
                 }else if(_dialog != null){ // se c'è una dialog di tipo container aperta
                     
                     if(genericCommand == Command.Generic.UP){
@@ -152,6 +552,8 @@ public class EscapeRoomGame extends EscapeRoom{
                             try {
                                 
                                 this.inventory.putObjectSquare(containerObj.getFromName(_dialog.getChoice() ));
+                                
+                                
                                 this.loadInventory();
                                 containerObj.removeFromName( containerObj.getFromName(_dialog.getChoice()).name );
                                 _dialog.dispose();
@@ -188,9 +590,11 @@ public class EscapeRoomGame extends EscapeRoom{
                                     selectedObj.backgroundColor = new Color(0,0,0,0);
                                     selectedObj.isInteractable = true;
                                     
-                                    // rendi selectedObj un oggetto raccoglibile
+                                    
 
                                     this.room.addObject( selectedObj );
+
+                                    
                                     this.loadObjectSquare( this.room.getObject(dropObjCord) );
 
                                     this.inventory.removeObject( this.inventory.selected );
@@ -256,7 +660,36 @@ public class EscapeRoomGame extends EscapeRoom{
 
                 if(obj != null){
                     
-                    if(obj instanceof ContainerObjectSquare _obj){
+                    
+                    if (obj instanceof CollectableObjectSquare _obj){
+                        
+                        if(this.cmd instanceof Command.Player _cmd){
+                            if(_cmd == Command.Player.INTERACT){
+                                
+                                if(this.dialog == null){
+                                    
+                                    this.dialog = new MultipleChoiceDialog(this);
+                                    dialogCollectable = (MultipleChoiceDialog)dialog;
+                                    dialogCollectable.setBrief("desideri raccogliere l'oggetto?");
+                                    dialogCollectable.setChoices("si","no");
+                                    dialogCollectable.assembleText();
+                                    dialogCollectable.show(true);
+                                    dialogCollectable.reWriteText(true);
+                                    
+                                    collectableObj = _obj;
+                                    
+                                    
+                                }
+                                
+                                
+                            }
+                            
+                            
+                        }
+                        
+                        
+                        
+                    }else if(obj instanceof ContainerObjectSquare _obj){
                         
 
                         if(this.cmd instanceof Command.Player _cmd){
@@ -337,8 +770,8 @@ public class EscapeRoomGame extends EscapeRoom{
             // resetta il comando
             this.cmd = Command.Invalid.NONE;
         }   
-    } 
-}
+    }*/
+
 
 
 /*if(_thread!=null && _thread.isAlive()){

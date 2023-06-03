@@ -73,7 +73,7 @@ public class TextDialog {
         setText(this.text);
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
                 
-
+        show(true);
 
     }
     

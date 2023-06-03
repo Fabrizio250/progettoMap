@@ -129,6 +129,9 @@ public class Room implements Serializable{
             
             }else if (currentObj.getString("tag").equals("door")){
                 this.addObject( new DoorObjectSquare(currentObj) );
+            
+            }else if (currentObj.getString("tag").equals("collectable")){
+                this.addObject( new CollectableObjectSquare(currentObj) );
             }
             
             

@@ -32,6 +32,23 @@
     },
     "objects" : [
         {
+            "name": "lol1",
+            "tag": "collectable",
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "color":{
+                "r": 200,
+                "g": 200,
+                "b": 0,
+                "a": 128
+            },
+            "pathImage": "images\\player2.png",
+            "isPassable": true,
+            "isInteractable": false
+        },
+        {
             "name": "egress_door",
             "tag": "door",
             "position": {
@@ -143,20 +160,18 @@
             "objects": [
                 {
                     "name": "lol1",
-                    "tag": "basic",
+                    "tag": "collectable",
                     "position": {
                         "x": 7,
                         "y": 5
                     },
                     "color":{
-                        "r": 200,
-                        "g": 200,
+                        "r": 0,
+                        "g": 0,
                         "b": 0,
-                        "a": 128
+                        "a": 0
                     },
-                    "pathImage": "images\\player2.png",
-                    "isPassable": true,
-                    "isInteractable": false
+                    "pathImage": "images\\player2.png"
                 },
                 {
                     "name": "lo2",

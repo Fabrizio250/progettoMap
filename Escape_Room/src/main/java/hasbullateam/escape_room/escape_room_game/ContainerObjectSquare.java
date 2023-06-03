@@ -33,7 +33,14 @@ public class ContainerObjectSquare extends ObjectSquare implements Serializable{
         JSONArray objArray = jsonObj.getJSONArray("objects");
 
         for(int i=0; i<objArray.length(); i++){
-            objectList.add( new ObjectSquare(objArray.getJSONObject(i)) );
+            
+            if( objArray.getJSONObject(i).getString("tag").equals("collectable") ){
+                objectList.add( new CollectableObjectSquare(objArray.getJSONObject(i)) );
+                
+            }else if(objArray.getJSONObject(i).getString("tag").equals("basic")){
+                objectList.add( new ObjectSquare(objArray.getJSONObject(i)) );
+            }
+            
         }
     }
 

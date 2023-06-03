@@ -54,6 +54,7 @@ public class EscapeRoom extends GridPanel{
     TextDialog dialog;
     Inventory inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);;
     Thread loopThread;
+    final String BACKUP_FILE_PATH = "rooms\\roomsBackup.dat";
     
     Command cmd = Command.Invalid.NONE;
     
@@ -64,7 +65,19 @@ public class EscapeRoom extends GridPanel{
     public EscapeRoom() {
         super(GRID_SIZE);
         
-        this.addKeyListener(new KeyboardInput());        
+        this.addKeyListener(new KeyboardInput());
+        resetBackupFile();
+        
+    }
+    
+    public void resetBackupFile(){
+        try {
+            FileOutputStream file = new FileOutputStream(BACKUP_FILE_PATH);
+            file.close();
+        
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
     }
     
@@ -200,10 +213,12 @@ public class EscapeRoom extends GridPanel{
                     
 
                 } catch (EOFException e) {
+                    //System.out.println("aeeeeeeee");
                     break;
                 } catch (ClassNotFoundException e) {
-                    System.err.println("Classe non trovata durante la lettura dell'oggetto Room dal file: " + filePath);
+                    //System.err.println("Classe non trovata durante la lettura dell'oggetto Room dal file: " + filePath);
                     e.printStackTrace();
+                    break;
                 }
             }
 
@@ -212,8 +227,8 @@ public class EscapeRoom extends GridPanel{
         } catch (FileNotFoundException e) {
  
         } catch (IOException e) {
-            System.err.println("Errore durante la lettura dell'oggetto Room dal file: " + filePath);
-            e.printStackTrace();
+            //System.err.println("Errore durante la lettura dell'oggetto Room dal file: " + filePath+ "  ehhh già");
+            //e.printStackTrace();
         }
         
         rooms.put(this._backupFileCounter++, room);
@@ -229,9 +244,9 @@ public class EscapeRoom extends GridPanel{
             
             outStream.close();
 
-            System.out.println("Oggetto Room scritto con successo nel file: " + filePath);
+            //System.out.println("Oggetto Room scritto con successo nel file: " + filePath);
         } catch (IOException e) {
-            System.err.println("Errore durante la scrittura dell'oggetto Room nel file: " + filePath);
+            //System.err.println("Errore durante la scrittura dell'oggetto Room nel file: " + filePath);
             e.printStackTrace();
         }
     }
@@ -256,26 +271,27 @@ public class EscapeRoom extends GridPanel{
                 } catch (EOFException e) {
                     break;
                 } catch (ClassNotFoundException e) {
-                    System.err.println("Classe non trovata durante la lettura dell'oggetto Room dal file: " + filePath);
+                    //System.err.println("Classe non trovata durante la lettura dell'oggetto Room dal file: " + filePath);
                     e.printStackTrace();
+                    break;
                 }
             }
 
             inStream.close();
 
         } catch (FileNotFoundException e) {
-            System.err.println("File non trovato: " + filePath);
+            //System.err.println("File non trovato: " + filePath);
             throw new RoomNotFoundException();
         } catch (IOException e) {
-            System.err.println("Errore durante la lettura dell'oggetto Room dal file: " + filePath);
+            //System.err.println("Errore durante la lettura dell'oggetto Room dal file: " + filePath);
             e.printStackTrace();
         }
 
         if(searchedRoom != null){
-            System.out.println("Room trovata!!"+" name:"+searchedRoom.name);
+            //System.out.println("Room trovata!!"+" name:"+searchedRoom.name);
             loadRoom(searchedRoom);
         }else{
-            System.out.println("room non trovata");
+            //System.out.println("room non trovata");
             throw new RoomNotFoundException();
         }
     }
