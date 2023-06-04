@@ -22,7 +22,11 @@ import javax.swing.SwingUtilities;
  */
 
 // TODO: "non è presente nessun oggetto" nel container
-
+// TODO: tastierino numerico
+// TODO: enigmista
+// TODO: snake
+// TODO: battaglia navale
+// TODO: tris
 
 public class EscapeRoomGame extends EscapeRoom{
     
@@ -33,7 +37,7 @@ public class EscapeRoomGame extends EscapeRoom{
     MultipleChoiceDialog dialog_container = null;
     TextDialog dialog_invFull = null;
     
-    TextDialog dialog_door = null;
+    TextDialog dialog_door = null; // renderlo dialog_generic
     
     MultipleChoiceDialog dialog_drop_obj_chose = null;
     TextDialog dialog_drop_obj_impossible = null;
@@ -41,6 +45,10 @@ public class EscapeRoomGame extends EscapeRoom{
     
     MultipleChoiceDialog dialog_boss = null;
     public BossObjectSquare obj_boss = null;
+    
+    TextDialog dialog_generic = null;
+    
+    
     
      
 
@@ -60,6 +68,26 @@ public class EscapeRoomGame extends EscapeRoom{
     public void gameLoop(){
         
         highlightFacingObject();
+        
+        if(obj_boss != null && obj_boss.isDefeated() && this.dialog == null){
+            
+            // visualizza dialog oh no mi hai sconfitto
+            // sposta boss in maniera tale che liberi il passaggio alla porta
+            
+            dialog_generic = new TextDialog(this);
+            dialog_generic.setText(obj_boss.defeatMessage);
+            
+            this.room.removeObject(obj_boss.position);
+            this.clearSquare(obj_boss.position);
+            obj_boss.position = obj_boss.defeatPosition;
+            this.room.addObject(obj_boss);
+            this.loadObjectSquare(obj_boss);
+            
+            
+            this.dialog = dialog_generic;
+            obj_boss = null;
+            
+        }
         
         switch(this.cmd){
             
@@ -205,12 +233,16 @@ public class EscapeRoomGame extends EscapeRoom{
                                 frame.setContentPane(obj_boss.getMinigame(this));
                                 frame.revalidate();
                                 frame.repaint();
-
+                                removeAllDialog();
+                                
                             }else{
-                                System.out.println("pff pivello");
+                                removeAllDialog();
+                                dialog_generic = new TextDialog(this);
+                                dialog_generic.setText(obj_boss.loserMessage);
+                                this.dialog = dialog_generic;
                             }
                             
-                            removeAllDialog();
+                            
                             
                         }
                         
@@ -237,6 +269,40 @@ public class EscapeRoomGame extends EscapeRoom{
                             
                             
                             case null -> {break;}
+                            
+                            case BreakableObjectSquare _breakableObj -> {
+                                
+                                if(this.dialog == null && _breakableObj.isBroken==false){
+                                    
+                                    if(this.inventory.getSelected().name.equals(_breakableObj.breakableWith_objName)){
+                                        
+                                        // rompi
+                                        // visualizza brokeMessage
+                                        
+                                        _breakableObj.broke();
+                                        this.loadObjectSquare(_breakableObj);
+                                        
+                                        dialog_generic = new TextDialog(this);
+                                        dialog_generic.setText(_breakableObj.getBrokeMessage());
+                                        
+                                        this.dialog = dialog_generic;
+                                        
+                                        
+                                    }else{
+                                        
+                                        // text dialog con message
+                                        dialog_generic = new TextDialog(this);
+                                        dialog_generic.setText(_breakableObj.message);
+                                        
+                                        this.dialog = dialog_generic;
+                                        
+                                    }
+                                    
+                                }
+                                
+                                
+                                break;
+                            }
 
                             case ContainerObjectSquare _containerObj -> {
                                 
@@ -258,6 +324,36 @@ public class EscapeRoomGame extends EscapeRoom{
                                     this.dialog = dialog_container;
                                     obj_container = _containerObj;
                                 }
+                                break;
+                            }
+                            
+                            case BrokenDoorObjectSquare _brokenDoorObj -> {
+                                
+                                if(this.dialog == null){
+                                        
+                                    if( this.inventory.getSelected().name.equals(_brokenDoorObj.fixableWith_nameObj) ){
+                                        // aggiusta la porta
+                                        // rimpiazza la porta rotta con la porta aggiustata
+
+                                        this.room.removeObject(_brokenDoorObj.position);
+                                        this.clearSquare(_brokenDoorObj.position);
+
+                                        this.room.addObject(_brokenDoorObj.fixedDoor);
+                                        this.loadObjectSquare(_brokenDoorObj.fixedDoor);
+
+                                        dialog_generic = new TextDialog(this);
+                                        dialog_generic.setText(_brokenDoorObj.fixedDoor_message);
+                                        this.dialog = dialog_generic;
+
+                                    }else{
+                                        // visualizza dialog che dice di trovare qualcosa per aggiustarla
+                                        dialog_generic = new TextDialog(this);
+                                        dialog_generic.setText(_brokenDoorObj.brokeDoor_message);
+                                        this.dialog = dialog_generic;
+
+                                    }
+                                }
+                                
                                 break;
                             }
                             
@@ -333,6 +429,7 @@ public class EscapeRoomGame extends EscapeRoom{
                                 break;
                             }
                             
+                            
                             case CollectableObjectSquare _collectableObj -> { // ------------------------------------------ Intercat Collectable
                                 
                                 // setta e mostra dialog_collectable
@@ -359,14 +456,26 @@ public class EscapeRoomGame extends EscapeRoom{
                             case BossObjectSquare _bossObj ->{ // ------------------------------------------------------- Intercat Boss
                                 
                                 if(this.dialog == null){
-                                    dialog_boss = new MultipleChoiceDialog(this);
-                                    dialog_boss.setBrief(_bossObj.message);
-                                    dialog_boss.setChoices("sì","no");
-                                    dialog_boss.assembleText();
-                                    dialog_boss.reWriteText(true);
+                                    
+                                    if(!_bossObj.isDefeated()){
+                                        
+                                        dialog_boss = new MultipleChoiceDialog(this);
+                                        dialog_boss.setBrief(_bossObj.entryMessage);
+                                        dialog_boss.setChoices("sì","no");
+                                        dialog_boss.assembleText();
+                                        dialog_boss.reWriteText(true);
 
-                                    obj_boss = _bossObj;
-                                    this.dialog = dialog_boss; 
+                                        obj_boss = _bossObj;
+                                        this.dialog = dialog_boss; 
+                                    
+                                    }else{
+                                        
+                                        dialog_generic = new TextDialog(this);
+                                        dialog_generic.setText(_bossObj.defeatMessage);
+                                        this.dialog = dialog_generic;
+                                        
+                                    }
+                                    
                                 }
                                 
                                 break;
@@ -434,6 +543,7 @@ public class EscapeRoomGame extends EscapeRoom{
         dialog_drop_obj_impossible = null;
         dialog_invFull = null;
         dialog_boss = null;
+        dialog_generic = null;
     }
     
     
@@ -453,6 +563,7 @@ public class EscapeRoomGame extends EscapeRoom{
         
         }else if(dialog_boss != null){
             return dialog_boss;
+        
         }
         
         return null;

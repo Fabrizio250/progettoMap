@@ -14,10 +14,12 @@ import org.json.JSONObject;
  * @author giuse
  */
 public class BossObjectSquare extends ObjectSquare implements Serializable{
-    
-    JPanel minigame;
     String minigameTag;
-    String message;
+    String entryMessage;
+    String defeatMessage;
+    String loserMessage;
+    public Boolean defeated;
+    Cord defeatPosition;
     
     public BossObjectSquare(JSONObject jsonObj) {
         super(
@@ -29,7 +31,14 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
         );
         
         this.minigameTag = jsonObj.getString("minigame");
-        this.message = jsonObj.getString("message");
+        this.entryMessage = jsonObj.getString("entry_message");
+        this.defeatMessage = jsonObj.getString("defeat_message");
+        this.loserMessage = jsonObj.getString("loser_message");
+        this.defeatPosition = new Cord(
+                jsonObj.getJSONObject("defeat_position").getInt("x"),
+                jsonObj.getJSONObject("defeat_position").getInt("y")
+        );
+        this.defeated = false;
         
     }
     
@@ -40,7 +49,7 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
         switch(minigameTag){
             
             case "BattleShip" -> {
-                return new BattleShip(previousPanel);
+                return new BattleShip(previousPanel, this);
             }
             
             case "Tris" -> {
@@ -57,6 +66,10 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
         }
         return null;
         
+    }
+    
+    public Boolean isDefeated(){
+        return this.defeated;
     }
     
     

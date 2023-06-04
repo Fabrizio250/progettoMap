@@ -31,19 +31,89 @@
         "y": 3
     },
     "objects" : [
+
+        {
+            "name": "coso_rompibile",
+            "tag": "breakable",
+            "position": {
+                "x" : "3",
+                "y" : "3"
+            },
+            "pathImage": "images\\player2.png",
+            "breakable_with_obj_name": "cacciavite",
+            "message" : "sembra che sto coso si possa rompere",
+            "broke_stage": [
+                {
+                    "message": " uanm si stc rumbenn 1",
+                    "path_image": "images\\pic_UP_2.png"
+                },
+                {
+                    "message": " uanm si stc rumbenn 2",
+                    "path_image": "images\\pic_DOWN_2.png"
+                },
+                {
+                    "message": " uanm si stc rumbenn 3",
+                    "path_image": "images\\pic_LEFT_2.png"
+                },
+                {
+                    "message": " uanm si stc rumbenn 4",
+                    "path_image": "images\\pic_RIGHT_2.png"
+                }
+            ]
+
+
+        },
+        
+        {
+            "name": "porta rotta",
+            "tag": "broken_door",
+            "position": {
+                "x": 4,
+                "y": 7
+            },
+            "pathImage": "images\\player2.png",
+            "broke_door_message": "u scem la porta è rotta aggiustala",
+            "fixed_door_message": "brv brv è aggiustt a port",
+            "fixable_with_name_object": "cacciavite",
+            "fixed_door": {
+                "name": "egress_door",
+                "tag": "door",
+                "position": {
+                    "x": 4,
+                    "y": 7
+                },
+
+                "pathImage": "images\\pic_RIGHT_1.png",
+                "isOpen": false,
+                "isExit": true,
+                "message": "la porta sembra chiusa<br>  trova la chiave ...",
+                "open_door_path_image": "images\\pic_UP_1.png"
+
+            }
+        },
+
+
+
+
         {
             "name": "uscem",
             "tag": "boss",
             "minigame": "BattleShip",
-            "message": "ueeee u scem vu fa pesc e pesc",
+            "entry_message": "ueeee u scem vu fa pesc e pesc",
+            "loser_message": "si nu fess",
+            "defeat_message": "oh zio pera mi hai sconfitto",
             "pathImage": "images\\player2.png",
             "position": {
                 "x": 9,
                 "y": 0
+            },
+            "defeat_position" : {
+                "x": 2,
+                "y": 4
             }
         },
         {
-            "name": "lol1",
+            "name": "cacciavite",
             "tag": "collectable",
             "position": {
                 "x": 0,

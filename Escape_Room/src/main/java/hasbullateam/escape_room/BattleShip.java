@@ -1,6 +1,7 @@
 
 package hasbullateam.escape_room;
 
+import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.escape_room_game.EscapeRoom;
 import hasbullateam.escape_room.escape_room_game.EscapeRoomGame;
 import java.awt.CardLayout;
@@ -18,6 +19,7 @@ import javax.swing.SwingUtilities;
  */
 public class BattleShip extends JPanel{
     JPanel previousPanel;
+    BossObjectSquare boss;
     
     public BattleShip(){
         super();
@@ -35,9 +37,12 @@ public class BattleShip extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     
+                    if(BattleShip.this.boss != null){
+                        BattleShip.this.boss.defeated = true;
+                    }
+                    
+                    
                     JFrame frame = (JFrame) BattleShip.this.getTopLevelAncestor();
-                    
-                    
                     if(BattleShip.this.previousPanel instanceof EscapeRoomGame){
                         EscapeRoomGame escGame = (EscapeRoomGame)BattleShip.this.previousPanel;
                         
@@ -57,6 +62,12 @@ public class BattleShip extends JPanel{
             this.revalidate();
             this.repaint();
         });
+        
+    }
+    
+    public BattleShip (JPanel previuosPanel, BossObjectSquare boss) {
+        this(previuosPanel);
+        this.boss = boss;
         
     }
     
