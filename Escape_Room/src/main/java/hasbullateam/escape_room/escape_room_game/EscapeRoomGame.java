@@ -1,12 +1,19 @@
 
 package hasbullateam.escape_room.escape_room_game;
 
+import hasbullateam.escape_room.BattleShip;
+import hasbullateam.escape_room.Tris;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.Direction;
 import hasbullateam.escape_room.type.InventoryFullException;
 import hasbullateam.escape_room.type.RoomNotFoundException;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -14,8 +21,7 @@ import javax.swing.SwingUtilities;
  * @author giuse
  */
 
-// TODO: aprire le porte raccogliendo oggetti dai Container
-// TODO: chiave
+// TODO: "non è presente nessun oggetto" nel container
 
 
 public class EscapeRoomGame extends EscapeRoom{
@@ -33,7 +39,10 @@ public class EscapeRoomGame extends EscapeRoom{
     TextDialog dialog_drop_obj_impossible = null;
     Cord cord_drop_obj = null;
     
+    MultipleChoiceDialog dialog_boss = null;
+    public BossObjectSquare obj_boss = null;
     
+     
 
     public EscapeRoomGame() {
         super();
@@ -51,7 +60,6 @@ public class EscapeRoomGame extends EscapeRoom{
     public void gameLoop(){
         
         highlightFacingObject();
-        
         
         switch(this.cmd){
             
@@ -185,6 +193,25 @@ public class EscapeRoomGame extends EscapeRoom{
                                 }
                             }
                             removeAllDialog();  
+                        
+                        
+                        
+                        }else if (dialog_boss != null){
+                            
+                            if(dialog_boss.getChoice().equalsIgnoreCase("sì")){
+                                backupRoom(BACKUP_FILE_PATH, this.room);
+                                JFrame frame = (JFrame) this.getTopLevelAncestor();
+                                removeKeyListener(this.getKeyListeners()[0]);
+                                frame.setContentPane(obj_boss.getMinigame(this));
+                                frame.revalidate();
+                                frame.repaint();
+
+                            }else{
+                                System.out.println("pff pivello");
+                            }
+                            
+                            removeAllDialog();
+                            
                         }
                         
                         break;
@@ -206,6 +233,8 @@ public class EscapeRoomGame extends EscapeRoom{
                     case INTERACT -> {
                         
                         switch( this.room.getFacingObject() ){
+                            
+                            
                             
                             case null -> {break;}
 
@@ -242,11 +271,13 @@ public class EscapeRoomGame extends EscapeRoom{
                                     
                                     _doorObj.setBackgroundColor(new Color(0,0,0,0));
                                     Direction oldDirection = this.room.playerDirection;
+                                    resetHighlightFObjcet();
                                     backupRoom(this.BACKUP_FILE_PATH, this.room);
                                     
                                     if(_doorObj.isExit){
                                         
                                         try {
+                                            
                                             loadRoomFromBackupFile(this.BACKUP_FILE_PATH, this.room.nextRoomName);
                                             this.player.setFaceDirection(oldDirection);
                                         } catch (RoomNotFoundException ex) {
@@ -254,22 +285,45 @@ public class EscapeRoomGame extends EscapeRoom{
                                             
                                         }
                                     }else{
+                                        
                                         try {
+                                            
                                             loadRoomFromBackupFile(this.BACKUP_FILE_PATH, this.room.previousRoomName);
                                             this.player.setFaceDirection(oldDirection);
                                         } catch (RoomNotFoundException ex) {
                                             loadRoomFromJSON(this.room.previousRoomPath);
                                         }
                                     }
- 
-                                
+                                    
+                                    
+                                    
                                 }else{
+                                    // apri la porta se hai selezionato la chiave
                                     // mostra dialog se non è già presente una
                                     if(this.dialog == null){
-                                        dialog_door = new TextDialog(this);
-                                        dialog_door.setText(_doorObj.message);
-                                        this.dialog = dialog_door;
+                                        
+                                        if (this.inventory.getSelected() instanceof KeyObjectSquare){
+                                            // apri la porta
+                                            _doorObj.open();
+                                            loadObjectSquare(_doorObj);
+                                            refresh();
+                                            // rimuovi la chiave dall'inventario
+                                            this.inventory.removeObject(this.inventory.selected);
+                                            loadInventory();
+                                            // mostra dialog porta aperta
+                                            dialog_door = new TextDialog(this);
+                                            dialog_door.setText("la porta è stata aperta !");
+                                            this.dialog = dialog_door;
+                                        
+                                        }else{
+                                            dialog_door = new TextDialog(this);
+                                            dialog_door.setText(_doorObj.message);
+                                            this.dialog = dialog_door;
+                                        
+                                        }
                                     }
+                                    
+                                    
                                 }
                                 
                                 
@@ -279,7 +333,7 @@ public class EscapeRoomGame extends EscapeRoom{
                                 break;
                             }
                             
-                            case CollectableObjectSquare _collectableObj -> {
+                            case CollectableObjectSquare _collectableObj -> { // ------------------------------------------ Intercat Collectable
                                 
                                 // setta e mostra dialog_collectable
                                 // setta obj_collectable
@@ -299,6 +353,25 @@ public class EscapeRoomGame extends EscapeRoom{
                                 
                                 break;
                             }
+                            
+                            
+                            
+                            case BossObjectSquare _bossObj ->{ // ------------------------------------------------------- Intercat Boss
+                                
+                                if(this.dialog == null){
+                                    dialog_boss = new MultipleChoiceDialog(this);
+                                    dialog_boss.setBrief(_bossObj.message);
+                                    dialog_boss.setChoices("sì","no");
+                                    dialog_boss.assembleText();
+                                    dialog_boss.reWriteText(true);
+
+                                    obj_boss = _bossObj;
+                                    this.dialog = dialog_boss; 
+                                }
+                                
+                                break;
+                            }
+                            
                             
                             default -> {break;}
  
@@ -360,6 +433,7 @@ public class EscapeRoomGame extends EscapeRoom{
         dialog_drop_obj_chose = null;
         dialog_drop_obj_impossible = null;
         dialog_invFull = null;
+        dialog_boss = null;
     }
     
     
@@ -376,6 +450,9 @@ public class EscapeRoomGame extends EscapeRoom{
 
         }else if(dialog_drop_obj_chose != null){
             return dialog_drop_obj_chose;
+        
+        }else if(dialog_boss != null){
+            return dialog_boss;
         }
         
         return null;

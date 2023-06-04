@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.json.*;
 
@@ -53,7 +54,7 @@ public class EscapeRoom extends GridPanel{
     public Room room;
     TextDialog dialog;
     Inventory inventory = new Inventory(GRID_SIZE-1,0,GRID_SIZE-1);;
-    Thread loopThread;
+    public Thread loopThread;
     final String BACKUP_FILE_PATH = "rooms\\roomsBackup.dat";
     
     Command cmd = Command.Invalid.NONE;
@@ -134,6 +135,13 @@ public class EscapeRoom extends GridPanel{
             HighlightFacingObjectManger.facingObj = facingObj;
         }
         
+        public void reset(){
+            this.selectedObj = false;
+            this.previousBackground = this.selectedBackground;
+            this.facingObj = null;
+            this.previousObject = null;
+        }
+        
         public void setPreviousObject(ObjectSquare prevObj){
             this.previousObject = prevObj;
         }
@@ -194,6 +202,11 @@ public class EscapeRoom extends GridPanel{
         
         h.run();
         
+    }
+    
+    public void resetHighlightFObjcet(){
+        HighlightFacingObjectManger h = new HighlightFacingObjectManger();
+        h.reset();
     }
     
     
@@ -307,8 +320,7 @@ public class EscapeRoom extends GridPanel{
         }catch (Exception e){
             e.printStackTrace();
         }
-        
-        
+  
     }
     
     // carica nella Griglia newRoom, il player e l'inventario
@@ -470,7 +482,15 @@ public class EscapeRoom extends GridPanel{
     }
     
     
-    private class KeyboardInput implements KeyListener{
+    public void changePanel(JPanel panel){
+        JFrame frame = (JFrame) this.getTopLevelAncestor();
+        frame.setContentPane(panel);
+        frame.revalidate();
+        frame.repaint();
+    }
+    
+    
+    public class KeyboardInput implements KeyListener{
 
         @Override
         public void keyTyped(KeyEvent e) {

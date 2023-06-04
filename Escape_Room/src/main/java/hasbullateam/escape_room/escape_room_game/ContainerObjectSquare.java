@@ -39,6 +39,10 @@ public class ContainerObjectSquare extends ObjectSquare implements Serializable{
                 
             }else if(objArray.getJSONObject(i).getString("tag").equals("basic")){
                 objectList.add( new ObjectSquare(objArray.getJSONObject(i)) );
+            
+            }else if(objArray.getJSONObject(i).getString("tag").equals("key")){
+                objectList.add( new KeyObjectSquare(objArray.getJSONObject(i)) );
+            
             }
             
         }

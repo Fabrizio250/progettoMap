@@ -35,8 +35,8 @@
             "name": "exit_door",
             "tag": "door",
             "position": {
-                "x": 7,
-                "y": 7
+                "x": 4,
+                "y": 4
             },
 
             "pathImage": "images\\pic_RIGHT_1.png",

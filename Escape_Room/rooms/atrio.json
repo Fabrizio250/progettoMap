@@ -32,6 +32,17 @@
     },
     "objects" : [
         {
+            "name": "uscem",
+            "tag": "boss",
+            "minigame": "BattleShip",
+            "message": "ueeee u scem vu fa pesc e pesc",
+            "pathImage": "images\\player2.png",
+            "position": {
+                "x": 9,
+                "y": 0
+            }
+        },
+        {
             "name": "lol1",
             "tag": "collectable",
             "position": {
@@ -63,90 +74,21 @@
             "closed_door_path_image": "images\\pic_UP_1.png"
 
         },
+
         {
-            "name": "lol",
-            "tag": "basic",
-            "position": {
-                "x": 4,
-                "y": 4
-            },
-            "color":{
-                "r": 0,
-                "g": 0,
-                "b": 0,
-                "a": 0
-            },
-            "pathImage": "images\\player2.png",
-            "isPassable": false,
-            "isInteractable": true
-        },
-        {
-            "name": "lol",
-            "tag": "basic",
-            "position": {
-                "x": 5,
-                "y": 5
-            },
-            "color":{
-                "r": 0,
-                "g": 0,
-                "b": 0,
-                "a": 0
-            },
-            "pathImage": "images\\player2.png",
-            "isPassable": true,
-            "isInteractable": false
-        },
-        {
-            "name": "lol",
-            "tag": "basic",
-            "position": {
-                "x": 2,
-                "y": 2
-            },
-            "color":{
-                "r": 0,
-                "g": 0,
-                "b": 0,
-                "a": 0
-            },
-            "pathImage": "images\\player2.png",
-            "isPassable": false,
-            "isInteractable": false
-        },
-        {
-            "name": "lol",
-            "tag": "basic",
+            "name": "egress_door",
+            "tag": "door",
             "position": {
                 "x": 8,
-                "y": 5
+                "y": 7
             },
-            "color":{
-                "r": 0,
-                "g": 0,
-                "b": 0,
-                "a": 0
-            },
-            "pathImage": "images\\player2.png",
-            "isPassable": true,
-            "isInteractable": true
-        },
-        {
-            "name": "lol",
-            "tag": "basic",
-            "position": {
-                "x": 7,
-                "y": 5
-            },
-            "color":{
-                "r": 200,
-                "g": 200,
-                "b": 0,
-                "a": 128
-            },
-            "pathImage": "images\\player2.png",
-            "isPassable": true,
-            "isInteractable": false
+
+            "pathImage": "images\\pic_RIGHT_1.png",
+            "isOpen": false,
+            "isExit": true,
+            "message": "la porta sembra chiusa<br>  trova la chiave ...",
+            "open_door_path_image": "images\\pic_UP_1.png"
+
         },
         {
             "name": "lol",
@@ -158,37 +100,21 @@
             "pathImage": "images\\pic_UP_0.png",
             "brief": "le mie palle sono palle le tue palle anche sono palle però...<br>LE MIE PALLE SONO LE PALLE DEFINITIVE",
             "objects": [
+                
                 {
-                    "name": "lol1",
+                    "name": "collectable item",
                     "tag": "collectable",
                     "position": {
                         "x": 7,
                         "y": 5
                     },
-                    "color":{
-                        "r": 0,
-                        "g": 0,
-                        "b": 0,
-                        "a": 0
-                    },
                     "pathImage": "images\\player2.png"
                 },
+
                 {
-                    "name": "lo2",
-                    "tag": "basic",
-                    "position": {
-                        "x": 7,
-                        "y": 5
-                    },
-                    "color":{
-                        "r": 0,
-                        "g": 0,
-                        "b": 0,
-                        "a": 0
-                    },
-                    "pathImage": "images\\player2.png",
-                    "isPassable": true,
-                    "isInteractable": false
+                    "name": "key item",
+                    "tag": "key",
+                    "pathImage": "images\\player2.png"
                 },
                 {
                     "name": "lol3",

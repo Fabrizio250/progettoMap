@@ -132,6 +132,10 @@ public class Room implements Serializable{
             
             }else if (currentObj.getString("tag").equals("collectable")){
                 this.addObject( new CollectableObjectSquare(currentObj) );
+            
+            }else if (currentObj.getString("tag").equals("boss")){
+                this.addObject( new BossObjectSquare(currentObj));
+            
             }
             
             
