@@ -30,14 +30,28 @@
         "x": 3,
         "y": 3
     },
+    
     "objects" : [
+
+        {
+            "name": "keycoso",
+            "tag": "keypad",
+            "position": {
+                "x": 6,
+                "y": 2
+            },
+            "pathImage": "images\\pic_DOWN_2.png",
+            "goal_string": "12345",
+            "success_message": "complimenti hai sbloccato la porta",
+            "fail_message": "hahahaha fai schifo"
+        },
 
         {
             "name": "coso_rompibile",
             "tag": "breakable",
             "position": {
-                "x" : "3",
-                "y" : "3"
+                "x" : 3,
+                "y" : 3
             },
             "pathImage": "images\\player2.png",
             "breakable_with_obj_name": "cacciavite",

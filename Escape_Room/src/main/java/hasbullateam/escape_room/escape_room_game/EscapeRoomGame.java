@@ -2,6 +2,7 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.BattleShip;
+import hasbullateam.escape_room.Menu;
 import hasbullateam.escape_room.Tris;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
@@ -12,6 +13,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -48,6 +50,8 @@ public class EscapeRoomGame extends EscapeRoom{
     
     TextDialog dialog_generic = null;
     
+    NumericKeypadObjectSquare obj_numericKeypad = null;
+    NumericKeypadDialog numericKeyDialog = null;
     
     
      
@@ -89,10 +93,45 @@ public class EscapeRoomGame extends EscapeRoom{
             
         }
         
+        
+        if ( numericKeyDialog != null && obj_numericKeypad != null && this.dialog == null) {
+            if(numericKeyDialog.isExit()){
+                dialog_generic = new TextDialog(this);
+                if(numericKeyDialog.goalReached){
+                    
+                    dialog_generic.setText(obj_numericKeypad.successMessage);
+                    
+                    // apri la porta
+                    
+                    // setta obj_numericKeypad non interagibile
+                    
+                }else{
+                    dialog_generic.setText(obj_numericKeypad.failMessage);
+                }
+                this.dialog = dialog_generic;
+                obj_numericKeypad = null;
+                numericKeyDialog = null;
+            }
+        }
+        
+        
+        
         switch(this.cmd){
             
             // ------------------------------------------------------------------
             case Command.Invalid cmd_invalid -> {break;}
+            
+            case Command.Test lol -> {
+                
+                JDialog d = new JDialog();
+                d.add(new Menu());
+                
+                d.setVisible(true);
+                d.setSize(400,400);
+                d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                
+                break;
+            }
             
             case Command.Move cmd_move -> {
             
@@ -269,6 +308,17 @@ public class EscapeRoomGame extends EscapeRoom{
                             
                             
                             case null -> {break;}
+                            
+                            
+                            case NumericKeypadObjectSquare _numericKeypadObj -> {
+                                
+                                if(this.dialog == null && this.numericKeyDialog == null){
+                                    
+                                    numericKeyDialog = new NumericKeypadDialog(this, _numericKeypadObj.goalString);
+                                    obj_numericKeypad = _numericKeypadObj;
+                                }
+                                break;
+                            }
                             
                             case BreakableObjectSquare _breakableObj -> {
                                 
