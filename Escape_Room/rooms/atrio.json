@@ -1,0 +1,229 @@
+{
+    "name": "atrio",
+
+    "previous_room_path": "null",
+    "next_room_path": "rooms\\cucina.json",
+
+    "previous_room_name": "null",
+    "next_room_name": "cucina",
+
+    "backGroundPath": "images\\prigione.jpg",
+
+    "playerPathImageUP_0": "images\\pic_UP_0.png",
+    "playerPathImageDOWN_0": "images\\pic_DOWN_0.png",
+    "playerPathImageLEFT_0": "images\\pic_LEFT_0.png",
+    "playerPathImageRIGHT_0": "images\\pic_RIGHT_0.png",
+
+    "playerPathImageUP_1": "images\\pic_UP_1.png",
+    "playerPathImageDOWN_1": "images\\pic_DOWN_1.png",
+    "playerPathImageLEFT_1": "images\\pic_LEFT_1.png",
+    "playerPathImageRIGHT_1": "images\\pic_RIGHT_1.png",
+
+    "playerPathImageUP_2": "images\\pic_UP_2.png",
+    "playerPathImageDOWN_2": "images\\pic_DOWN_2.png",
+    "playerPathImageLEFT_2": "images\\pic_LEFT_2.png",
+    "playerPathImageRIGHT_2": "images\\pic_RIGHT_2.png",
+
+
+    "playerStartDirection": "DOWN",
+    "playerStartPosition": {
+        "x": 3,
+        "y": 3
+    },
+    
+    "objects" : [
+
+        {
+            "name": "keycoso",
+            "tag": "keypad",
+            "position": {
+                "x": 6,
+                "y": 2
+            },
+            "pathImage": "images\\pic_DOWN_2.png",
+            "goal_string": "12345",
+            "success_message": "complimenti hai sbloccato la porta",
+            "fail_message": "hahahaha fai schifo"
+        },
+
+        {
+            "name": "coso_rompibile",
+            "tag": "breakable",
+            "position": {
+                "x" : 3,
+                "y" : 3
+            },
+            "pathImage": "images\\player2.png",
+            "breakable_with_obj_name": "cacciavite",
+            "message" : "sembra che sto coso si possa rompere",
+            "broke_stage": [
+                {
+                    "message": " uanm si stc rumbenn 1",
+                    "path_image": "images\\pic_UP_2.png"
+                },
+                {
+                    "message": " uanm si stc rumbenn 2",
+                    "path_image": "images\\pic_DOWN_2.png"
+                },
+                {
+                    "message": " uanm si stc rumbenn 3",
+                    "path_image": "images\\pic_LEFT_2.png"
+                },
+                {
+                    "message": " uanm si stc rumbenn 4",
+                    "path_image": "images\\pic_RIGHT_2.png"
+                }
+            ]
+
+
+        },
+        
+        {
+            "name": "porta rotta",
+            "tag": "broken_door",
+            "position": {
+                "x": 4,
+                "y": 7
+            },
+            "pathImage": "images\\player2.png",
+            "broke_door_message": "u scem la porta è rotta aggiustala",
+            "fixed_door_message": "brv brv è aggiustt a port",
+            "fixable_with_name_object": "cacciavite",
+            "fixed_door": {
+                "name": "egress_door",
+                "tag": "door",
+                "position": {
+                    "x": 4,
+                    "y": 7
+                },
+
+                "pathImage": "images\\pic_RIGHT_1.png",
+                "isOpen": false,
+                "isExit": true,
+                "message": "la porta sembra chiusa<br>  trova la chiave ...",
+                "open_door_path_image": "images\\pic_UP_1.png"
+
+            }
+        },
+
+
+
+
+        {
+            "name": "uscem",
+            "tag": "boss",
+            "minigame": "BattleShip",
+            "entry_message": "ueeee u scem vu fa pesc e pesc",
+            "loser_message": "si nu fess",
+            "defeat_message": "oh zio pera mi hai sconfitto",
+            "pathImage": "images\\player2.png",
+            "position": {
+                "x": 9,
+                "y": 0
+            },
+            "defeat_position" : {
+                "x": 2,
+                "y": 4
+            }
+        },
+        {
+            "name": "cacciavite",
+            "tag": "collectable",
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "color":{
+                "r": 200,
+                "g": 200,
+                "b": 0,
+                "a": 128
+            },
+            "pathImage": "images\\player2.png",
+            "isPassable": true,
+            "isInteractable": false
+        },
+        {
+            "name": "egress_door",
+            "tag": "door",
+            "position": {
+                "x": 7,
+                "y": 7
+            },
+
+            "pathImage": "images\\pic_RIGHT_1.png",
+            "isOpen": true,
+            "isExit": true,
+            "message": "la porta sembra chiusa<br>  trova la chiave ...",
+            "closed_door_path_image": "images\\pic_UP_1.png"
+
+        },
+
+        {
+            "name": "egress_door",
+            "tag": "door",
+            "position": {
+                "x": 8,
+                "y": 7
+            },
+
+            "pathImage": "images\\pic_RIGHT_1.png",
+            "isOpen": false,
+            "isExit": true,
+            "message": "la porta sembra chiusa<br>  trova la chiave ...",
+            "open_door_path_image": "images\\pic_UP_1.png"
+
+        },
+        {
+            "name": "lol",
+            "tag": "container",
+            "position": {
+                "x": 8,
+                "y": 8
+            },
+            "pathImage": "images\\pic_UP_0.png",
+            "brief": "le mie palle sono palle le tue palle anche sono palle però...<br>LE MIE PALLE SONO LE PALLE DEFINITIVE",
+            "objects": [
+                
+                {
+                    "name": "collectable item",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 7,
+                        "y": 5
+                    },
+                    "pathImage": "images\\player2.png"
+                },
+
+                {
+                    "name": "key item",
+                    "tag": "key",
+                    "pathImage": "images\\player2.png"
+                },
+                {
+                    "name": "lol3",
+                    "tag": "basic",
+                    "position": {
+                        "x": 7,
+                        "y": 5
+                    },
+                    "color":{
+                        "r": 200,
+                        "g": 200,
+                        "b": 0,
+                        "a": 128
+                    },
+                    "pathImage": "images\\player2.png",
+                    "isPassable": true,
+                    "isInteractable": false
+                }
+
+            ]
+        }
+
+        
+
+
+
+    ]
+}

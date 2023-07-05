@@ -8,16 +8,56 @@ package hasbullateam.escape_room.type;
  *
  * @author giuse
  */
-public enum Command {
-    NONE,
+
+
+public interface Command{
     
-    MOVE_UP,
-    MOVE_DOWN,
-    MOVE_LEFT,
-    MOVE_RIGHT,
+    public enum Invalid implements Command{
+        NONE;
+    }
     
-    FACING_UP,
-    FACING_DOWN,
-    FACING_LEFT,
-    FACING_RIGHT;
+    public enum Move implements Command{
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT;
+    }
+    
+    public enum InventorySelection implements Command{
+        NONE,
+        SELECT_0,
+        SELECT_1,
+        SELECT_2,
+        SELECT_3,
+        SELECT_4,
+        SELECT_5,
+        SELECT_6,
+        SELECT_7,
+        SELECT_8,
+        SELECT_9;
+    }
+    
+    public enum Generic implements Command{
+        NONE,
+        ESC,
+        ENTER,
+        UP,
+        DOWN;
+    }
+    
+    public enum Test implements Command{
+        LOAD,
+        BACKUP,
+        MOD_ROOM,
+        SET_TEXT,
+        SET_TEXT_SIZE,
+        NEXT_ROOM,
+        PREVIOUS_ROOM;
+    }
+    
+    public enum Player implements Command{
+        INTERACT,
+        DROP_OBJECT;
+    }
 }
