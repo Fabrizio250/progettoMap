@@ -367,7 +367,17 @@ public class EscapeRoom extends GridPanel{
         this.setSquare(new SquarePanel(obj.position, obj.backgroundColor,obj.pathImage) );
     }
     
+    public void removeObjectSquare(ObjectSquare obj){
+        // rimuovi dalla room
+        this.room.removeObject(obj.position);
+        this.setSquare(new SquarePanel(obj.position));
+        
+    }
+    
     public void loadInventory(){
+            
+        this.inventory.refreshSelected();
+        
         // aggiungi gli item dell'inventario alla room
         for( ObjectSquare item: this.inventory.items ){
             this.room.addObject(item );
@@ -377,6 +387,8 @@ public class EscapeRoom extends GridPanel{
         for(SquarePanel panel: this.inventory.getItemPanels()){
             this.setSquare(panel);
         }
+        
+        
     }
     
   

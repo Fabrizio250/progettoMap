@@ -58,6 +58,10 @@ public class Inventory {
         
     }
     
+    public void refreshSelected(){
+        this.select(this.selected);
+    }
+    
     public void select(int n){
         itemPanels.get(this.selected).setBackground(DEFAULTCOLOR);
         this.selected = n;
@@ -81,10 +85,7 @@ public class Inventory {
                 
                 this.items.set(i, obj);
                 
-                SquarePanel _panel = this.itemPanels.get(i);
-                
-                _panel.setBackgroundImage(obj.pathImage);
-                _panel.setBackground(obj.backgroundColor);
+                this.itemPanels.set(i, new SquarePanel(obj.position, obj.backgroundColor, obj.pathImage));
                 
                 this.select(this.selected);
                 

@@ -200,19 +200,21 @@ public class EscapeRoomGame extends EscapeRoom{
                             // TODO: 
                             
                             if( dialog_collectable.getChoice().equals("sì") ){
-                                // rimuovi dalla room
-                                this.room.removeObject(obj_collectable.position);
-                                this.setSquare(new SquarePanel(obj_collectable.position));
+                                
 
                                 try {
                                     // metti nell'inventario
-                                    this.inventory.putObjectSquare(obj_collectable);
+                                    this.inventory.putObjectSquare(obj_collectable.clone());
+                                    loadInventory();
+                                    
+                                    this.removeObjectSquare(obj_collectable);
+                                    resetHighlightFObjcet();
 
                                 } catch (InventoryFullException ex) {
                                     System.out.println("inventario pieno");
                                 }
                                 
-                                loadInventory();
+                                
                             }
                             
                             obj_collectable = null;

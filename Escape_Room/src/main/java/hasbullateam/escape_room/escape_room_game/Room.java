@@ -168,7 +168,8 @@ public class Room implements Serializable{
     }
     
     public void removeObject(Cord cord){
-        this.objects.remove(cord);
+        //this.objects.remove(cord);
+        this.objects.remove(cord, this.objects.get(cord));
     }
     
     public ObjectSquare getFacingObject(){
