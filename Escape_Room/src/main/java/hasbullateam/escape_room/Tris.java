@@ -1,28 +1,43 @@
 package hasbullateam.escape_room;
 
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 public class Tris extends JPanel implements ActionListener {
     private final JButton[][] buttons;
-    private final JLabel playerWinsLabel;
+    private final JLabel player1WinsLabel;
+    private final JLabel player2WinsLabel;
     private final JLabel computerWinsLabel;
 
-    private int playerWins;
+    private int player1Wins;
+    private int player2Wins;
     private int computerWins;
     private boolean gameOver;
+    private boolean player1Turn;
+    private int modalitaScelta;
 
-    public Tris() {
+    public Tris(int modalitaScelta) {
         super();
+        this.modalitaScelta=modalitaScelta;
         buttons = new JButton[3][3];
-        playerWinsLabel = new JLabel("Giocatore: 0");
-        computerWinsLabel = new JLabel("Computer: 0");
+        player1WinsLabel = new JLabel();
+        player2WinsLabel = new JLabel();
+        computerWinsLabel = new JLabel();
 
-        playerWins = 0;
-        computerWins = 0;
+        if (modalitaScelta == 1) {
+            player1WinsLabel.setText("Giocatore 1: 0");
+            player2WinsLabel.setText("Giocatore 2: 0");
+            player1Wins = 0;
+            player2Wins = 0;
+            player1Turn = true;
+        } else if (modalitaScelta == 2) {
+            player1WinsLabel.setText("Giocatore: 0");
+            computerWinsLabel.setText("Computer: 0");
+            player1Wins = 0;
+            computerWins = 0;
+        }
         gameOver = false;
 
         JPanel gamePanel = new JPanel(new GridLayout(3, 3));
@@ -33,43 +48,57 @@ public class Tris extends JPanel implements ActionListener {
                 buttons[row][col].setFont(new Font(Font.SANS_SERIF, Font.BOLD, 80));
                 buttons[row][col].addActionListener(this);
                 gamePanel.add(buttons[row][col]);
-               
             }
         }
 
         JPanel scorePanel = new JPanel(new GridLayout(1, 2));
-        scorePanel.add(playerWinsLabel);
-        scorePanel.add(computerWinsLabel);
-        scorePanel.setPreferredSize(new Dimension(100,150));
-        Font font = playerWinsLabel.getFont();
-        Font nuovaDimensione = font.deriveFont(font.getSize() + 10f); // Aggiungi 10 punti alla dimensione corrente
-        playerWinsLabel.setFont(nuovaDimensione);
-         font= computerWinsLabel.getFont();
-         nuovaDimensione = font.deriveFont(font.getSize() + 10f); // Aggiungi 10 punti alla dimensione corrente
-        computerWinsLabel.setFont(nuovaDimensione);
+        if (modalitaScelta == 1) {
+            setWinsLabels(player1WinsLabel, player2WinsLabel, scorePanel);
+        } else if (modalitaScelta == 2) {
+            setWinsLabels(player1WinsLabel, computerWinsLabel, scorePanel);
+        }
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(gamePanel, BorderLayout.CENTER);
         mainPanel.add(scorePanel, BorderLayout.SOUTH);
         this.add(mainPanel);
         setVisible(true);
-        
     }
-
     public void actionPerformed(ActionEvent e) {
         JButton clickedButton = (JButton) e.getSource();
-
+        if(modalitaScelta == 1){
         if (clickedButton.getText().equals("") && !gameOver) {
-            clickedButton.setText("X");
+            if (player1Turn) {
+                clickedButton.setText("X");
+                player1Turn = false;
+            } else {
+                clickedButton.setText("O");
+                player1Turn = true;
+            }
 
-            if (checkWin("X")) {
-                playerWins++;
-                JOptionPane.showMessageDialog(this,"Vittoria del giocatore");
-                playerWinsLabel.setText("Giocatore: " + playerWins);
+           if(checkWin("X")) {
+                player1Wins++;
+                JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 1");
+                player1WinsLabel.setText("Giocatore 1: " + player1Wins);
 
-                if (playerWins == 3) {
+                if (player1Wins == 3) {
                     gameOver = true;
                     JOptionPane.showMessageDialog(this, "Hai vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                    System.exit(0);
+                }
+
+                resetGame();
+                return;
+            }
+
+            if (checkWin("O")) {
+                player2Wins++;
+                JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 2");
+                player2WinsLabel.setText("Giocatore 2: " + player2Wins);
+
+                if (player2Wins == 3) {
+                    gameOver = true;
+                    JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 2! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
                     System.exit(0);
                 }
 
@@ -81,33 +110,71 @@ public class Tris extends JPanel implements ActionListener {
                 resetGame();
                 return;
             }
+        }
+     }
 
-            computerMove();
-            if (checkWin("O")) {
-                computerWins++;
-                  JOptionPane.showMessageDialog(this,"Vittoria dell' avversario");
-                computerWinsLabel.setText("Computer: " + computerWins);
+        else if (modalitaScelta == 2 ) {
+           
+            
+             if (clickedButton.getText().equals("")  && !gameOver) {
+                clickedButton.setText("X");
+            
 
-                if (computerWins == 3) {
+           if(checkWin("X")) {
+                player1Wins++;
+                JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 1");
+                player1WinsLabel.setText("Giocatore 1: " + player1Wins);
+
+                if (player1Wins == 3) {
                     gameOver = true;
-                    JOptionPane.showMessageDialog(this, "Il computer ha vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Hai vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
                     System.exit(0);
                 }
 
                 resetGame();
+                return;
+                
             }
-        }
-    }
+           
+           if (checkTie()) {
+                      resetGame();
+                      return;
+                    }
+        
+                computerMove();
+                if (checkWin("O")) {
+                    computerWins++;
+                    JOptionPane.showMessageDialog(this, "Vittoria del Computer");
+                    computerWinsLabel.setText("Computer: " + computerWins);
 
-    private void computerMove() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                if (buttons[row][col].getText().equals("")) {
-                    buttons[row][col].setText("O");
-                    return;
+                    if (computerWins == 3) {
+                        gameOver = true;
+                        JOptionPane.showMessageDialog(this, "Il computer ha vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                        System.exit(0);
+                    }
+
+                    resetGame();
+                    
+                    if (checkTie()) {
+                      resetGame();
+                      return;
+                    }
                 }
             }
         }
+    }
+    
+
+    private void computerMove() {
+        Random random = new Random();
+        int row, col;
+        do {
+            row = random.nextInt(3);
+            col = random.nextInt(3);
+        } while (!buttons[row][col].getText().equals(""));
+
+        buttons[row][col].setText("O");
+        player1Turn = true;
     }
 
     private boolean checkWin(String symbol) {
@@ -144,7 +211,7 @@ public class Tris extends JPanel implements ActionListener {
 
         return false;
     }
-//risoluzione caso di pareggio
+
     private boolean checkTie() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
@@ -166,10 +233,15 @@ public class Tris extends JPanel implements ActionListener {
         }
     }
 
-  
-   
-
-   
-
-   
+    private void setWinsLabels(JLabel label1, JLabel label2, JPanel scorePanel) {
+        scorePanel.add(label1);
+        scorePanel.add(label2);
+        scorePanel.setPreferredSize(new Dimension(100, 150));
+        Font font = label1.getFont();
+        Font nuovaDimensione = font.deriveFont(font.getSize() + 10f);
+        label1.setFont(nuovaDimensione);
+        font = label2.getFont();
+        nuovaDimensione = font.deriveFont(font.getSize()+ 10f);
+        label2.setFont(nuovaDimensione);
+    }
 }
