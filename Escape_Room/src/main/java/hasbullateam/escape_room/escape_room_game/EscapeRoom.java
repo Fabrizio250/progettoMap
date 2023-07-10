@@ -112,7 +112,15 @@ public class EscapeRoom extends GridPanel{
     }
     
     
-    
+    public void changePanel(JPanel newPanel){
+        JFrame frame = (JFrame) this.getTopLevelAncestor();
+        removeKeyListener(this.getKeyListeners()[0]);
+        frame.setContentPane(newPanel);
+        frame.revalidate();
+        frame.repaint();
+        this.loopThread.interrupt();
+        this.loopThread = null;
+    }
     
     
     public void refresh(){
@@ -135,11 +143,11 @@ public class EscapeRoom extends GridPanel{
             HighlightFacingObjectManger.facingObj = facingObj;
         }
         
-        public void reset(){
-            this.selectedObj = false;
-            this.previousBackground = this.selectedBackground;
-            this.facingObj = null;
-            this.previousObject = null;
+        public static void reset(){
+            HighlightFacingObjectManger.selectedObj = false;
+            HighlightFacingObjectManger.previousBackground = selectedBackground;
+            HighlightFacingObjectManger.facingObj = null;
+            HighlightFacingObjectManger.previousObject = null;
         }
         
         public void setPreviousObject(ObjectSquare prevObj){
@@ -205,8 +213,9 @@ public class EscapeRoom extends GridPanel{
     }
     
     public void resetHighlightFObjcet(){
-        HighlightFacingObjectManger h = new HighlightFacingObjectManger();
-        h.reset();
+        //HighlightFacingObjectManger h = new HighlightFacingObjectManger();
+        //h.reset();
+        HighlightFacingObjectManger.reset();
     }
     
     
@@ -493,13 +502,6 @@ public class EscapeRoom extends GridPanel{
            
     }
     
-    
-    public void changePanel(JPanel panel){
-        JFrame frame = (JFrame) this.getTopLevelAncestor();
-        frame.setContentPane(panel);
-        frame.revalidate();
-        frame.repaint();
-    }
     
     
     public class KeyboardInput implements KeyListener{

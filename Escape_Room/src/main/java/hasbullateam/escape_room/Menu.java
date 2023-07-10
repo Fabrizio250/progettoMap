@@ -7,10 +7,10 @@ package hasbullateam.escape_room;
  */
 public class Menu extends javax.swing.JPanel {
 
-    Runnable gotoEscapeRoom;
-    Runnable gotoBattleShip;
-    Runnable gotoPingPong;
-    Runnable gotoTris;
+    static Runnable gotoEscapeRoom;
+    static Runnable gotoBattleShip;
+    static Runnable gotoPingPong;
+    static Runnable gotoTris;
     
     private boolean isShowedMinigameButton = false;
     
@@ -33,19 +33,19 @@ public class Menu extends javax.swing.JPanel {
     
     
     public void setGotoEscapeRoom(Runnable gotoEscapeRoom){
-        this.gotoEscapeRoom = gotoEscapeRoom;
+        Menu.gotoEscapeRoom = gotoEscapeRoom;
     }
     
     public void setGotoBattleShip(Runnable gotoBattleShip){
-        this.gotoBattleShip = gotoBattleShip;
+        Menu.gotoBattleShip = gotoBattleShip;
     }
     
     public void setGotoTris(Runnable gotoTris){
-        this.gotoTris = gotoTris;
+        Menu.gotoTris = gotoTris;
     }
     
     public void setGotoPingPong(Runnable gotoPingPong){
-        this.gotoPingPong = gotoPingPong;
+        Menu.gotoPingPong = gotoPingPong;
     }
 
     /**
