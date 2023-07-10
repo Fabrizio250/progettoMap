@@ -14,9 +14,9 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>unknown.binary</groupId>
+            <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
-            <version>SNAPSHOT</version>
+            <version>RELEASE180</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

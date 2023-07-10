@@ -1,33 +1,47 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package com.mycompany.minigame;
 
-import Database.DbEscapeRoom;
-import PingPong.GameFrame;
+package hasbullateam.escape_room;
+
+
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
  * @author gioel
  */
-public class MiniGameFrame extends javax.swing.JFrame {
+public class TabbedMenu extends JPanel {
+    
+    static Runnable gotoEscapeRoom;
+    static Runnable gotoMorraCinese;
+    static Runnable gotoPingPong;
+    static Runnable gotoTris;
     
     private String loggedUser = "null";  //contiene il nome utente dell' utente loggato
     
-   private GameFrame gamePong;
-    /**
-     * Creates new form MiniGameFrame
-     */
-    public MiniGameFrame() {
+    public TabbedMenu() {
         initComponents();
         init(); 
     }
     
+    public void setGotoEscapeRoom(Runnable gotoEscapeRoom){
+        TabbedMenu.gotoEscapeRoom = gotoEscapeRoom;
+    }
+    
+    public void setGotoMorraCinese(Runnable gotoMorraCinese){
+        TabbedMenu.gotoMorraCinese = gotoMorraCinese;
+    }
+    
+    public void setGotoTris(Runnable gotoTris){
+        TabbedMenu.gotoTris = gotoTris;
+    }
+    
+    public void setGotoPingPong(Runnable gotoPingPong){
+        TabbedMenu.gotoPingPong = gotoPingPong;
+    }
+    
     private void init(){
         DbEscapeRoom.createTable();
-        this.setLocationRelativeTo(null);
+       
         tabbedPanel.setSelectedIndex(5);
     }
 
@@ -252,9 +266,8 @@ public class MiniGameFrame extends javax.swing.JFrame {
                 .addComponent(jButton14)
                 .addContainerGap(35, Short.MAX_VALUE))
         );
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        
+        this.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelMenu.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -463,18 +476,24 @@ public class MiniGameFrame extends javax.swing.JFrame {
         jButton3.setText("1 VS 1");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                 buttonPingPong1vs1(evt);
             }
         });
 
         jButton4.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton4.setText("1 VS ONLINE_PLAYER");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                 buttonPingPong1vsOnline(evt);
+            }
+        });
+        
 
         jButton5.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton5.setText("1 VS CPU");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                 buttonPingPong1vsPC(evt);
             }
         });
 
@@ -537,17 +556,30 @@ public class MiniGameFrame extends javax.swing.JFrame {
 
         jButton6.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton6.setText("1 VS ONLINE_PLAYER");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                   buttonTris1vsOnline(evt);
+            }
+        });
+        
 
         jButton8.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton8.setText("1 VS 1");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                   buttonTris1vs1(evt);
+            }
+        });
 
         jButton9.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton9.setText("1 VS CPU");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                   buttonTris1vsPC(evt);
             }
         });
+        
+
 
         buttonBack3.setBackground(new java.awt.Color(204, 0, 0));
         buttonBack3.setFont(new java.awt.Font("STCaiyun", 0, 12)); // NOI18N
@@ -607,15 +639,26 @@ public class MiniGameFrame extends javax.swing.JFrame {
 
         jButton10.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton10.setText("1 VS ONLINE_PLAYER");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMorraCinese1vsOnline(evt);
+            }
+        });
+        
 
         jButton11.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton11.setText("1 VS 1");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMorraCinese1vs1(evt);
+            }
+        });
 
         jButton12.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton12.setText("1 VS CPU");
         jButton12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
+                buttonMorraCinese1vsPC(evt);
             }
         });
 
@@ -1189,9 +1232,10 @@ public class MiniGameFrame extends javax.swing.JFrame {
 
         tabbedPanel.addTab("tab7", panelStatsMiniGame);
 
-        getContentPane().add(tabbedPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -38, 640, 400));
-
-        pack();
+        this.add(tabbedPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -38, 640, 400));
+    
+        
+    
     }// </editor-fold>                        
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -1287,9 +1331,7 @@ public class MiniGameFrame extends javax.swing.JFrame {
         tabbedPanel.setSelectedIndex(1);
     }                                              
 
-    private void buttonStoriaActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
-    }                                            
+                                          
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
@@ -1344,42 +1386,48 @@ public class MiniGameFrame extends javax.swing.JFrame {
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
         tabbedPanel.setSelectedIndex(1);
-    }                                         
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MiniGameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MiniGameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MiniGameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MiniGameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MiniGameFrame().setVisible(true);
-            }
-        });
+    }  
+    
+    /**buttonSTORIA**/
+    private void buttonStoriaActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        gotoEscapeRoom.run();
+    }  
+    /**button Ping Pong 1 vs 1**/
+    private void buttonPingPong1vs1(java.awt.event.ActionEvent evt){
     }
+    
+    /**button Ping Pong 1 vs online**/
+    private void buttonPingPong1vsOnline(java.awt.event.ActionEvent evt){
+    }
+    
+    /**button Ping Pong 1 vs PC**/
+    private void buttonPingPong1vsPC(java.awt.event.ActionEvent evt){
+    }
+    
+    /**button Tris 1 vs 1**/
+    private void buttonTris1vs1(java.awt.event.ActionEvent evt){
+    }
+    
+    /**button Tris 1 vs online**/
+    private void buttonTris1vsOnline(java.awt.event.ActionEvent evt){
+    }
+    
+    /**button Tris 1 vs PC**/
+    private void buttonTris1vsPC(java.awt.event.ActionEvent evt){
+    }
+    
+    /**button Morra Cinese 1 vs 1 **/
+    private void buttonMorraCinese1vs1(java.awt.event.ActionEvent evt){
+    }
+    
+    /**button Morra Cinese 1 vs online **/
+    private void buttonMorraCinese1vsOnline(java.awt.event.ActionEvent evt){
+    }
+    
+    /**button Morra Cinese 1 vs PC **/
+    private void buttonMorraCinese1vsPC(java.awt.event.ActionEvent evt){
+    }
+    
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton buttonBack1;
@@ -1505,3 +1553,4 @@ public class MiniGameFrame extends javax.swing.JFrame {
     // End of variables declaration                   
   
 }
+

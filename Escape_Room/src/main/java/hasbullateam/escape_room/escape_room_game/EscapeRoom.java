@@ -50,6 +50,7 @@ import org.json.*;
 
 public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
+    static final int WINDOW_SIZE = 800;
     public PlayerSquarePanel player;
     public Room room;
     TextDialog dialog;
@@ -65,6 +66,7 @@ public class EscapeRoom extends GridPanel{
     
     public EscapeRoom() {
         super(GRID_SIZE);
+        
         
         this.addKeyListener(new KeyboardInput());
         resetBackupFile();
@@ -120,6 +122,13 @@ public class EscapeRoom extends GridPanel{
         frame.repaint();
         this.loopThread.interrupt();
         this.loopThread = null;
+    }
+    
+    public void setWindowSize(){
+        JFrame frame = (JFrame) this.getTopLevelAncestor();
+        frame.setSize(WINDOW_SIZE,WINDOW_SIZE);
+        frame.revalidate();
+        frame.repaint();
     }
     
     

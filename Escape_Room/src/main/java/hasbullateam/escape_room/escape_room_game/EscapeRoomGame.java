@@ -49,13 +49,12 @@ public class EscapeRoomGame extends EscapeRoom{
 
     public EscapeRoomGame() {
         super();
+        
         SwingUtilities.invokeLater( ()-> {
-            
+            this.setWindowSize();
             // carica la prima stanza ed il player
             this.loadRoomFromJSON("rooms\\atrio.json");
             this.refresh();
-            
-            
             startGame(); 
         });
     }
