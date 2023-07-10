@@ -62,7 +62,6 @@ public class EscapeRoomGame extends EscapeRoom{
     
     @Override
     public void gameLoop(){
-        System.out.println("aeee");
         
         highlightFacingObject();
         
