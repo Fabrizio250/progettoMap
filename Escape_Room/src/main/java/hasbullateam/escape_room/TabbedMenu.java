@@ -1388,11 +1388,12 @@ public class TabbedMenu extends JPanel {
         String newpassword = new String(passwordRPDialog.getPassword());
         if ( username.length() < 4  || username.length() > 10 || newpassword.length() < 4  || newpassword.length() > 10){
             JOptionPane.showMessageDialog(this, "username e password devono essere compresi fra 4 e 10 caratteri", "MODIFY_PASSWORD_ERROR",JOptionPane.ERROR_MESSAGE);
-       }
-       if(DbEscapeRoom.userExists(username)){          
-            if (DbEscapeRoom.modifyUserPassword(username, newpassword)){
-                JOptionPane.showMessageDialog(this, "Password modificata!", "MODIFY_PASSWORD_OK",JOptionPane.INFORMATION_MESSAGE);
-                reimpostaPasswordDialog.setVisible(false);
+       }else{
+            if(DbEscapeRoom.userExists(username)){
+                if (DbEscapeRoom.modifyUserPassword(username, newpassword)){
+                    JOptionPane.showMessageDialog(this, "Password modificata!", "MODIFY_PASSWORD_OK",JOptionPane.INFORMATION_MESSAGE);
+                    reimpostaPasswordDialog.setVisible(false);
+                }
             }
         }
     }                                         
