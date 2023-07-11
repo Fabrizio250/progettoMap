@@ -1,10 +1,7 @@
 
 package hasbullateam.escape_room;
 
-import java.awt.Dimension;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  *
@@ -21,7 +18,7 @@ public class MainFrame extends JFrame{
         setVisible(true);
         setFocusable(true);
         
-        new GameEngine( (JPanel p) -> {
+        new GameEngine((JPanel p) -> {
             setContentPane(p);
             revalidate();
             pack();

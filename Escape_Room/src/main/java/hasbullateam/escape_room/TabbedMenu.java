@@ -2,8 +2,16 @@
 package hasbullateam.escape_room;
 
 
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -54,6 +62,7 @@ public class TabbedMenu extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
+        docButton = new javax.swing.JButton();
         registerDialog = new javax.swing.JDialog();
         passwordRegisterDialog = new javax.swing.JPasswordField();
         usernameRegisterDialog = new javax.swing.JTextField();
@@ -296,7 +305,7 @@ public class TabbedMenu extends JPanel {
         jLabel5.setFont(new java.awt.Font("STCaiyun", 0, 48)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("    Escape Room");
+        jLabel5.setText("Escape Room");
         jLabel5.setOpaque(true);
 
         jLabel6.setFont(new java.awt.Font("STCaiyun", 0, 18)); // NOI18N
@@ -321,6 +330,16 @@ public class TabbedMenu extends JPanel {
         usernameLable.setForeground(new java.awt.Color(255, 255, 255));
         usernameLable.setText("null");
 
+        docButton.setBackground(new java.awt.Color(0, 102, 0));
+        docButton.setFont(new java.awt.Font("STCaiyun", 0, 12)); // NOI18N
+        docButton.setForeground(new java.awt.Color(255, 255, 255));
+        docButton.setText("Documentazione");
+        docButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                docButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
         panelMenu.setLayout(panelMenuLayout);
         panelMenuLayout.setHorizontalGroup(
@@ -333,12 +352,16 @@ public class TabbedMenu extends JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(usernameLable))
                     .addComponent(jButton13))
-                .addGap(20, 20, 20)
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(buttonStoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(buttonMiniGame, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+                    .addGap(84, 84, 84)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelMenuLayout.createSequentialGroup()
+                                    .addComponent(docButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addContainerGap())))
+                    .addComponent(buttonStoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonMiniGame, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
         );
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -357,6 +380,9 @@ public class TabbedMenu extends JPanel {
                                 .addComponent(jButton13)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(panelMenuLayout.createSequentialGroup()
+                            .addGap(15, 15, 15)
+                            .addComponent(docButton, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6)
                         .addGap(31, 31, 31)))
                 .addComponent(buttonStoria, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -383,7 +409,7 @@ public class TabbedMenu extends JPanel {
         jLabel4.setFont(new java.awt.Font("STCaiyun", 0, 48)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setText("             Mini Game");
+        jLabel4.setText("          Mini Game");
         jLabel4.setOpaque(true);
 
         buttonPingPong.setBackground(new java.awt.Color(153, 153, 255));
@@ -469,7 +495,7 @@ public class TabbedMenu extends JPanel {
         jLabel1.setFont(new java.awt.Font("STCaiyun", 0, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("            Ping Pong");
+        jLabel1.setText("           Ping Pong");
         jLabel1.setOpaque(true);
 
         jButton3.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
@@ -552,7 +578,7 @@ public class TabbedMenu extends JPanel {
         jLabel2.setFont(new java.awt.Font("STCaiyun", 0, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("                  Tris");
+        jLabel2.setText("                Tris");
 
         jButton6.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton6.setText("1 VS ONLINE_PLAYER");
@@ -635,7 +661,7 @@ public class TabbedMenu extends JPanel {
         jLabel3.setFont(new java.awt.Font("STCaiyun", 0, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel3.setText("          Morra Cinese");
+        jLabel3.setText("        Morra Cinese");
 
         jButton10.setFont(new java.awt.Font("STCaiyun", 0, 24)); // NOI18N
         jButton10.setText("1 VS ONLINE_PLAYER");
@@ -1427,6 +1453,57 @@ public class TabbedMenu extends JPanel {
     /**button Morra Cinese 1 vs PC **/
     private void buttonMorraCinese1vsPC(java.awt.event.ActionEvent evt){
     }
+
+    /**buttonDocumentation**/
+    private void docButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        //if (ServerDoc.IS_UP){
+        getDoc();
+        //}else{
+        //  JOptionPane.showMessageDialog(this, "La richiesta non può essere inoltrata perchè il server è in down!", "SERVER_DOWN",JOptionPane.ERROR_MESSAGE);
+        //}
+    }
+
+    private void getDoc(){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("http://localhost:4321");
+
+        Response response = target.path("documentation/download").request("application/pdf").get();
+
+        if (response.getStatus() == 200) {
+            // Ottieni l'input stream dalla risposta
+            InputStream inputStream = response.readEntity(InputStream.class);
+            // Crea un file locale
+            File file = new File("src\\main\\java\\hasbullateam\\escape_room\\REST\\downloadedDoc\\downloadedDoc.pdf");
+
+            try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                // Leggi i dati dall'input stream e scrivi nel file
+                int bytesRead;
+                byte[] buffer = new byte[4096];
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Apri il file utilizzando un'applicazione esterna
+            try {
+                Desktop.getDesktop().open(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // La chiamata non ha avuto successo
+            System.out.println("Error!!!");
+            JOptionPane.showMessageDialog(this, "Errore in chiamata o server in down!", "SERVER_ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+
+
+        // Chiudi la risposta e il client
+        response.close();
+        client.close();
+    }
     
 
     // Variables declaration - do not modify                     
@@ -1550,6 +1627,7 @@ public class TabbedMenu extends JPanel {
     private javax.swing.JLabel usernameLable;
     private javax.swing.JTextField usernameRPDialog;
     private javax.swing.JTextField usernameRegisterDialog;
+    private javax.swing.JButton docButton;
     // End of variables declaration                   
   
 }
