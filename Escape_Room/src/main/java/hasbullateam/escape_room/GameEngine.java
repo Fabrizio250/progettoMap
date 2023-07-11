@@ -2,10 +2,10 @@
 package hasbullateam.escape_room;
 
 
-import hasbullateam.escape_room.escape_room_game.EscapeRoom;
 import hasbullateam.escape_room.escape_room_game.EscapeRoomGame;
+
+import javax.swing.*;
 import java.util.function.Consumer;
-import javax.swing.JPanel;
 
 /**
  *
@@ -14,16 +14,19 @@ import javax.swing.JPanel;
 public class GameEngine{
     
     public GameEngine( Consumer<JPanel> setPanel ){
+
         
-        Menu menu = new Menu();
+
+        
+        TabbedMenu menu = new TabbedMenu();
         
         menu.setGotoEscapeRoom( () -> { setPanel.accept(new EscapeRoomGame()); }  );
-        menu.setGotoBattleShip( () -> { setPanel.accept(new BattleShip()); }  );
-        menu.setGotoTris(       () -> { setPanel.accept(new Tris()); }        );
-        menu.setGotoPingPong(   () -> { setPanel.accept(new PingPong()); }    );
+        menu.setGotoMorraCinese(() -> { setPanel.accept(new BattleShip()); }  );
+        //menu.setGotoTris(       () -> { setPanel.accept(new Tris()); }        );
+        //menu.setGotoPingPong(   () -> { setPanel.accept(new PingPong()); }    );
         
         
-        setPanel.accept( menu );
+        setPanel.accept(menu);
         
     }
     

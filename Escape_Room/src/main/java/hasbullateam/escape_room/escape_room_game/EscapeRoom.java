@@ -1,15 +1,11 @@
 
 package hasbullateam.escape_room.escape_room_game;
 
-import hasbullateam.escape_room.Tris;
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.Direction;
 import hasbullateam.escape_room.type.RoomNotFoundException;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.EOFException;
@@ -17,23 +13,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.json.*;
@@ -50,6 +37,7 @@ import org.json.*;
 
 public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
+    static final int WINDOW_SIZE = 800;
     public PlayerSquarePanel player;
     public Room room;
     TextDialog dialog;
@@ -65,6 +53,7 @@ public class EscapeRoom extends GridPanel{
     
     public EscapeRoom() {
         super(GRID_SIZE);
+        
         
         this.addKeyListener(new KeyboardInput());
         resetBackupFile();
@@ -112,7 +101,23 @@ public class EscapeRoom extends GridPanel{
     }
     
     
+    public void changePanel(JPanel newPanel){
+        JFrame frame = (JFrame) this.getTopLevelAncestor();
+        removeKeyListener(this.getKeyListeners()[0]);
+        frame.setContentPane(newPanel);
+        frame.pack();
+        frame.revalidate();
+        frame.repaint();
+        this.loopThread.interrupt();
+        this.loopThread = null;
+    }
     
+    public void setWindowSize(){
+        JFrame frame = (JFrame) this.getTopLevelAncestor();
+        frame.setSize(WINDOW_SIZE,WINDOW_SIZE);
+        frame.revalidate();
+        frame.repaint();
+    }
     
     
     public void refresh(){
@@ -135,11 +140,11 @@ public class EscapeRoom extends GridPanel{
             HighlightFacingObjectManger.facingObj = facingObj;
         }
         
-        public void reset(){
-            this.selectedObj = false;
-            this.previousBackground = this.selectedBackground;
-            this.facingObj = null;
-            this.previousObject = null;
+        public static void reset(){
+            HighlightFacingObjectManger.selectedObj = false;
+            HighlightFacingObjectManger.previousBackground = selectedBackground;
+            HighlightFacingObjectManger.facingObj = null;
+            HighlightFacingObjectManger.previousObject = null;
         }
         
         public void setPreviousObject(ObjectSquare prevObj){
@@ -205,8 +210,9 @@ public class EscapeRoom extends GridPanel{
     }
     
     public void resetHighlightFObjcet(){
-        HighlightFacingObjectManger h = new HighlightFacingObjectManger();
-        h.reset();
+        //HighlightFacingObjectManger h = new HighlightFacingObjectManger();
+        //h.reset();
+        HighlightFacingObjectManger.reset();
     }
     
     
@@ -367,7 +373,17 @@ public class EscapeRoom extends GridPanel{
         this.setSquare(new SquarePanel(obj.position, obj.backgroundColor,obj.pathImage) );
     }
     
+    public void removeObjectSquare(ObjectSquare obj){
+        // rimuovi dalla room
+        this.room.removeObject(obj.position);
+        this.setSquare(new SquarePanel(obj.position));
+        
+    }
+    
     public void loadInventory(){
+            
+        this.inventory.refreshSelected();
+        
         // aggiungi gli item dell'inventario alla room
         for( ObjectSquare item: this.inventory.items ){
             this.room.addObject(item );
@@ -377,6 +393,8 @@ public class EscapeRoom extends GridPanel{
         for(SquarePanel panel: this.inventory.getItemPanels()){
             this.setSquare(panel);
         }
+        
+        
     }
     
   
@@ -481,13 +499,6 @@ public class EscapeRoom extends GridPanel{
            
     }
     
-    
-    public void changePanel(JPanel panel){
-        JFrame frame = (JFrame) this.getTopLevelAncestor();
-        frame.setContentPane(panel);
-        frame.revalidate();
-        frame.repaint();
-    }
     
     
     public class KeyboardInput implements KeyListener{

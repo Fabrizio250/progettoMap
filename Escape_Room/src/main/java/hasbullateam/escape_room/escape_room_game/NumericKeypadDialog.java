@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -48,6 +50,16 @@ public class NumericKeypadDialog {
         
         dialog = new JDialog(this.frame, true);
         this.dialog.setSize(600,600);
+        
+        
+        this.dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.dialog.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosed(WindowEvent e) {
+                NumericKeypadDialog.this.exit = true;
+            }
+            
+        });
         
 
         this.keypadPanel = new NumericKeypadPanel(maxDigit, 
