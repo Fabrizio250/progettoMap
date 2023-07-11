@@ -3,6 +3,7 @@ package hasbullateam.escape_room.escape_room_game;
 
 
 import hasbullateam.escape_room.Menu;
+import hasbullateam.escape_room.TabbedMenu;
 
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
@@ -188,7 +189,7 @@ public class EscapeRoomGame extends EscapeRoom{
                             if(dialog_backToMenu.getChoice().equals("sì")){
                                 removeAllDialog();
                                 resetHighlightFObjcet();
-                                changePanel(new Menu());
+                                changePanel(new TabbedMenu());
                                 
                             }
                             removeAllDialog();

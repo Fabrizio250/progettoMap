@@ -118,6 +118,7 @@ public class EscapeRoom extends GridPanel{
         JFrame frame = (JFrame) this.getTopLevelAncestor();
         removeKeyListener(this.getKeyListeners()[0]);
         frame.setContentPane(newPanel);
+        frame.pack();
         frame.revalidate();
         frame.repaint();
         this.loopThread.interrupt();
