@@ -1,5 +1,6 @@
 hasbullateam\escape_room\type\Command$Generic.class
 hasbullateam\escape_room\escape_room_game\TextDialog$1.class
+hasbullateam\escape_room\REST\Service\DocService.class
 hasbullateam\escape_room\escape_room_game\BrokenDoorObjectSquare.class
 hasbullateam\escape_room\escape_room_game\EscapeRoomGame$1.class
 hasbullateam\escape_room\TabbedMenu$14.class
@@ -11,6 +12,7 @@ hasbullateam\escape_room\escape_room_game\TextDialog.class
 hasbullateam\escape_room\Menu$5.class
 hasbullateam\escape_room\TabbedMenu$9.class
 hasbullateam\escape_room\escape_room_game\ObjectSquare.class
+hasbullateam\escape_room\REST\ServerDoc.class
 hasbullateam\escape_room\type\Command$Invalid.class
 hasbullateam\escape_room\Menu$2.class
 hasbullateam\escape_room\TabbedMenu$17.class
@@ -65,6 +67,7 @@ hasbullateam\escape_room\GameEngine.class
 hasbullateam\escape_room\type\Command$InventorySelection.class
 hasbullateam\escape_room\TabbedMenu$7.class
 hasbullateam\escape_room\TabbedMenu$13.class
+hasbullateam\escape_room\TabbedMenu$28.class
 hasbullateam\escape_room\BattleShip$1.class
 hasbullateam\escape_room\Menu$1.class
 hasbullateam\escape_room\type\Command$Move.class
