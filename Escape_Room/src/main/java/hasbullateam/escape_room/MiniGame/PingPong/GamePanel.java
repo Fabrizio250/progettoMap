@@ -1,4 +1,4 @@
-package PingPong;
+package hasbullateam.escape_room.MiniGame.PingPong;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,6 +38,8 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
+    
+    
 
     public void newBall(){
         random = new Random();

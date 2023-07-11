@@ -6,15 +6,43 @@
   <component name="ChangeListManager">
     <list default="true" id="5ecc5a4f-1cd6-4e0d-9b9e-646adeb1b38b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/data/dbEscapeRoom.mv.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/data/dbEscapeRoom.trace.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/Database/DbEscapeRoom.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/Documentatio/DocumentationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/PingPong/Ball.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/PingPong/GameFrame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/PingPong/GamePanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/PingPong/Paddle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/PingPong/PongGame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/PingPong/Score.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/com/mycompany/minigame/MiniGameFrame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MiniGame/src/main/java/img/PingPong.PNG" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/data/dbEscapeRoom.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/dbEscapeRoom.mv.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/TabbedMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/TabbedMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/GameEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/PingPong.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/Tris.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/escape_room_game/BossObjectSquare.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/escape_room_game/BossObjectSquare.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/escape_room_game/EscapeRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hasbullateam/escape_room/escape_room_game/EscapeRoom.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -56,18 +84,34 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\gioel\Desktop\progettoMap\Escape_Room\src\main\java\hasbullateam\escape_room\REST\Service" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\gioel\Desktop\progettoMap\Escape_Room\src\main\java\hasbullateam\escape_room\MiniGame" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="hasbullateam.escape_room.REST.Service" />
       <recent name="hasbullateam.escape_room.REST" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainFrame">
+  <component name="RunManager" selected="Application.PongGame">
     <configuration name="MainFrame" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="hasbullateam.escape_room.MainFrame" />
       <module name="Escape_Room" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="hasbullateam.escape_room.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PongGame" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="hasbullateam.escape_room.MiniGame.PingPong.PongGame" />
+      <module name="Escape_Room" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hasbullateam.escape_room.MiniGame.PingPong.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -90,6 +134,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.PongGame" />
         <item itemvalue="Application.MainFrame" />
         <item itemvalue="Application.ServerDoc" />
       </list>

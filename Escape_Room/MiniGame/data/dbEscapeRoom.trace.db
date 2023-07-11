@@ -1,9 +1,0 @@
-2023-07-08 17:05:01 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER" not found; SQL statement:
-SELECT* from user where username = ?  [42102-200]
-2023-07-08 17:05:02 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USER" not found; SQL statement:
-SELECT* from user where username = ?  [42102-200]
-2023-07-08 18:41:14 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT*[*] FROM USER WHERE USERNAME = ? "; expected "INTO"; SQL statement:
-Insert* from user where username = ?  [42001-200]

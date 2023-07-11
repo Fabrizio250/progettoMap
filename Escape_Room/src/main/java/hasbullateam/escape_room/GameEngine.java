@@ -3,8 +3,9 @@ package hasbullateam.escape_room;
 
 
 import hasbullateam.escape_room.escape_room_game.EscapeRoomGame;
+
+import javax.swing.*;
 import java.util.function.Consumer;
-import javax.swing.JPanel;
 
 /**
  *
@@ -21,8 +22,8 @@ public class GameEngine{
         
         menu.setGotoEscapeRoom( () -> { setPanel.accept(new EscapeRoomGame()); }  );
         menu.setGotoMorraCinese(() -> { setPanel.accept(new BattleShip()); }  );
-        menu.setGotoTris(       () -> { setPanel.accept(new Tris()); }        );
-        menu.setGotoPingPong(   () -> { setPanel.accept(new PingPong()); }    );
+        //menu.setGotoTris(       () -> { setPanel.accept(new Tris()); }        );
+        //menu.setGotoPingPong(   () -> { setPanel.accept(new PingPong()); }    );
         
         
         setPanel.accept(menu);

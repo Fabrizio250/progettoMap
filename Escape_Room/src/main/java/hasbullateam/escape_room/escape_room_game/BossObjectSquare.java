@@ -2,8 +2,6 @@
 package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.BattleShip;
-import hasbullateam.escape_room.PingPong;
-import hasbullateam.escape_room.Tris;
 import hasbullateam.escape_room.type.Cord;
 import java.io.Serializable;
 import javax.swing.JPanel;

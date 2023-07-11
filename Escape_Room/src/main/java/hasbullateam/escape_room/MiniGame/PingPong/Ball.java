@@ -1,4 +1,4 @@
-package PingPong;
+package hasbullateam.escape_room.MiniGame.PingPong;
 
 import java.awt.*;
 import java.util.Random;
