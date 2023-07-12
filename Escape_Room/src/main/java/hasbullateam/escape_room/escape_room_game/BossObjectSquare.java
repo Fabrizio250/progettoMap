@@ -1,8 +1,11 @@
 
 package hasbullateam.escape_room.escape_room_game;
 
-import hasbullateam.escape_room.BattleShip;
+
+import minigame.ping_pong.PingPongPanel;
+import hasbullateam.escape_room.type.BossStatus;
 import hasbullateam.escape_room.type.Cord;
+import hasbullateam.escape_room.type.GameMode;
 import java.io.Serializable;
 import javax.swing.JPanel;
 import org.json.JSONObject;
@@ -16,8 +19,8 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
     String entryMessage;
     String defeatMessage;
     String loserMessage;
-    public Boolean defeated;
     Cord defeatPosition;
+    public BossStatus bossStatus;
     
     public BossObjectSquare(JSONObject jsonObj) {
         super(
@@ -36,7 +39,7 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
                 jsonObj.getJSONObject("defeat_position").getInt("x"),
                 jsonObj.getJSONObject("defeat_position").getInt("y")
         );
-        this.defeated = false;
+        this.bossStatus = BossStatus.NOT_IN_GAME; 
         
     }
     
@@ -46,18 +49,8 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
         
         switch(minigameTag){
             
-            case "BattleShip" -> {
-                return new BattleShip(previousPanel, this);
-            }
-            
-            case "Tris" -> {
-                //return new Tris(previousPanel);
-                break;
-            }
-            
-            case "Snake" -> {
-                //return new Snake(previousPanel);
-                break;
+            case "Ping_Pong" -> {
+                return new PingPongPanel(previousPanel, GameMode.MODE_STORIA, this);
             }
             
             
@@ -66,9 +59,6 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
         
     }
     
-    public Boolean isDefeated(){
-        return this.defeated;
-    }
     
     
     

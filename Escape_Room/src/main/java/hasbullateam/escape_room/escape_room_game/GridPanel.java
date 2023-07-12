@@ -80,21 +80,6 @@ public class GridPanel extends JPanel{
         this.setSquare(new SquarePanel(cord) );
     }
     
-    private static class RequestFocusListener implements javax.swing.event.AncestorListener {
-        @Override
-        public void ancestorAdded(javax.swing.event.AncestorEvent e) {
-            JComponent component = e.getComponent();
-            component.requestFocusInWindow();
-            component.removeAncestorListener(this);
-        }
-
-        @Override
-        public void ancestorMoved(javax.swing.event.AncestorEvent e) {}
-
-        @Override
-        public void ancestorRemoved(javax.swing.event.AncestorEvent e) {}
-    }
-    
     public boolean isCordInGrid(Cord cord){
         return !((cord.x < 0) || (cord.y < 0) || (cord.x > this.size-1) || (cord.y > this.size-1));
     }

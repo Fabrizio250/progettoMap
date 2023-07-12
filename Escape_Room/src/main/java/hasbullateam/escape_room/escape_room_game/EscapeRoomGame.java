@@ -4,6 +4,7 @@ package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.Menu;
 import hasbullateam.escape_room.TabbedMenu;
+import hasbullateam.escape_room.type.BossStatus;
 
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
@@ -14,6 +15,7 @@ import hasbullateam.escape_room.type.RoomNotFoundException;
 import java.awt.Color;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import javax.swing.SwingUtilities;
 
@@ -46,10 +48,14 @@ public class EscapeRoomGame extends EscapeRoom{
     NumericKeypadDialog numericKeyDialog = null;
     
     MultipleChoiceDialog dialog_backToMenu = null;
+    
+    JPanel parentPanel;
      
 
-    public EscapeRoomGame() {
+    public EscapeRoomGame(JPanel parentPanel) {
         super();
+        
+        this.parentPanel = parentPanel;
         
         SwingUtilities.invokeLater( ()-> {
             this.setWindowSize();
@@ -65,24 +71,45 @@ public class EscapeRoomGame extends EscapeRoom{
         
         highlightFacingObject();
         
-        if(obj_boss != null && obj_boss.isDefeated() && this.dialog == null){
-            
-            // visualizza dialog oh no mi hai sconfitto
-            // sposta boss in maniera tale che liberi il passaggio alla porta
-            
-            dialog_generic = new TextDialog(this);
-            dialog_generic.setText(obj_boss.defeatMessage);
-            
-            this.room.removeObject(obj_boss.position);
-            this.clearSquare(obj_boss.position);
-            obj_boss.position = obj_boss.defeatPosition;
-            this.room.addObject(obj_boss);
-            this.loadObjectSquare(obj_boss);
-            
-            
-            this.dialog = dialog_generic;
-            obj_boss = null;
-            
+        if(obj_boss != null && this.dialog == null){
+            if(obj_boss.bossStatus != BossStatus.IN_GAME && obj_boss.bossStatus != BossStatus.NOT_IN_GAME){
+                this.setWindowSize();
+                if(obj_boss.bossStatus == BossStatus.PLAYER_WIN){
+                    
+                    dialog_generic = new TextDialog(this);
+                    dialog_generic.setText(obj_boss.defeatMessage);
+                    
+                    this.room.removeObject(obj_boss.position);
+                    this.clearSquare(obj_boss.position);
+                    
+                    obj_boss.position = obj_boss.defeatPosition;
+                    
+                    this.room.addObject(obj_boss);
+                    this.loadObjectSquare(obj_boss);
+
+                    
+                }else if(obj_boss.bossStatus == BossStatus.PLAYER_LOSE){
+                    obj_boss.bossStatus = BossStatus.NOT_IN_GAME;
+                    
+                    dialog_generic = new TextDialog(this);
+                    dialog_generic.setText(obj_boss.loserMessage);
+                }
+                
+                // riaggiungi il listner
+                if(obj_boss.minigameTag.equals("Ping_Pong")){
+                    this.addAncestorListener(new RequestFocusListener());
+                    this.addKeyListener(new KeyboardInput());
+                    this.setFocusable(true);
+                    this.requestFocus();
+                    
+                }
+                
+                
+                
+                
+                this.dialog = dialog_generic;
+                obj_boss = null;
+            }
         }
         
         
@@ -189,8 +216,7 @@ public class EscapeRoomGame extends EscapeRoom{
                             if(dialog_backToMenu.getChoice().equals("sì")){
                                 removeAllDialog();
                                 resetHighlightFObjcet();
-                                changePanel(new TabbedMenu());
-                                
+                                changePanel(this.parentPanel);
                             }
                             removeAllDialog();
                             
@@ -268,9 +294,12 @@ public class EscapeRoomGame extends EscapeRoom{
                         }else if (dialog_boss != null){
                             
                             if(dialog_boss.getChoice().equalsIgnoreCase("sì")){
+                                obj_boss.bossStatus = BossStatus.IN_GAME;
                                 JFrame frame = (JFrame) this.getTopLevelAncestor();
                                 removeKeyListener(this.getKeyListeners()[0]);
+                                //removeAncestorListener(this.getAncestorListeners()[0]);
                                 frame.setContentPane(obj_boss.getMinigame(this));
+                                frame.pack();
                                 frame.revalidate();
                                 frame.repaint();
                                 removeAllDialog();
@@ -508,7 +537,7 @@ public class EscapeRoomGame extends EscapeRoom{
                                 
                                 if(this.dialog == null){
                                     
-                                    if(!_bossObj.isDefeated()){
+                                    if(_bossObj.bossStatus == BossStatus.NOT_IN_GAME){
                                         
                                         dialog_boss = new MultipleChoiceDialog(this);
                                         dialog_boss.setBrief(_bossObj.entryMessage);
@@ -519,7 +548,7 @@ public class EscapeRoomGame extends EscapeRoom{
                                         obj_boss = _bossObj;
                                         this.dialog = dialog_boss; 
                                     
-                                    }else{
+                                    }else if(_bossObj.bossStatus == BossStatus.PLAYER_WIN){
                                         
                                         dialog_generic = new TextDialog(this);
                                         dialog_generic.setText(_bossObj.defeatMessage);

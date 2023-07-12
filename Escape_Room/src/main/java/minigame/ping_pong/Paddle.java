@@ -1,4 +1,4 @@
-package hasbullateam.escape_room.MiniGame.PingPong;
+package minigame.ping_pong;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

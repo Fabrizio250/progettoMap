@@ -1,4 +1,4 @@
-package hasbullateam.escape_room.MiniGame.MorraCinese;
+package minigame;
 
 import javax.swing.*;
 import java.awt.*;

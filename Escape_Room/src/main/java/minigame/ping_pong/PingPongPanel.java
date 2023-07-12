@@ -1,12 +1,20 @@
-package hasbullateam.escape_room.MiniGame.PingPong;
+package minigame.ping_pong;
 
+import minigame.MiniGame;
+import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
+import hasbullateam.escape_room.escape_room_game.RequestFocusListener;
+import hasbullateam.escape_room.type.BossStatus;
+import hasbullateam.escape_room.type.GameMode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.time.Duration;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class GamePanel extends JPanel implements Runnable {
+public class PingPongPanel extends MiniGame implements Runnable {
     static final int GAME_WIDTH = 1000;
     static final int GAME_HEIGHT = (int) (GAME_WIDTH * (0.5555));
     public static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
@@ -23,23 +31,40 @@ public class GamePanel extends JPanel implements Runnable {
     Paddle paddle2;
     Ball ball;
     Score score;
-    
-    int mode;   // 1 = 1 VS 1,  2 = 1 VS CPU , 3 = 1 VS ONLINE_PLAYER
 
-    public GamePanel(int mode){
-        this.mode = mode;
+    
+    public PingPongPanel(JPanel parentPanel, GameMode gameMode, BossObjectSquare bossObj){
+        super(parentPanel, gameMode);
+        
+        
+        
         this.newPaddles();
         this.newBall();
         score = new Score(GAME_WIDTH,GAME_HEIGHT);
-        this.setFocusable(true);    //permette al componenete di interagire con gli eventi da tastiera
+        
+        // rimuovi il listener dalla Room
+        if(gameMode == GameMode.MODE_STORIA){
+            
+            this.bossObj = bossObj;
+        }
+
+        this.setFocusable(true);
+
+        this.addAncestorListener(new RequestFocusListener());
+
+        
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
+        this.setBackground(Color.black);
+        this.revalidate();
 
         gameThread = new Thread(this);
         gameThread.start();
     }
     
-    
+    public PingPongPanel(JPanel parentPanel, GameMode gameMode){
+        this(parentPanel, gameMode, null);
+    }
 
     public void newBall(){
         random = new Random();
@@ -51,11 +76,15 @@ public class GamePanel extends JPanel implements Runnable {
         paddle2 = new Paddle(GAME_WIDTH-PADDLE_WIDTH,(GAME_HEIGHT/2)-(PADDLE_HEIGHT/2),PADDLE_WIDTH,PADDLE_HEIGHT,2);
     }
     
+
+    @Override
     public void paint(Graphics g){
+        
         image = this.createImage(this.getWidth(),this.getHeight());
         graphics = image.getGraphics();
         draw(graphics);
         g.drawImage(image,0,0,this);
+        
     }
 
     public void draw(Graphics g){
@@ -68,13 +97,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void move(){
         //1 VS 1
-        if (mode == 1){
+        if (this.gameMode == GameMode.MODE_1v1){
             paddle1.move();
             paddle2.move();
         }
         
-        //1 VS CPU
-        if (mode == 2){
+        //1 VS CPU o Storia
+        if (this.gameMode == GameMode.MODE_1vCPU || this.gameMode == gameMode.MODE_STORIA){
             paddle1.move();
             paddle2.automaticMove(ball.y);
         }
@@ -133,24 +162,50 @@ public class GamePanel extends JPanel implements Runnable {
             newBall();
             System.out.println("Player 1: "+score.player1);
         }
+        
+        if(score.player1 == 1 || score.player2 == 1){
+            if(score.player1 > score.player2){
+                if(gameMode == GameMode.MODE_STORIA){
+                    this.bossObj.bossStatus = BossStatus.PLAYER_WIN;
+                }
+            }else{
+                if(gameMode == GameMode.MODE_STORIA){
+                    this.bossObj.bossStatus = BossStatus.PLAYER_LOSE;
+                }
+            }
+            this.endGame();
+        }
 
+    }
+    
+    public void endGame(){
+        this.gameThread.interrupt();
+        this.changeToParentPanel();
     }
 
     public void run(){
+        
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         while (true){
-            long now = System.nanoTime();
-            delta += (now - lastTime)/ns;
-            lastTime = now;
-            if (delta >= 1 ){
-                this.move();
-                this.checkCollition();
-                this.repaint();
-                delta--;
+            
+            try{
+                long now = System.nanoTime();
+                delta += (now - lastTime)/ns;
+                lastTime = now;
+                if (delta >= 1 ){
+                    this.move();
+                    this.checkCollition();
+                    this.repaint();
+                    delta--;
+                }
+                Thread.sleep(Duration.ZERO);
+            }catch(InterruptedException e){
+                break;
             }
+
         }
     }
     

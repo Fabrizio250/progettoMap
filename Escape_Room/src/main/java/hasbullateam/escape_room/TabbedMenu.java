@@ -20,9 +20,16 @@ import java.io.InputStream;
 public class TabbedMenu extends JPanel {
     
     static Runnable gotoEscapeRoom;
-    static Runnable gotoMorraCinese;
-    static Runnable gotoPingPong;
-    static Runnable gotoTris;
+    
+    static Runnable gotoMorraCinese1v1;
+    static Runnable gotoMorraCinese1vCPU;
+    
+    static Runnable gotoPingPong1vCPU;
+    static Runnable gotoPingPong1v1;
+    
+    static Runnable gotoTris1v1;
+    static Runnable gotoTris1vCPU;
+    
     
     private String loggedUser = "null";  //contiene il nome utente dell' utente loggato
     
@@ -35,16 +42,29 @@ public class TabbedMenu extends JPanel {
         TabbedMenu.gotoEscapeRoom = gotoEscapeRoom;
     }
     
-    public void setGotoMorraCinese(Runnable gotoMorraCinese){
-        TabbedMenu.gotoMorraCinese = gotoMorraCinese;
+    
+    public void setGotoPingPong1vCPU(Runnable gotoPingPong1vCPU){
+        TabbedMenu.gotoPingPong1vCPU = gotoPingPong1vCPU;
     }
     
-    public void setGotoTris(Runnable gotoTris){
-        TabbedMenu.gotoTris = gotoTris;
+    public void setGotoPingPong1v1(Runnable gotoPingPong1v1){
+        TabbedMenu.gotoPingPong1v1 = gotoPingPong1v1;
     }
     
-    public void setGotoPingPong(Runnable gotoPingPong){
-        TabbedMenu.gotoPingPong = gotoPingPong;
+    public void setGotoTris1vCPU(Runnable gotoTris1vCPU){
+        TabbedMenu.gotoTris1vCPU = gotoTris1vCPU;
+    }
+    
+    public void setGotoTris1v1(Runnable gotoTris1v1){
+        TabbedMenu.gotoTris1v1 = gotoTris1v1;
+    }
+    
+    public void setGotoMorraCinese1vCPU(Runnable gotoMorraCinese1vCPU){
+        TabbedMenu.gotoMorraCinese1vCPU = gotoMorraCinese1vCPU;
+    }
+    
+    public void setGotoMorraCinese1v1(Runnable gotoMorraCinese1v1){
+        TabbedMenu.gotoMorraCinese1v1 = gotoMorraCinese1v1;
     }
     
     private void init(){
@@ -1422,6 +1442,7 @@ public class TabbedMenu extends JPanel {
     }  
     /**button Ping Pong 1 vs 1**/
     private void buttonPingPong1vs1(java.awt.event.ActionEvent evt){
+        gotoPingPong1v1.run();
     }
     
     /**button Ping Pong 1 vs online**/
@@ -1430,6 +1451,7 @@ public class TabbedMenu extends JPanel {
     
     /**button Ping Pong 1 vs PC**/
     private void buttonPingPong1vsPC(java.awt.event.ActionEvent evt){
+        gotoPingPong1vCPU.run();
     }
     
     /**button Tris 1 vs 1**/

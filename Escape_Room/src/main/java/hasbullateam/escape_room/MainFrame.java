@@ -12,7 +12,6 @@ public class MainFrame extends JFrame{
     
     public MainFrame(){
         setTitle("Escape Room");
-        //setSize(SIZE,SIZE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
@@ -20,7 +19,6 @@ public class MainFrame extends JFrame{
         
         new GameEngine((JPanel p) -> {
             setContentPane(p);
-            revalidate();
             pack();
             revalidate();
             repaint();

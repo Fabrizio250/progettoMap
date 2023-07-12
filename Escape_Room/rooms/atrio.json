@@ -112,7 +112,7 @@
         {
             "name": "uscem",
             "tag": "boss",
-            "minigame": "BattleShip",
+            "minigame": "Ping_Pong",
             "entry_message": "ueeee u scem vu fa pesc e pesc",
             "loser_message": "si nu fess",
             "defeat_message": "oh zio pera mi hai sconfitto",
