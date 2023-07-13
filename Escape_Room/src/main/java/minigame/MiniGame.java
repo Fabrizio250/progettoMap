@@ -32,6 +32,8 @@ public abstract class MiniGame extends JPanel {
             frame.pack();
             frame.revalidate();
             frame.repaint();   
+        }else{
+            System.out.println("frame è nullll");
         }
             
     }

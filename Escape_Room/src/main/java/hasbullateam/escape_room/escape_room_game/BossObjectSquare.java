@@ -8,6 +8,7 @@ import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.GameMode;
 import java.io.Serializable;
 import javax.swing.JPanel;
+import minigame.MorraCinese;
 import minigame.Tris;
 import org.json.JSONObject;
 
@@ -56,6 +57,10 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
             
             case "Tris" -> {
                 return new Tris(previousPanel, GameMode.MODE_STORIA, this);
+            }
+            
+            case "Morra_Cinese" -> {
+                return new MorraCinese(previousPanel, GameMode.MODE_STORIA, this);
             }
             
         }

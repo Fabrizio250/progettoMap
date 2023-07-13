@@ -1,17 +1,20 @@
 package minigame;
 
+import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
+import hasbullateam.escape_room.type.BossStatus;
+import hasbullateam.escape_room.type.GameMode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class MorraCinese extends JPanel implements ActionListener {
+public class MorraCinese extends MiniGame {
 
     private final JButton jButtonRock, jButtonPaper, jButtonScissors;
     private final JLabel player1Label, player2Label, player1WinsLabel, player2WinsLabel , turnLabel, computerWinsLabel;
     private final JLabel vsLabel;
-    private int player1Wins, player2Wins,modalitaScelta;
+    private int player1Wins, player2Wins;
     private int sceltaPlayer1, sceltaPlayer2; //memorizzano dei giocatori 1 e 2
     private Random random;
 
@@ -22,9 +25,10 @@ public class MorraCinese extends JPanel implements ActionListener {
 
     private final int WINNING_SCORE = 3;
 
-    public MorraCinese(int modalitaScelta) {
-        super(new GridLayout(3, 1));
-        this.modalitaScelta = modalitaScelta;
+    public MorraCinese(JPanel parentPanel, GameMode gameMode, BossObjectSquare bossObj) {
+        super(parentPanel, gameMode, bossObj);
+        
+        this.setLayout(new GridLayout(3, 1));
         setPreferredSize(new Dimension(800, 800));
         random = new Random();
 
@@ -62,13 +66,13 @@ public class MorraCinese extends JPanel implements ActionListener {
         turnLabel.setText("TURNO GIOCATORE 1");
         setFont(turnLabel);
 
-        if (modalitaScelta == 1) {
+        if (gameMode == GameMode.MODE_1v1) {
             scorePanel.add(player1WinsLabel);
             scorePanel.add(turnLabel);
             scorePanel.add(player2WinsLabel);
-        }
-
-        if (modalitaScelta == 2) {
+        
+        } else {
+            
             scorePanel.add(player1WinsLabel);
             scorePanel.add(turnLabel);
             scorePanel.add(computerWinsLabel);
@@ -101,7 +105,7 @@ public class MorraCinese extends JPanel implements ActionListener {
         jButtonRock.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (modalitaScelta == 1) {
+                if (gameMode == GameMode.MODE_1v1) {
                     if (sceltaPlayer1 == 0) {
                         player1Label.setIcon(questionMarkIcon);
                         turnLabel.setText("TURNO GIOCATORE 2");
@@ -119,7 +123,7 @@ public class MorraCinese extends JPanel implements ActionListener {
                         });
                         thread.start();
                     }
-                } else if (modalitaScelta == 2) {
+                } else {
                     if (sceltaPlayer1 == 0) {
                         player1Label.setIcon(questionMarkIcon);
                         turnLabel.setText("TURNO COMPUTER");
@@ -144,7 +148,7 @@ public class MorraCinese extends JPanel implements ActionListener {
         jButtonPaper.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (modalitaScelta == 1) {
+                if (gameMode == GameMode.MODE_1v1) {
                     if (sceltaPlayer1 == 0) {
                         player1Label.setIcon(questionMarkIcon);
                         turnLabel.setText("TURNO GIOCATORE 2");
@@ -162,7 +166,7 @@ public class MorraCinese extends JPanel implements ActionListener {
                         });
                         thread.start();
                     }
-                } else if (modalitaScelta == 2) {
+                } else{
                     if (sceltaPlayer1 == 0) {
                         player1Label.setIcon(questionMarkIcon);
                         turnLabel.setText("TURNO COMPUTER");
@@ -187,7 +191,7 @@ public class MorraCinese extends JPanel implements ActionListener {
         jButtonScissors.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (modalitaScelta == 1) {
+                if (gameMode == GameMode.MODE_1v1) {
                     if (sceltaPlayer1 == 0) {
                         player1Label.setIcon(questionMarkIcon);
                         turnLabel.setText("TURNO GIOCATORE 2");
@@ -205,7 +209,7 @@ public class MorraCinese extends JPanel implements ActionListener {
                         });
                         thread.start();
                     }
-                } else if (modalitaScelta == 2) {
+                } else {
                     if (sceltaPlayer1 == 0) {
                         player1Label.setIcon(questionMarkIcon);
                         turnLabel.setText("TURNO COMPUTER");
@@ -227,8 +231,12 @@ public class MorraCinese extends JPanel implements ActionListener {
             }
         });
     }
-
-
+    
+    
+    public MorraCinese(JPanel parentPanel, GameMode gameMode){
+        this(parentPanel, gameMode, null);
+    }
+    
     private void checkWin() {
         if (sceltaPlayer1 == sceltaPlayer2) {
             showchoice(getIconByChoice(sceltaPlayer1), getIconByChoice(sceltaPlayer2));
@@ -238,10 +246,10 @@ public class MorraCinese extends JPanel implements ActionListener {
         if (sceltaPlayer1 == 1 && sceltaPlayer2 == 2) {
             showchoice(getIconByChoice(1), getIconByChoice(2));
             player2Wins++;
-            if (modalitaScelta == 1) {
+            if (gameMode == GameMode.MODE_1v1) {
                 JOptionPane.showMessageDialog(this, "vittoria Giocatore 2");
                 player2WinsLabel.setText("Giocatore 2: " + player2Wins);
-            } else if (modalitaScelta == 2) {
+            } else {
                 JOptionPane.showMessageDialog(this, "vittoria Computer");
                 computerWinsLabel.setText("Computer: " + player2Wins);
             }
@@ -264,10 +272,10 @@ public class MorraCinese extends JPanel implements ActionListener {
         if (sceltaPlayer1 == 2 && sceltaPlayer2 == 3) {
             showchoice(getIconByChoice(2), getIconByChoice(3));
             player2Wins++;
-            if (modalitaScelta == 1) {
+            if (gameMode == GameMode.MODE_1v1) {
                 JOptionPane.showMessageDialog(this, "vittoria Giocatore 2");
                 player2WinsLabel.setText("Giocatore 2: " + player2Wins);
-            } else if (modalitaScelta == 2) {
+            } else {
                 JOptionPane.showMessageDialog(this, "vittoria Computer");
                 computerWinsLabel.setText("Computer: " + player2Wins);
             }
@@ -276,10 +284,10 @@ public class MorraCinese extends JPanel implements ActionListener {
         if (sceltaPlayer1 == 3 && sceltaPlayer2 == 1) {
             showchoice(getIconByChoice(3), getIconByChoice(1));
             player2Wins++;
-            if (modalitaScelta == 1) {
+            if (gameMode == GameMode.MODE_1v1) {
                 JOptionPane.showMessageDialog(this, "vittoria Giocatore 2");
                 player2WinsLabel.setText("Giocatore 2: " + player2Wins);
-            } else if (modalitaScelta == 2) {
+            } else {
                 JOptionPane.showMessageDialog(this, "vittoria Computer");
                 computerWinsLabel.setText("Computer: " + player2Wins);
             }
@@ -292,18 +300,29 @@ public class MorraCinese extends JPanel implements ActionListener {
             player1WinsLabel.setText("Giocatore 1: " + player1Wins);
             resetGame();
         }
-        if (player1Wins == WINNING_SCORE) {
-            JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 1! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
-        if (player2Wins == WINNING_SCORE) {
-            if (modalitaScelta == 1) {
-                JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 2! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
-            } else if (modalitaScelta == 2) {
-                JOptionPane.showMessageDialog(this, "Vittoria del Computer! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+        
+        if(player1Wins == WINNING_SCORE || player2Wins == WINNING_SCORE){
+            if (player1Wins == WINNING_SCORE) {
+                JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 1! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
             }
-            System.exit(0);
+            if (player2Wins == WINNING_SCORE) {
+                if (gameMode == GameMode.MODE_1v1) {
+                    JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 2! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Vittoria del Computer! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            
+            if(gameMode == GameMode.MODE_STORIA){
+                if(player1Wins > player2Wins){
+                    this.bossObj.bossStatus = BossStatus.PLAYER_WIN;
+                }else{
+                    this.bossObj.bossStatus = BossStatus.PLAYER_LOSE;
+                }
+            }
+            this.changeToParentPanel();
         }
+        
     }
 
     private void resetGame() {
@@ -338,8 +357,4 @@ public class MorraCinese extends JPanel implements ActionListener {
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

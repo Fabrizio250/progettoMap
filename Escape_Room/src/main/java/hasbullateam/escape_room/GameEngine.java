@@ -8,6 +8,7 @@ import hasbullateam.escape_room.type.GameMode;
 
 import javax.swing.*;
 import java.util.function.Consumer;
+import minigame.MorraCinese;
 import minigame.Tris;
 
 /**
@@ -28,10 +29,8 @@ public class GameEngine{
         menu.setGotoPingPong1v1( () -> { setPanel.accept(new PingPongPanel(menu,GameMode.MODE_1v1));}  );
         menu.setGotoTris1vCPU( () -> {setPanel.accept(new Tris(menu, GameMode.MODE_1vCPU));} );
         menu.setGotoTris1v1( () -> {setPanel.accept(new Tris(menu, GameMode.MODE_1v1));} );
-//menu.setGotoMorraCinese(() -> { setPanel.accept(new BattleShip()); }  );
-        //menu.setGotoTris(       () -> { setPanel.accept(new Tris()); }        );
-        //menu.setGotoPingPong(   () -> { setPanel.accept(new PingPongPanel()); }    );
-        
+        menu.setGotoMorraCinese1vCPU( () -> {setPanel.accept(new MorraCinese(menu, GameMode.MODE_1vCPU));} );
+        menu.setGotoMorraCinese1v1( () -> {setPanel.accept(new MorraCinese(menu, GameMode.MODE_1v1));} );
         
         setPanel.accept(menu);
         
