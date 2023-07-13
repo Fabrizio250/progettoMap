@@ -9,15 +9,12 @@ package hasbullateam.escape_room;
  * @author gioel
  */
 
+import hasbullateam.escape_room.type.GameMode;
+import hasbullateam.escape_room.type.NameDb;
+import hasbullateam.escape_room.type.Result;
 import org.mindrot.jbcrypt.BCrypt;
 
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DbEscapeRoom {
     private static final String jdbcUrl = "jdbc:h2:./data/dbEscapeRoom"; // Percorso e nome del database
@@ -49,9 +46,6 @@ public class DbEscapeRoom {
                     "losePlayer1 INT DEFAULT 0," +
                     "losePlayer2 INT DEFAULT 0,"+
                     "losePC INT DEFAULT 0," +
-                    "drawPlayer1 INT DEFAULT 0," +
-                    "drawPlayer2 INT DEFAULT 0,"+
-                    "drawPC INT DEFAULT 0," +
                     "FOREIGN KEY (id_user) REFERENCES user(id))";
             statement.executeUpdate(createTableSql);
 
@@ -65,9 +59,6 @@ public class DbEscapeRoom {
                     "losePlayer1 INT DEFAULT 0," +
                     "losePlayer2 INT DEFAULT 0,"+
                     "losePC INT DEFAULT 0," +
-                    "drawPlayer1 INT DEFAULT 0," +
-                    "drawPlayer2 INT DEFAULT 0,"+
-                    "drawPC INT DEFAULT 0," +
                     "FOREIGN KEY (id_user) REFERENCES user(id))";
             statement.executeUpdate(createTableSql);
 
@@ -81,9 +72,6 @@ public class DbEscapeRoom {
                     "losePlayer1 INT DEFAULT 0," +
                     "losePlayer2 INT DEFAULT 0,"+
                     "losePC INT DEFAULT 0," +
-                    "drawPlayer1 INT DEFAULT 0," +
-                    "drawPlayer2 INT DEFAULT 0,"+
-                    "drawPC INT DEFAULT 0," +
                     "FOREIGN KEY (id_user) REFERENCES user(id))";
             statement.executeUpdate(createTableSql);
 
@@ -104,6 +92,9 @@ public class DbEscapeRoom {
                 preparedStatement.setString(1,username);
                 preparedStatement.setString(2, BCrypt.hashpw(password, seed));  //criptimao la password
                 preparedStatement.executeUpdate();
+                //creaimo le tabelle delle statistiche associate al nuovo utente
+                createRecordStats(username);
+
                 return true;
 
             } catch (SQLException e) {
@@ -111,6 +102,34 @@ public class DbEscapeRoom {
             }
         }
         return false;
+    }
+
+    /**OK**/
+    private static void createRecordStats(String username){
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbusername, dbpassword)) {
+            int id = DbEscapeRoom.idByUsername(username);
+            PreparedStatement preparedStatement;
+            String query;
+
+            query = "INSERT INTO statsTris(id_user) VALUES (?)";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+
+            query = "INSERT INTO statsPingPong(id_user) VALUES (?)";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+
+            query = "INSERT INTO statsMorraCinese(id_user) VALUES (?)";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+
     }
 
 
@@ -170,6 +189,7 @@ public class DbEscapeRoom {
         }
         return false;  
     }
+
     
     //0 = no user , >=1 = idUser
     public static int idByUsername(String username){
@@ -214,6 +234,103 @@ public class DbEscapeRoom {
         }
 
         return userExists;
+    }
+
+
+    /**FUNCTION TO INCREMENT STATS**/
+    //Incrementa le statistiche al termine di una partita
+    public static void incrementStats(NameDb db, Result result, GameMode mode){
+        String query ="";
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbusername, dbpassword)) {
+            int id = idByUsername(TabbedMenu.loggedUser);
+            if (mode==GameMode.MODE_1v1){
+                if (result== Result.WIN_PLAYER1){
+                    System.out.println("eseguita query win p1 sul db "+ db.getValue());
+                    query = "UPDATE "+ db.getValue() +" SET winPlayer1=winPlayer1+1, losePlayer2=losePlayer2+1  where id_user = "+id;
+                }else {
+                    if (result==Result.WIN_PLAYER2){
+                        query = "UPDATE "+ db.getValue() +" SET winPlayer2=winPlayer2+1, losePlayer1=losePlayer1+1  where id_user = "+id;
+                    }
+                }
+            }else{
+                System.out.println("vediamo se almeno qui");
+                if (mode==GameMode.MODE_1vCPU){
+                    if (result==Result.WIN_PLAYER1){
+                        System.out.println("dovrei stare qui");
+                        query = "UPDATE "+ db.getValue() +" SET winPlayer1=winPlayer1+1, losePC=losePC+1  where id_user = "+id;
+                    }else {
+                        if (result==Result.WIN_PLAYER2){
+                            query = "UPDATE "+ db.getValue() +" SET winPC=winPC+1, losePlayer1=losePlayer1+1  where id_user = "+id;
+                        }
+                    }
+                }
+            }
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //restituise tutti i valori delle statistiche all' interno di una matrice
+
+    public static int[] statsMiniGiochi(NameDb nameDb){
+        int[] stats = new int[6];
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbusername, dbpassword)) {
+            int id = idByUsername(TabbedMenu.loggedUser);
+
+            /**Query per estrarre stats Tris e conservarle nell array**/
+            String query = "SELECT winPlayer1,winPlayer2,winPc,losePlayer1,losePlayer2,losePC from "+nameDb.getValue()+ " where id_user = "+id;
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                int i = 0;
+                while (i<=5){
+                    stats[i] = resultSet.getInt(i+1);
+                    System.out.println(stats[i]);
+                    i++;
+                }
+            }
+
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stats;
+    }
+
+    public static void printStatsDb(NameDb nameDb){
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, dbusername, dbpassword)) {
+            String query = "SELECT * from "+nameDb.getValue()+";";
+            System.out.println(query);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                System.out.println("Id: "+resultSet.getInt(1));
+                System.out.println("Id_user: "+resultSet.getInt(2));
+                System.out.println("WinPlayer1: "+resultSet.getInt(3));
+                System.out.println("WinPlayer2: "+resultSet.getInt(4));
+                System.out.println("WinPC: "+resultSet.getInt(5));
+                System.out.println("losePlayer1: "+resultSet.getInt(6));
+                System.out.println("losePlayer2: "+resultSet.getInt(7));
+                System.out.println("losePC: "+resultSet.getInt(8));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void printAllStatsDb(){
+        System.out.println("StatsTris:");
+        printStatsDb(NameDb.TRIS);
+        System.out.println("StatsPingPong:");
+        printStatsDb(NameDb.PINGPONG);
+        System.out.println("StatsMorraCinese:");
+        printStatsDb(NameDb.MORRACINESE);
     }
 
 }

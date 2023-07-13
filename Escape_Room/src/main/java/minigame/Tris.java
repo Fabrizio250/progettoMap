@@ -1,8 +1,12 @@
 package minigame;
 
+import hasbullateam.escape_room.DbEscapeRoom;
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.type.BossStatus;
 import hasbullateam.escape_room.type.GameMode;
+import hasbullateam.escape_room.type.NameDb;
+import hasbullateam.escape_room.type.Result;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -75,7 +79,7 @@ public class Tris extends MiniGame implements ActionListener {
     
     public void actionPerformed(ActionEvent e) {
         JButton clickedButton = (JButton) e.getSource();
-        if(gameMode == GameMode.MODE_1v1){
+        if(gameMode == GameMode.MODE_1v1 ){
             if (clickedButton.getText().equals("") && !gameOver) {
                 if (player1Turn) {
                     clickedButton.setText("X");
@@ -93,6 +97,13 @@ public class Tris extends MiniGame implements ActionListener {
                     if (player1Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Hai vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+
+                        /**funzione di updateStats**/
+                        result=Result.WIN_PLAYER1;
+                        DbEscapeRoom.incrementStats(NameDb.TRIS,result,gameMode);
+                        //System.out.println("WinP1");
+                        //DbEscapeRoom.printAllStatsDb();
+
                         this.changeToParentPanel();
                     }
 
@@ -108,6 +119,11 @@ public class Tris extends MiniGame implements ActionListener {
                     if (player2Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 2! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                        /**Mettere funzione di updateStats**/
+                        result=Result.WIN_PLAYER2;
+                        DbEscapeRoom.incrementStats(NameDb.TRIS,result,gameMode);
+                        //System.out.println("WinP2");
+
                         this.changeToParentPanel();
                     }
 
@@ -120,14 +136,10 @@ public class Tris extends MiniGame implements ActionListener {
                     return;
                 }
             }
-        }
-
-        else {
-
-
+            //game mode = 1 vs cpu
+        } else {
             if (clickedButton.getText().equals("")  && !gameOver) {
                 clickedButton.setText("X");
-
 
                 if(checkWin("X")) {
                     player1Wins++;
@@ -137,7 +149,11 @@ public class Tris extends MiniGame implements ActionListener {
                     if (player1Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Hai vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
-                        
+
+                        /**funzione di updateStats**/
+                        result=Result.WIN_PLAYER1;
+                        DbEscapeRoom.incrementStats(NameDb.TRIS,result,gameMode);
+
                         if(gameMode == GameMode.MODE_STORIA){
                             this.bossObj.bossStatus = BossStatus.PLAYER_WIN;
                         }
@@ -164,7 +180,11 @@ public class Tris extends MiniGame implements ActionListener {
                     if (computerWins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Il computer ha vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
-                        
+
+                        /**funzione di updateStats**/
+                        result=Result.WIN_PLAYER2;
+                        DbEscapeRoom.incrementStats(NameDb.TRIS,result,gameMode);
+
                         if(gameMode == GameMode.MODE_STORIA){
                             this.bossObj.bossStatus = BossStatus.PLAYER_LOSE;
                         }

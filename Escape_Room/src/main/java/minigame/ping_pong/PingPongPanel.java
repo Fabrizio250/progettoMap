@@ -1,10 +1,11 @@
 package minigame.ping_pong;
 
-import minigame.MiniGame;
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.escape_room_game.RequestFocusListener;
 import hasbullateam.escape_room.type.BossStatus;
 import hasbullateam.escape_room.type.GameMode;
+import minigame.MiniGame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -156,7 +157,7 @@ public class PingPongPanel extends MiniGame implements Runnable {
             newBall();
             System.out.println("Player 1: "+score.player1);
         }
-        
+        /**Terminazione partita**/
         if(score.player1 == 1 || score.player2 == 1){
             try {
                 SwingUtilities.invokeAndWait(()->{
@@ -178,6 +179,7 @@ public class PingPongPanel extends MiniGame implements Runnable {
                 }
             }
             this.gameThread.interrupt();
+
             //this.endGame();
         }
 

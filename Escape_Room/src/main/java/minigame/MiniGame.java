@@ -3,8 +3,9 @@ package minigame;
 
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.type.GameMode;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import hasbullateam.escape_room.type.Result;
+
+import javax.swing.*;
 
 /**
  *
@@ -14,6 +15,7 @@ public abstract class MiniGame extends JPanel {
     protected JPanel parentPanel;
     protected GameMode gameMode;
     protected BossObjectSquare bossObj;
+    protected Result result;
     
     public MiniGame(JPanel parentPanel, GameMode gameMode, BossObjectSquare bossObj){
         this.parentPanel = parentPanel;
@@ -35,6 +37,7 @@ public abstract class MiniGame extends JPanel {
         }else{
             System.out.println("frame è nullll");
         }
-            
+
     }
+
 }

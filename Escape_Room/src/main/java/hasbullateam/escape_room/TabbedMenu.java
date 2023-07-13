@@ -2,6 +2,8 @@
 package hasbullateam.escape_room;
 
 
+import hasbullateam.escape_room.type.NameDb;
+
 import javax.swing.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -29,9 +31,10 @@ public class TabbedMenu extends JPanel {
     
     static Runnable gotoTris1v1;
     static Runnable gotoTris1vCPU;
-    
-    
-    private String loggedUser = "null";  //contiene il nome utente dell' utente loggato
+
+
+
+    public static String loggedUser = "null";  //contiene il nome utente dell' utente loggato
     
     public TabbedMenu() {
         initComponents();
@@ -69,7 +72,6 @@ public class TabbedMenu extends JPanel {
     
     private void init(){
         DbEscapeRoom.createTable();
-       
         tabbedPanel.setSelectedIndex(5);
     }
 
@@ -898,21 +900,21 @@ public class TabbedMenu extends JPanel {
 
         jLabel77.setText("losePC");
 
-        jLabel78.setText("drawPlayer1");
+        jLabel78.setText("");
 
-        jLabel79.setText("drawPlayer2");
+        jLabel79.setText("");
 
         jLabel80.setText("0");
 
         jLabel81.setText("0");
 
-        jLabel82.setText("0");
+        jLabel82.setText("");
 
-        jLabel83.setText("0");
+        jLabel83.setText("");
 
-        jLabel84.setText("drawPC");
+        jLabel84.setText("");
 
-        jLabel85.setText("0");
+        jLabel85.setText("");
 
         jLabel86.setText("winPlayer1");
 
@@ -938,17 +940,17 @@ public class TabbedMenu extends JPanel {
 
         jLabel97.setText("0");
 
-        jLabel98.setText("drawPlayer1");
+        jLabel98.setText("");
 
-        jLabel99.setText("0");
+        jLabel99.setText("");
 
-        jLabel100.setText("drawPlayer2");
+        jLabel100.setText("");
 
-        jLabel101.setText("0");
+        jLabel101.setText("");
 
-        jLabel102.setText("drawPC");
+        jLabel102.setText("");
 
-        jLabel103.setText("0");
+        jLabel103.setText("");
 
         jLabel104.setText("winPlayer1");
 
@@ -974,17 +976,17 @@ public class TabbedMenu extends JPanel {
 
         jLabel115.setText("0");
 
-        jLabel116.setText("drawPlayer1");
+        jLabel116.setText("");
 
-        jLabel117.setText("0");
+        jLabel117.setText("");
 
-        jLabel118.setText("drawPlayer2");
+        jLabel118.setText("");
 
-        jLabel119.setText("0");
+        jLabel119.setText("");
 
-        jLabel120.setText("drawPC");
+        jLabel120.setText("");
 
-        jLabel121.setText("0");
+        jLabel121.setText("");
 
         jButton16.setBackground(new java.awt.Color(204, 0, 0));
         jButton16.setFont(new java.awt.Font("STCaiyun", 0, 12)); // NOI18N
@@ -1426,8 +1428,39 @@ public class TabbedMenu extends JPanel {
         reimpostaPasswordDialog.setVisible(true);
     }                                        
 
-    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        int[] stats;
+
+        /**Set StatsPingPong**/
+        stats=DbEscapeRoom.statsMiniGiochi(NameDb.PINGPONG);
+        jLabel105.setText(Integer.toString(stats[0]));
+        jLabel107.setText(Integer.toString(stats[1]));
+        jLabel109.setText(Integer.toString(stats[2]));
+        jLabel111.setText(Integer.toString(stats[3]));
+        jLabel113.setText(Integer.toString(stats[4]));
+        jLabel115.setText(Integer.toString(stats[5]));
+
+        /**Set StatsTris**/
+        stats=DbEscapeRoom.statsMiniGiochi(NameDb.TRIS);
+        jLabel35.setText(Integer.toString(stats[0]));
+        jLabel37.setText(Integer.toString(stats[1]));
+        jLabel73.setText(Integer.toString(stats[2]));
+        jLabel75.setText(Integer.toString(stats[3]));
+        jLabel80.setText(Integer.toString(stats[4]));
+        jLabel81.setText(Integer.toString(stats[5]));
+
+
+        /**Set StatsMorraCinese**/
+        stats=DbEscapeRoom.statsMiniGiochi(NameDb.MORRACINESE);
+        jLabel87.setText(Integer.toString(stats[0]));
+        jLabel89.setText(Integer.toString(stats[1]));
+        jLabel91.setText(Integer.toString(stats[2]));
+        jLabel93.setText(Integer.toString(stats[3]));
+        jLabel95.setText(Integer.toString(stats[4]));
+        jLabel97.setText(Integer.toString(stats[5]));
+
+
         tabbedPanel.setSelectedIndex(6);
     }                                         
 
