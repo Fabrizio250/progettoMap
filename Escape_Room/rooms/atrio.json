@@ -2,12 +2,12 @@
     "name": "atrio",
 
     "previous_room_path": "null",
-    "next_room_path": "rooms\\cucina.json",
+    "next_room_path": "rooms\\salone.json",
 
     "previous_room_name": "null",
-    "next_room_name": "cucina",
+    "next_room_name": "salone",
 
-    "backGroundPath": "images\\prigione.jpg",
+    "backGroundPath": "images\\cantina.png",
 
     "playerPathImageUP_0": "images\\pic_UP_0.png",
     "playerPathImageDOWN_0": "images\\pic_DOWN_0.png",
@@ -27,219 +27,215 @@
 
     "playerStartDirection": "DOWN",
     "playerStartPosition": {
-        "x": 3,
+        "x": 1,
         "y": 3
     },
     
     "objects" : [
-
-        {
-            "name": "keycoso",
-            "tag": "keypad",
-            "position": {
-                "x": 6,
-                "y": 2
-            },
-            "pathImage": "images\\pic_DOWN_2.png",
-            "goal_string": "12345",
-            "success_message": "complimenti hai sbloccato la porta",
-            "fail_message": "hahahaha fai schifo"
-        },
-
-        {
-            "name": "coso_rompibile",
-            "tag": "breakable",
-            "position": {
-                "x" : 3,
-                "y" : 3
-            },
-            "pathImage": "images\\player2.png",
-            "breakable_with_obj_name": "cacciavite",
-            "message" : "sembra che sto coso si possa rompere",
-            "broke_stage": [
-                {
-                    "message": " uanm si stc rumbenn 1",
-                    "path_image": "images\\pic_UP_2.png"
-                },
-                {
-                    "message": " uanm si stc rumbenn 2",
-                    "path_image": "images\\pic_DOWN_2.png"
-                },
-                {
-                    "message": " uanm si stc rumbenn 3",
-                    "path_image": "images\\pic_LEFT_2.png"
-                },
-                {
-                    "message": " uanm si stc rumbenn 4",
-                    "path_image": "images\\pic_RIGHT_2.png"
-                }
-            ]
-
-
-        },
-        
-        {
-            "name": "porta rotta",
-            "tag": "broken_door",
-            "position": {
-                "x": 4,
-                "y": 7
-            },
-            "pathImage": "images\\player2.png",
-            "broke_door_message": "u scem la porta è rotta aggiustala",
-            "fixed_door_message": "brv brv è aggiustt a port",
-            "fixable_with_name_object": "cacciavite",
-            "fixed_door": {
-                "name": "egress_door",
-                "tag": "door",
-                "position": {
-                    "x": 4,
-                    "y": 7
-                },
-
-                "pathImage": "images\\pic_RIGHT_1.png",
-                "isOpen": false,
-                "isExit": true,
-                "message": "la porta sembra chiusa<br>  trova la chiave ...",
-                "open_door_path_image": "images\\pic_UP_1.png"
-
-            }
-        },
-
-
-        {
-            "name": "uscem",
-            "tag": "boss",
-            "minigame": "Tris",
-            "entry_message": "ueeee u scem vu fa pesc e pesc",
-            "loser_message": "si nu fess",
-            "defeat_message": "oh zio pera mi hai sconfitto",
-            "pathImage": "images\\player2.png",
-            "position": {
-                "x": 0,
-                "y": 8
-            },
-            "defeat_position" : {
-                "x": 2,
-                "y": 4
-            }
-        },
-
-        {
-            "name": "uscem",
-            "tag": "boss",
-            "minigame": "Ping_Pong",
-            "entry_message": "ueeee u scem vu fa pesc e pesc",
-            "loser_message": "si nu fess",
-            "defeat_message": "oh zio pera mi hai sconfitto",
-            "pathImage": "images\\player2.png",
+           {
+            "name": "egress_door",
+            "tag": "door",
             "position": {
                 "x": 9,
-                "y": 0
-            },
-            "defeat_position" : {
-                "x": 2,
                 "y": 4
-            }
-        },
-        {
-            "name": "cacciavite",
-            "tag": "collectable",
-            "position": {
-                "x": 0,
-                "y": 0
-            },
-            "color":{
-                "r": 200,
-                "g": 200,
-                "b": 0,
-                "a": 128
-            },
-            "pathImage": "images\\player2.png",
-            "isPassable": true,
-            "isInteractable": false
-        },
-        {
-            "name": "egress_door",
-            "tag": "door",
-            "position": {
-                "x": 7,
-                "y": 7
             },
 
-            "pathImage": "images\\pic_RIGHT_1.png",
-            "isOpen": true,
-            "isExit": true,
-            "message": "la porta sembra chiusa<br>  trova la chiave ...",
-            "closed_door_path_image": "images\\pic_UP_1.png"
-
-        },
-
-        {
-            "name": "egress_door",
-            "tag": "door",
-            "position": {
-                "x": 8,
-                "y": 7
-            },
-
-            "pathImage": "images\\pic_RIGHT_1.png",
+            "pathImage": "images\\porta chiusa.png",
             "isOpen": false,
             "isExit": true,
             "message": "la porta sembra chiusa<br>  trova la chiave ...",
-            "open_door_path_image": "images\\pic_UP_1.png"
+            "open_door_path_image": "images\\porta aperta.png"
+            
+           
 
         },
-        {
-            "name": "lol",
-            "tag": "container",
+        
+        
+         { 
+            "name": "bara",
+            "tag": "basic",
             "position": {
-                "x": 8,
+                "x": 9,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\bara.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        { 
+            "name": "bara",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\bara.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        { 
+            "name": "bara",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 6
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\bara.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        { 
+            "name": "bara1",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\bara.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        { 
+            "name": "dispensa1",
+            "tag": "basic",
+            "position": {
+                "x": 6,
                 "y": 8
             },
-            "pathImage": "images\\pic_UP_0.png",
-            "brief": "le mie palle sono palle le tue palle anche sono palle però...<br>LE MIE PALLE SONO LE PALLE DEFINITIVE",
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\armadio.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        { 
+            "name": "dispensa2",
+            "tag": "basic",
+            "position": {
+                "x": 4,
+                "y": 8
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\armadio.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+
+
+          {
+            "name": "dispensa3",
+            "tag": "container",
+            "position": {
+                "x": 5,
+                "y": 8
+            },
+            "pathImage": "images\\armadio.png",
+            "brief": "Oggetti frugati",
             "objects": [
                 
                 {
-                    "name": "collectable item",
+                    "name": "lattina di pomodoro",
                     "tag": "collectable",
                     "position": {
                         "x": 7,
                         "y": 5
                     },
-                    "pathImage": "images\\player2.png"
+                    "pathImage": "images\\barattolo di pomodoro.png"
                 },
 
                 {
-                    "name": "key item",
+                    "name": "chiave1",
                     "tag": "key",
-                    "pathImage": "images\\player2.png"
+                    "pathImage": "images\\chiave1.png"
                 },
-                {
-                    "name": "lol3",
-                    "tag": "basic",
+                  {
+                    "name": "teschio",
+                    "tag": "collectable",
                     "position": {
-                        "x": 7,
+                        "x": 8,
                         "y": 5
                     },
-                    "color":{
-                        "r": 200,
-                        "g": 200,
-                        "b": 0,
-                        "a": 128
-                    },
-                    "pathImage": "images\\player2.png",
-                    "isPassable": true,
-                    "isInteractable": false
+                    "pathImage": "images\\teschio.png"
                 }
+            ]
+        },
+         
+        {
+            "name": "tavolo da lavoro",
+            "tag": "container",
+            "position": {
+                "x": 5,
+                "y": 0
+            },
+            "pathImage": "images\\tavolo da lavoro.png",
+            "brief": "Oggetti frugati",
+            "objects": [
+                
+                {
+                    "name": "motosega",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 5,
+                        "y": 0
+                    },
+                    "pathImage": "images\\motosega.png"
+                },
+                 
+                {
+                    "name": "chiave inglese",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 5,
+                        "y": 0
+                    },
+                    "pathImage": "images\\chiaveInglese.png"
+                },
 
+              
+                  {
+                    "name": "cacciavite",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 8,
+                        "y": 5
+                    },
+                    "pathImage": "images\\cacciavite.png"
+                }
             ]
         }
-
-        
-
-
 
     ]
 }

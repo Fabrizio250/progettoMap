@@ -1,0 +1,209 @@
+{
+     "name": "openSpace",
+
+    "previous_room_path": "rooms\\corridoio1.json",
+    "next_room_path": "StanzaFinale.json",
+
+    "previous_room_name": "corridoio1",
+    "next_room_name": "StanzaFinale",
+
+    "backGroundPath": "images\\salone.png",
+
+    "playerPathImageUP_0": "images\\pic_UP_0.png",
+    "playerPathImageDOWN_0": "images\\pic_DOWN_0.png",
+    "playerPathImageLEFT_0": "images\\pic_LEFT_0.png",
+    "playerPathImageRIGHT_0": "images\\pic_RIGHT_0.png",
+
+    "playerPathImageUP_1": "images\\pic_UP_1.png",
+    "playerPathImageDOWN_1": "images\\pic_DOWN_1.png",
+    "playerPathImageLEFT_1": "images\\pic_LEFT_1.png",
+    "playerPathImageRIGHT_1": "images\\pic_RIGHT_1.png",
+
+    "playerPathImageUP_2": "images\\pic_UP_2.png",
+    "playerPathImageDOWN_2": "images\\pic_DOWN_2.png",
+    "playerPathImageLEFT_2": "images\\pic_LEFT_2.png",
+    "playerPathImageRIGHT_2": "images\\pic_RIGHT_2.png",
+    
+     "playerStartDirection": "DOWN",
+    "playerStartPosition": {
+        "x": 1,
+        "y": 4
+        },
+    
+     
+        "objects" : [
+
+        {
+            "name": "porta con tastierino",
+            "tag": "keypad",
+            "position": {
+                "x": 9,
+                "y": 4
+            },
+            "pathImage": "images\\porta chiusa.png",
+            "goal_string": "6549",
+            "success_message": "complimenti hai sbloccato la porta",
+            "fail_message": "combinazione non corretta..."
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "exit_door",
+            "tag": "door",
+            "position": {
+                "x": 0,
+                "y": 4
+            },
+
+            "pathImage": "images\\porta aperta.png",
+            "isOpen": true,
+            "isExit": false,
+             "message": "cambio stanza",
+            "closed_door_path_image": "images\\portaApertaADestra.png"
+            
+
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 4,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 5,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },       
+        
+        {
+            "name": "tavolo tondo",
+            "tag": "basic",
+            "position": {
+                "x": 4,
+                "y": 4
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\tavolo tondo.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        
+
+        {
+            "name": "uomo morto",
+            "tag": "container",
+            "position": {
+                "x": 5,
+                "y": 8
+            },
+            "pathImage": "images\\uomo_morto_a_terra.png",
+            "brief": "Oggetti Frugabili",
+            "objects": [
+                
+                {
+                    "name": "combinazione1",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 9,
+                        "y": 3
+                    },
+                    "pathImage": "images\\foglio1.png"
+                },
+
+                {
+                    "name": "bottiglia",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 9,
+                        "y": 3
+                    },
+                    "pathImage": "images\\bottiglia con sangue.png"
+                }
+                
+            ]
+        },
+        
+        
+        {
+            "name": "machete",
+            "tag": "container",
+            "position": {
+                "x": 3,
+                "y": 2
+            },
+            "pathImage": "images\\coltello insanguinato.png",
+            "brief": "Oggetti Frugabili:",
+            "objects": [
+                
+                {
+                    "name": "combinazione2",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 7,
+                        "y": 5
+                    },
+                    "pathImage": "images\\foglio2.png"
+                }
+                
+            ]
+        }
+
+
+    ]
+}
+
