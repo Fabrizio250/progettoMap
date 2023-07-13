@@ -129,7 +129,11 @@ public class EscapeRoomGame extends EscapeRoom{
                     
                     // apri la porta
                     
-                    // setta obj_numericKeypad non interagibile
+                    DoorObjectSquare doorObj = (DoorObjectSquare)this.room.getObject(obj_numericKeypad.doorPosition);
+                    doorObj.open();
+                    this.room.addObject(doorObj);
+                    this.loadObjectSquare(this.room.getObject(doorObj.position));
+                    
                     
                 }else{
                     dialog_generic.setText(obj_numericKeypad.failMessage);

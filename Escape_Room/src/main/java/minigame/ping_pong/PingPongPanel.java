@@ -165,7 +165,7 @@ public class PingPongPanel extends MiniGame implements Runnable {
                 SwingUtilities.invokeAndWait(()->{
                     this.changeToParentPanel();
                 });
-                
+                     
                 Thread.sleep(200);
             } catch (InterruptedException ex) {
                 Logger.getLogger(PingPongPanel.class.getName()).log(Level.SEVERE, null, ex);

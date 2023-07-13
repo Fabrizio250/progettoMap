@@ -12,6 +12,7 @@ public class NumericKeypadObjectSquare extends ObjectSquare {
     String goalString;
     String successMessage;
     String failMessage;
+    Cord doorPosition;
     
     public NumericKeypadObjectSquare(JSONObject jsonObj) {
         super(
@@ -24,6 +25,8 @@ public class NumericKeypadObjectSquare extends ObjectSquare {
         this.goalString = jsonObj.getString("goal_string");
         this.failMessage = jsonObj.getString("fail_message");
         this.successMessage = jsonObj.getString("success_message");
+        this.doorPosition = new Cord(jsonObj.getJSONObject("door_position").getInt("x"),
+                     jsonObj.getJSONObject("door_position").getInt("y"));
     }
     
 }

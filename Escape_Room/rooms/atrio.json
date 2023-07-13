@@ -43,7 +43,11 @@
             "pathImage": "images\\pic_DOWN_2.png",
             "goal_string": "12345",
             "success_message": "complimenti hai sbloccato la porta",
-            "fail_message": "hahahaha fai schifo"
+            "fail_message": "hahahaha fai schifo",
+            "door_position": {
+                "x": 8,
+                "y": 7
+            }
         },
 
         {
