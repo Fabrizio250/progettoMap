@@ -9,8 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PingPongPanel extends MiniGame implements Runnable {
     static final int GAME_WIDTH = 1000;
@@ -155,6 +158,16 @@ public class PingPongPanel extends MiniGame implements Runnable {
         }
         
         if(score.player1 == 1 || score.player2 == 1){
+            try {
+                SwingUtilities.invokeAndWait(()->{
+                    this.changeToParentPanel();
+                });
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PingPongPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(PingPongPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if(score.player1 > score.player2){
                 if(gameMode == GameMode.MODE_STORIA){
                     this.bossObj.bossStatus = BossStatus.PLAYER_WIN;
@@ -164,10 +177,12 @@ public class PingPongPanel extends MiniGame implements Runnable {
                     this.bossObj.bossStatus = BossStatus.PLAYER_LOSE;
                 }
             }
-            this.endGame();
+            this.gameThread.interrupt();
+            //this.endGame();
         }
 
     }
+  
     
     public void endGame(){
         this.gameThread.interrupt();

@@ -3,11 +3,7 @@ package hasbullateam.escape_room.escape_room_game;
 
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.prefs.BackingStoreException;
 import javax.swing.JPanel;
 
 /**
@@ -41,7 +37,7 @@ public class SquarePanel extends JPanel implements Cloneable{
             this.setBackground( new Color(0,0,0,0) );
         }
         
-        if(pathImage != null){
+        if(pathImage != null && (!pathImage.equals(""))){
             backgroundImage = new ImageManager(pathImage);
         }
     }

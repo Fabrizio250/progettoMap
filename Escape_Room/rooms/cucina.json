@@ -60,9 +60,9 @@
                 "b": 0,
                 "a": 0
             },
-            "pathImage": "images\\pic_RIGHT_0.png",
+            "pathImage": "",
             "isPassable": false,
-            "isInteractable": true
+            "isInteractable": false
         }
 
     ]
