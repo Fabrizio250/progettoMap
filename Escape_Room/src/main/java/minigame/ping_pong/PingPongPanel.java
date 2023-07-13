@@ -1,5 +1,8 @@
 package minigame.ping_pong;
 
+import hasbullateam.escape_room.DbEscapeRoom;
+import hasbullateam.escape_room.type.NameDb;
+import hasbullateam.escape_room.type.Result;
 import minigame.MiniGame;
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.escape_room_game.RequestFocusListener;
@@ -157,10 +160,8 @@ public class PingPongPanel extends MiniGame implements Runnable {
             System.out.println("Player 1: "+score.player1);
         }
         
-        if(score.player1 == 1 || score.player2 == 1){
-            
-            
-            
+        if(score.player1 == 3|| score.player2 == 3){
+
             try {
                 SwingUtilities.invokeAndWait(()->{
                     this.changeToParentPanel();
@@ -182,7 +183,26 @@ public class PingPongPanel extends MiniGame implements Runnable {
                     this.bossObj.bossStatus = BossStatus.PLAYER_LOSE;
                 }
             }
-            
+
+
+            //aggiornamneto db
+            if (score.player1==3 && gameMode==GameMode.MODE_1v1){
+                JOptionPane.showMessageDialog(this, "Player1 Win!");
+                result= Result.WIN_PLAYER1;
+                DbEscapeRoom.incrementStats(NameDb.PINGPONG,result,gameMode);
+            }else {
+                if (score.player2==3){
+                    if (gameMode==GameMode.MODE_1vCPU){
+                        JOptionPane.showMessageDialog(this, "CPU Win!");
+                        result= Result.WIN_PLAYER2;
+                        DbEscapeRoom.incrementStats(NameDb.PINGPONG,result,GameMode.MODE_1vCPU);
+                    }else{
+                        JOptionPane.showMessageDialog(this, "Player2 Win!");
+                    }
+
+                }
+            }
+
             gameThread.interrupt();
             
         }
@@ -193,7 +213,6 @@ public class PingPongPanel extends MiniGame implements Runnable {
     public void endGame(){
 
             this.changeToParentPanel();
-            System.out.println("-----------lol 1");
             this.gameThread.interrupt();
 
         

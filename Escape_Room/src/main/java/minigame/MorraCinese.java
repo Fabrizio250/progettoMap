@@ -1,8 +1,12 @@
 package minigame;
 
+import hasbullateam.escape_room.DbEscapeRoom;
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.type.BossStatus;
 import hasbullateam.escape_room.type.GameMode;
+import hasbullateam.escape_room.type.NameDb;
+import hasbullateam.escape_room.type.Result;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -304,6 +308,9 @@ public class MorraCinese extends MiniGame {
         if(player1Wins == WINNING_SCORE || player2Wins == WINNING_SCORE){
             if (player1Wins == WINNING_SCORE) {
                 JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 1! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                //update stats
+                result= Result.WIN_PLAYER1;
+                DbEscapeRoom.incrementStats(NameDb.MORRACINESE,result,gameMode);
             }
             if (player2Wins == WINNING_SCORE) {
                 if (gameMode == GameMode.MODE_1v1) {
@@ -311,6 +318,8 @@ public class MorraCinese extends MiniGame {
                 } else {
                     JOptionPane.showMessageDialog(this, "Vittoria del Computer! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
                 }
+                result= Result.WIN_PLAYER2;
+                DbEscapeRoom.incrementStats(NameDb.MORRACINESE,result,gameMode);
             }
             
             if(gameMode == GameMode.MODE_STORIA){

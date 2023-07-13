@@ -1,8 +1,12 @@
 package minigame;
 
+import hasbullateam.escape_room.DbEscapeRoom;
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.type.BossStatus;
 import hasbullateam.escape_room.type.GameMode;
+import hasbullateam.escape_room.type.NameDb;
+import hasbullateam.escape_room.type.Result;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -93,7 +97,14 @@ public class Tris extends MiniGame implements ActionListener {
                     if (player1Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Hai vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+
+                        //update stats
+                        result= Result.WIN_PLAYER1;
+                        DbEscapeRoom.incrementStats(NameDb.TRIS,result,gameMode);
+
                         this.changeToParentPanel();
+
+
                     }
 
                     resetGame();
@@ -108,6 +119,9 @@ public class Tris extends MiniGame implements ActionListener {
                     if (player2Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 2! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                        //update stats
+                        result= Result.WIN_PLAYER2;
+                        DbEscapeRoom.incrementStats(NameDb.TRIS,result,gameMode);
                         this.changeToParentPanel();
                     }
 
@@ -137,6 +151,9 @@ public class Tris extends MiniGame implements ActionListener {
                     if (player1Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Hai vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                        //update stats
+                        result= Result.WIN_PLAYER1;
+                        DbEscapeRoom.incrementStats(NameDb.TRIS,result,gameMode);
                         
                         if(gameMode == GameMode.MODE_STORIA){
                             this.bossObj.bossStatus = BossStatus.PLAYER_WIN;
@@ -164,6 +181,9 @@ public class Tris extends MiniGame implements ActionListener {
                     if (computerWins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Il computer ha vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+                        //update stats
+                        result= Result.WIN_PLAYER2;
+                        DbEscapeRoom.incrementStats(NameDb.TRIS,result,gameMode);
                         
                         if(gameMode == GameMode.MODE_STORIA){
                             this.bossObj.bossStatus = BossStatus.PLAYER_LOSE;
