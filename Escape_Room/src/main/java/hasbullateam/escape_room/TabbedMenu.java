@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 
 /**
  *
@@ -1521,13 +1522,17 @@ public class TabbedMenu extends JPanel {
     /**buttonDocumentation**/
     private void docButtonActionPerformed(java.awt.event.ActionEvent evt) {
         //if (ServerDoc.IS_UP){
-        getDoc();
+        try {
+            getDoc();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "La richiesta non può essere inoltrata perchè il server non è ON!", "SERVER_DOWN",JOptionPane.ERROR_MESSAGE);
+        }
         //}else{
-        //  JOptionPane.showMessageDialog(this, "La richiesta non può essere inoltrata perchè il server è in down!", "SERVER_DOWN",JOptionPane.ERROR_MESSAGE);
+
         //}
     }
 
-    private void getDoc(){
+    private void getDoc() throws ConnectException {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target("http://localhost:4321");
 
