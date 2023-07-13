@@ -2,23 +2,15 @@
 package hasbullateam.escape_room.escape_room_game;
 
 
-import hasbullateam.escape_room.Menu;
-import hasbullateam.escape_room.TabbedMenu;
 import hasbullateam.escape_room.type.BossStatus;
-
 import hasbullateam.escape_room.type.Command;
 import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.Direction;
 import hasbullateam.escape_room.type.InventoryFullException;
 import hasbullateam.escape_room.type.RoomNotFoundException;
-
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import javax.swing.SwingUtilities;
 
 /**
