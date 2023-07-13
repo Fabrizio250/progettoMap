@@ -11,8 +11,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.Duration;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PingPongPanel extends MiniGame implements Runnable {
     static final int GAME_WIDTH = 1000;
@@ -34,19 +32,12 @@ public class PingPongPanel extends MiniGame implements Runnable {
 
     
     public PingPongPanel(JPanel parentPanel, GameMode gameMode, BossObjectSquare bossObj){
-        super(parentPanel, gameMode);
-        
-        
+        super(parentPanel, gameMode, bossObj);
         
         this.newPaddles();
         this.newBall();
         score = new Score(GAME_WIDTH,GAME_HEIGHT);
         
-        // rimuovi il listener dalla Room
-        if(gameMode == GameMode.MODE_STORIA){
-            
-            this.bossObj = bossObj;
-        }
 
         this.setFocusable(true);
 

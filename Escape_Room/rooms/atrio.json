@@ -107,7 +107,23 @@
         },
 
 
-
+        {
+            "name": "uscem",
+            "tag": "boss",
+            "minigame": "Tris",
+            "entry_message": "ueeee u scem vu fa pesc e pesc",
+            "loser_message": "si nu fess",
+            "defeat_message": "oh zio pera mi hai sconfitto",
+            "pathImage": "images\\player2.png",
+            "position": {
+                "x": 0,
+                "y": 8
+            },
+            "defeat_position" : {
+                "x": 2,
+                "y": 4
+            }
+        },
 
         {
             "name": "uscem",

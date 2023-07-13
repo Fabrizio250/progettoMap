@@ -1456,6 +1456,7 @@ public class TabbedMenu extends JPanel {
     
     /**button Tris 1 vs 1**/
     private void buttonTris1vs1(java.awt.event.ActionEvent evt){
+        gotoTris1v1.run();
     }
     
     /**button Tris 1 vs online**/
@@ -1464,10 +1465,12 @@ public class TabbedMenu extends JPanel {
     
     /**button Tris 1 vs PC**/
     private void buttonTris1vsPC(java.awt.event.ActionEvent evt){
+        gotoTris1vCPU.run();
     }
     
     /**button Morra Cinese 1 vs 1 **/
     private void buttonMorraCinese1vs1(java.awt.event.ActionEvent evt){
+        gotoMorraCinese1v1.run();
     }
     
     /**button Morra Cinese 1 vs online **/
@@ -1476,6 +1479,7 @@ public class TabbedMenu extends JPanel {
     
     /**button Morra Cinese 1 vs PC **/
     private void buttonMorraCinese1vsPC(java.awt.event.ActionEvent evt){
+        gotoMorraCinese1vCPU.run();
     }
 
     /**buttonDocumentation**/

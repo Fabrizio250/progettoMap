@@ -1,11 +1,14 @@
 package minigame;
 
+import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
+import hasbullateam.escape_room.type.BossStatus;
+import hasbullateam.escape_room.type.GameMode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
 
-public class Tris extends JPanel implements ActionListener {
+public class Tris extends MiniGame implements ActionListener {
     private final JButton[][] buttons;
     private final JLabel player1WinsLabel;
     private final JLabel player2WinsLabel;
@@ -16,23 +19,24 @@ public class Tris extends JPanel implements ActionListener {
     private int computerWins;
     private boolean gameOver;
     private boolean player1Turn;
-    private int modalitaScelta;
 
-    public Tris(int modalitaScelta) {
-        super();
-        this.modalitaScelta=modalitaScelta;
+
+    public Tris(JPanel parentPanel, GameMode gameMode, BossObjectSquare bossObj) {
+        super(parentPanel, gameMode, bossObj);
+        
+
         buttons = new JButton[3][3];
         player1WinsLabel = new JLabel();
         player2WinsLabel = new JLabel();
         computerWinsLabel = new JLabel();
 
-        if (modalitaScelta == 1) {
+        if (gameMode == GameMode.MODE_1v1) {
             player1WinsLabel.setText("Giocatore 1: 0");
             player2WinsLabel.setText("Giocatore 2: 0");
             player1Wins = 0;
             player2Wins = 0;
             player1Turn = true;
-        } else if (modalitaScelta == 2) {
+        } else { // Storia o 1vCpu
             player1WinsLabel.setText("Giocatore: 0");
             computerWinsLabel.setText("Computer: 0");
             player1Wins = 0;
@@ -52,9 +56,9 @@ public class Tris extends JPanel implements ActionListener {
         }
 
         JPanel scorePanel = new JPanel(new GridLayout(1, 2));
-        if (modalitaScelta == 1) {
+        if (gameMode == GameMode.MODE_1v1) {
             setWinsLabels(player1WinsLabel, player2WinsLabel, scorePanel);
-        } else if (modalitaScelta == 2) {
+        } else {
             setWinsLabels(player1WinsLabel, computerWinsLabel, scorePanel);
         }
 
@@ -64,9 +68,14 @@ public class Tris extends JPanel implements ActionListener {
         this.add(mainPanel);
         setVisible(true);
     }
+    
+    public Tris(JPanel parentPanel, GameMode gameMode){
+        this(parentPanel, gameMode, null);
+    }
+    
     public void actionPerformed(ActionEvent e) {
         JButton clickedButton = (JButton) e.getSource();
-        if(modalitaScelta == 1){
+        if(gameMode == GameMode.MODE_1v1){
             if (clickedButton.getText().equals("") && !gameOver) {
                 if (player1Turn) {
                     clickedButton.setText("X");
@@ -84,7 +93,7 @@ public class Tris extends JPanel implements ActionListener {
                     if (player1Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Hai vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
+                        this.changeToParentPanel();
                     }
 
                     resetGame();
@@ -99,7 +108,7 @@ public class Tris extends JPanel implements ActionListener {
                     if (player2Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Vittoria del Giocatore 2! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
+                        this.changeToParentPanel();
                     }
 
                     resetGame();
@@ -113,7 +122,7 @@ public class Tris extends JPanel implements ActionListener {
             }
         }
 
-        else if (modalitaScelta == 2 ) {
+        else {
 
 
             if (clickedButton.getText().equals("")  && !gameOver) {
@@ -128,7 +137,12 @@ public class Tris extends JPanel implements ActionListener {
                     if (player1Wins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Hai vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
+                        
+                        if(gameMode == GameMode.MODE_STORIA){
+                            this.bossObj.bossStatus = BossStatus.PLAYER_WIN;
+                        }
+                        
+                        this.changeToParentPanel();
                     }
 
                     resetGame();
@@ -150,7 +164,12 @@ public class Tris extends JPanel implements ActionListener {
                     if (computerWins == 3) {
                         gameOver = true;
                         JOptionPane.showMessageDialog(this, "Il computer ha vinto! Gioco terminato.", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
-                        System.exit(0);
+                        
+                        if(gameMode == GameMode.MODE_STORIA){
+                            this.bossObj.bossStatus = BossStatus.PLAYER_LOSE;
+                        }
+                        
+                        this.changeToParentPanel();
                     }
 
                     resetGame();

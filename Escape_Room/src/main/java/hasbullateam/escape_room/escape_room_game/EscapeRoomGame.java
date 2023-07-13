@@ -101,7 +101,11 @@ public class EscapeRoomGame extends EscapeRoom{
                     this.addKeyListener(new KeyboardInput());
                     this.setFocusable(true);
                     this.requestFocus();
-                    
+                }else{
+                    this.addAncestorListener(new RequestFocusListener());
+                    this.addKeyListener(new KeyboardInput());
+                    this.setFocusable(true);
+                    this.requestFocus();
                 }
                 
                 

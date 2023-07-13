@@ -8,6 +8,7 @@ import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.GameMode;
 import java.io.Serializable;
 import javax.swing.JPanel;
+import minigame.Tris;
 import org.json.JSONObject;
 
 /**
@@ -53,6 +54,9 @@ public class BossObjectSquare extends ObjectSquare implements Serializable{
                 return new PingPongPanel(previousPanel, GameMode.MODE_STORIA, this);
             }
             
+            case "Tris" -> {
+                return new Tris(previousPanel, GameMode.MODE_STORIA, this);
+            }
             
         }
         return null;
