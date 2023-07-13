@@ -13,6 +13,8 @@ import hasbullateam.escape_room.type.InventoryFullException;
 import hasbullateam.escape_room.type.RoomNotFoundException;
 
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -72,8 +74,9 @@ public class EscapeRoomGame extends EscapeRoom{
         highlightFacingObject();
         
         if(obj_boss != null && this.dialog == null){
+            
             if(obj_boss.bossStatus != BossStatus.IN_GAME && obj_boss.bossStatus != BossStatus.NOT_IN_GAME){
-                this.setWindowSize();
+
                 if(obj_boss.bossStatus == BossStatus.PLAYER_WIN){
                     
                     dialog_generic = new TextDialog(this);

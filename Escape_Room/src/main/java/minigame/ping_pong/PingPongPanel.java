@@ -158,16 +158,21 @@ public class PingPongPanel extends MiniGame implements Runnable {
         }
         
         if(score.player1 == 1 || score.player2 == 1){
+            
+            
+            
             try {
                 SwingUtilities.invokeAndWait(()->{
                     this.changeToParentPanel();
                 });
-                Thread.sleep(500);
+                
+                Thread.sleep(200);
             } catch (InterruptedException ex) {
                 Logger.getLogger(PingPongPanel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InvocationTargetException ex) {
                 Logger.getLogger(PingPongPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
             if(score.player1 > score.player2){
                 if(gameMode == GameMode.MODE_STORIA){
                     this.bossObj.bossStatus = BossStatus.PLAYER_WIN;
@@ -177,16 +182,21 @@ public class PingPongPanel extends MiniGame implements Runnable {
                     this.bossObj.bossStatus = BossStatus.PLAYER_LOSE;
                 }
             }
-            this.gameThread.interrupt();
-            //this.endGame();
+            
+            gameThread.interrupt();
+            
         }
 
     }
   
     
     public void endGame(){
-        this.gameThread.interrupt();
-        this.changeToParentPanel();
+
+            this.changeToParentPanel();
+            System.out.println("-----------lol 1");
+            this.gameThread.interrupt();
+
+        
     }
 
     public void run(){
@@ -209,6 +219,7 @@ public class PingPongPanel extends MiniGame implements Runnable {
                 }
                 Thread.sleep(Duration.ZERO);
             }catch(InterruptedException e){
+                System.out.println("interrotto!!");
                 break;
             }
 

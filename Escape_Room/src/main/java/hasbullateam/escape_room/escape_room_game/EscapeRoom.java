@@ -37,7 +37,7 @@ import org.json.*;
 
 public class EscapeRoom extends GridPanel{
     static final int GRID_SIZE = 10;
-    static final int WINDOW_SIZE = 800;
+    public static final int WINDOW_SIZE = 800;
     public PlayerSquarePanel player;
     public Room room;
     TextDialog dialog;

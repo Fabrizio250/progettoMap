@@ -4,10 +4,6 @@ package hasbullateam.escape_room.escape_room_game;
 import hasbullateam.escape_room.type.Cord;
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -60,11 +56,4 @@ public class ObjectSquare implements Serializable, Cloneable{
                 this.pathImage,this.isPassable,this.isInteractable);
     }
 
-    
-    
-    
-    
-    
-    
-    
 }
