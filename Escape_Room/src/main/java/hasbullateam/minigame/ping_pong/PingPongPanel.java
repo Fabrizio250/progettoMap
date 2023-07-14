@@ -1,9 +1,9 @@
-package minigame.ping_pong;
+package hasbullateam.minigame.ping_pong;
 
-import hasbullateam.escape_room.DbEscapeRoom;
+import hasbullateam.escape_room.database.DbEscapeRoom;
 import hasbullateam.escape_room.type.NameDb;
 import hasbullateam.escape_room.type.Result;
-import minigame.MiniGame;
+import hasbullateam.minigame.MiniGame;
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.escape_room_game.RequestFocusListener;
 import hasbullateam.escape_room.type.BossStatus;
@@ -185,23 +185,27 @@ public class PingPongPanel extends MiniGame implements Runnable {
             }
 
 
-            //aggiornamneto db
-            if (score.player1==3 && gameMode==GameMode.MODE_1v1){
-                JOptionPane.showMessageDialog(this, "Player1 Win!");
-                result= Result.WIN_PLAYER1;
-                DbEscapeRoom.incrementStats(NameDb.PINGPONG,result,gameMode);
-            }else {
-                if (score.player2==3){
-                    if (gameMode==GameMode.MODE_1vCPU){
-                        JOptionPane.showMessageDialog(this, "CPU Win!");
-                        result= Result.WIN_PLAYER2;
-                        DbEscapeRoom.incrementStats(NameDb.PINGPONG,result,GameMode.MODE_1vCPU);
-                    }else{
-                        JOptionPane.showMessageDialog(this, "Player2 Win!");
+            //aggiornamento db
+            if (gameMode!=GameMode.MODE_STORIA){
+                if (score.player1==3 || score.player2==3){
+                    if (gameMode==GameMode.MODE_1v1 || gameMode==GameMode.MODE_1vCPU){
+                        if (score.player1==3){
+                            JOptionPane.showMessageDialog(this, "Player1 Win!");
+                            result= Result.WIN_PLAYER1;
+                            DbEscapeRoom.incrementStats(NameDb.PINGPONG,result,gameMode);
+                        }else {
+                            JOptionPane.showMessageDialog(this, "Player2 Win!");
+                            result= Result.WIN_PLAYER2;
+                            DbEscapeRoom.incrementStats(NameDb.PINGPONG,result,gameMode);
+                        }
+                    }else {
+                        if (score.player1==3){
+                            JOptionPane.showMessageDialog(this, "Player1 Win!");
+                        }
                     }
-
                 }
             }
+
 
             gameThread.interrupt();
             

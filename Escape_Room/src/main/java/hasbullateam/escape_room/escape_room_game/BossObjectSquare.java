@@ -2,14 +2,14 @@
 package hasbullateam.escape_room.escape_room_game;
 
 
-import minigame.ping_pong.PingPongPanel;
+import hasbullateam.minigame.ping_pong.PingPongPanel;
 import hasbullateam.escape_room.type.BossStatus;
 import hasbullateam.escape_room.type.Cord;
 import hasbullateam.escape_room.type.GameMode;
 import java.io.Serializable;
 import javax.swing.JPanel;
-import minigame.MorraCinese;
-import minigame.Tris;
+import hasbullateam.minigame.MorraCinese;
+import hasbullateam.minigame.Tris;
 import org.json.JSONObject;
 
 /**

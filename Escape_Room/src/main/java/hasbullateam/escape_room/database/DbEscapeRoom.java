@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package hasbullateam.escape_room;
+package hasbullateam.escape_room.database;
 
 /**
  *
  * @author gioel
  */
 
+import hasbullateam.escape_room.TabbedMenu;
 import hasbullateam.escape_room.type.GameMode;
 import hasbullateam.escape_room.type.NameDb;
 import hasbullateam.escape_room.type.Result;
@@ -26,7 +27,6 @@ public class DbEscapeRoom {
 
     /**OK**/
     public static void createTable(){
-        System.out.println("miao");
         try (Connection connection = DriverManager.getConnection(jdbcUrl, dbusername, dbpassword);
              Statement statement = connection.createStatement()) {
 
@@ -286,7 +286,7 @@ public class DbEscapeRoom {
                 int i = 0;
                 while (i<=5){
                     stats[i] = resultSet.getInt(i+1);
-                    System.out.println(stats[i]);
+                    //System.out.println(stats[i]);
                     i++;
                 }
             }
@@ -302,18 +302,18 @@ public class DbEscapeRoom {
     public static void printStatsDb(NameDb nameDb){
         try (Connection connection = DriverManager.getConnection(jdbcUrl, dbusername, dbpassword)) {
             String query = "SELECT * from "+nameDb.getValue()+";";
-            System.out.println(query);
+            //System.out.println(query);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){
-                System.out.println("Id: "+resultSet.getInt(1));
-                System.out.println("Id_user: "+resultSet.getInt(2));
-                System.out.println("WinPlayer1: "+resultSet.getInt(3));
-                System.out.println("WinPlayer2: "+resultSet.getInt(4));
-                System.out.println("WinPC: "+resultSet.getInt(5));
-                System.out.println("losePlayer1: "+resultSet.getInt(6));
-                System.out.println("losePlayer2: "+resultSet.getInt(7));
-                System.out.println("losePC: "+resultSet.getInt(8));
+               // System.out.println("Id: "+resultSet.getInt(1));
+                //System.out.println("Id_user: "+resultSet.getInt(2));
+                //System.out.println("WinPlayer1: "+resultSet.getInt(3));
+                //System.out.println("WinPlayer2: "+resultSet.getInt(4));
+                //System.out.println("WinPC: "+resultSet.getInt(5));
+                //System.out.println("losePlayer1: "+resultSet.getInt(6));
+               // System.out.println("losePlayer2: "+resultSet.getInt(7));
+                //System.out.println("losePC: "+resultSet.getInt(8));
             }
         } catch (SQLException e) {
             e.printStackTrace();

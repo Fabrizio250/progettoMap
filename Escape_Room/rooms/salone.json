@@ -1,0 +1,298 @@
+{
+    
+     "name": "salone",
+
+    "previous_room_path": "rooms\\atrio.json",
+    "next_room_path": "rooms\\corridoio1.json",
+
+    "previous_room_name": "atrio",
+    "next_room_name": "corridoio1",
+
+    "backGroundPath": "images\\salone.png",
+
+    "playerPathImageUP_0": "images\\pic_UP_0.png",
+    "playerPathImageDOWN_0": "images\\pic_DOWN_0.png",
+    "playerPathImageLEFT_0": "images\\pic_LEFT_0.png",
+    "playerPathImageRIGHT_0": "images\\pic_RIGHT_0.png",
+
+    "playerPathImageUP_1": "images\\pic_UP_1.png",
+    "playerPathImageDOWN_1": "images\\pic_DOWN_1.png",
+    "playerPathImageLEFT_1": "images\\pic_LEFT_1.png",
+    "playerPathImageRIGHT_1": "images\\pic_RIGHT_1.png",
+
+    "playerPathImageUP_2": "images\\pic_UP_2.png",
+    "playerPathImageDOWN_2": "images\\pic_DOWN_2.png",
+    "playerPathImageLEFT_2": "images\\pic_LEFT_2.png",
+    "playerPathImageRIGHT_2": "images\\pic_RIGHT_2.png",
+
+
+    "playerStartDirection": "DOWN",
+    "playerStartPosition": {
+        "x": 1,
+        "y": 4
+    },
+    "objects" : [
+           {
+            "name": "porta rotta",
+            "tag": "broken_door",
+            "position": {
+                "x": 9,
+                "y": 4
+            },
+            "pathImage": "images\\porta chiusa.png",
+            "broke_door_message": "mmm.... la porta sembra rotta, bisogna trovare qualcosa per aggiustarla",
+            "fixed_door_message": "grande!!, hai aggiustato la porta",
+            "fixable_with_name_object": "cacciavite",
+            "fixed_door": {
+                "name": "porta_APERTA",
+                "tag": "door",
+                "position": {
+                    "x": 9,
+                    "y": 4
+                },
+
+                "pathImage": "images\\porta chiusa.png",
+                "isOpen": false,
+                "isExit": true,
+                "message": "la porta sembra chiusa<br>  trova la chiave ...",
+                "open_door_path_image": "images\\porta aperta.png"
+
+            }
+        },
+         {
+            "name": "exit_door",
+            "tag": "door",
+            "position": {
+                "x": 0,
+                "y": 4
+            },
+
+            "pathImage": "images\\portaApertaADestra.png",
+            "isOpen": true,
+            "isExit": false,
+             "message": "cambio stanza",
+            "closed_door_path_image": "images\\portaApertaADestra.png"
+            
+
+        },
+        
+        
+         { 
+            "name": "bara",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\bara.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+      
+   
+        { 
+            "name": "bara",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\bara.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        { 
+            "name": "dispensa",
+            "tag": "basic",
+            "position": {
+                "x": 0,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\dispensa.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        { 
+            "name": "dispensa",
+            "tag": "basic",
+            "position": {
+                "x": 0,
+                "y": 8
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\dispensa.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        { 
+            "name": "dispensa",
+            "tag": "basic",
+            "position": {
+                "x": 0,
+                "y": 3
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\dispensa.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+         { 
+            "name": "televisione",
+            "tag": "basic",
+            "position": {
+                "x": 4,
+                "y": 4
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\televisione.png",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 4,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 5,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },       
+         
+        {
+            "name": "divano",
+            "tag": "container",
+            "position": {
+                "x": 4,
+                "y": 8
+            },
+            "pathImage": "images\\divano.png",
+            "brief": "Oggetti frugati",
+            "objects": [
+                
+                {
+                    "name": "occhiali rotti",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 4,
+                        "y": 3
+                    },
+                    "pathImage": "images\\occhiali rotti.png"
+                },
+                 
+                {
+                    "name": "chiave ",
+                    "tag": "key",
+                    "position": {
+                        "x": 5,
+                        "y": 0
+                    },
+                    "pathImage": "images\\chiave2.png"
+                },
+
+              
+                  {
+                    "name": "teschio",
+                    "tag": "collectable",
+                    "position": {
+                        "x": 8,
+                        "y": 5
+                    },
+                    "pathImage": "images\\teschio.png"
+                }
+            ]
+        }
+        
+        
+    ]
+        
+}
+         
+

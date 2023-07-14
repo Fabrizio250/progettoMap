@@ -3,13 +3,13 @@ package hasbullateam.escape_room;
 
 
 import hasbullateam.escape_room.escape_room_game.EscapeRoomGame;
-import minigame.ping_pong.PingPongPanel;
+import hasbullateam.minigame.ping_pong.PingPongPanel;
 import hasbullateam.escape_room.type.GameMode;
 
 import javax.swing.*;
 import java.util.function.Consumer;
-import minigame.MorraCinese;
-import minigame.Tris;
+import hasbullateam.minigame.MorraCinese;
+import hasbullateam.minigame.Tris;
 
 /**
  *

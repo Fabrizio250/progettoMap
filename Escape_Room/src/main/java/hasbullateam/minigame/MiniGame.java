@@ -1,5 +1,5 @@
 
-package minigame;
+package hasbullateam.minigame;
 
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.escape_room_game.EscapeRoom;

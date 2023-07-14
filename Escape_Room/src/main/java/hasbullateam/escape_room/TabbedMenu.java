@@ -2,6 +2,7 @@
 package hasbullateam.escape_room;
 
 
+import hasbullateam.escape_room.database.DbEscapeRoom;
 import hasbullateam.escape_room.type.NameDb;
 
 import javax.swing.*;
@@ -1564,7 +1565,6 @@ public class TabbedMenu extends JPanel {
             }
         } else {
             // La chiamata non ha avuto successo
-            System.out.println("Error!!!");
             JOptionPane.showMessageDialog(this, "Errore in chiamata o server in down!", "SERVER_ERROR",JOptionPane.ERROR_MESSAGE);
         }
 

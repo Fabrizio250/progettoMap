@@ -1,6 +1,6 @@
-package minigame;
+package hasbullateam.minigame;
 
-import hasbullateam.escape_room.DbEscapeRoom;
+import hasbullateam.escape_room.database.DbEscapeRoom;
 import hasbullateam.escape_room.escape_room_game.BossObjectSquare;
 import hasbullateam.escape_room.type.BossStatus;
 import hasbullateam.escape_room.type.GameMode;

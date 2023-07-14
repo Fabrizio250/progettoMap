@@ -1,4 +1,4 @@
-package minigame.ping_pong;
+package hasbullateam.minigame.ping_pong;
 
 import java.awt.*;
 import java.util.Random;

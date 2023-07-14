@@ -1,0 +1,581 @@
+{
+    "name": "stanza_rossa",
+
+    "previous_room_path": "rooms\\corridoio1.json",
+    "next_room_path": "rooms\\openSpace.json",
+
+    "previous_room_name": "corridoio1",
+    "next_room_name": "open Space",
+
+    "backGroundPath": "images\\stanza rossa.png",
+
+    "playerPathImageUP_0": "images\\pic_UP_0.png",
+    "playerPathImageDOWN_0": "images\\pic_DOWN_0.png",
+    "playerPathImageLEFT_0": "images\\pic_LEFT_0.png",
+    "playerPathImageRIGHT_0": "images\\pic_RIGHT_0.png",
+
+    "playerPathImageUP_1": "images\\pic_UP_1.png",
+    "playerPathImageDOWN_1": "images\\pic_DOWN_1.png",
+    "playerPathImageLEFT_1": "images\\pic_LEFT_1.png",
+    "playerPathImageRIGHT_1": "images\\pic_RIGHT_1.png",
+
+    "playerPathImageUP_2": "images\\pic_UP_2.png",
+    "playerPathImageDOWN_2": "images\\pic_DOWN_2.png",
+    "playerPathImageLEFT_2": "images\\pic_LEFT_2.png",
+    "playerPathImageRIGHT_2": "images\\pic_RIGHT_2.png",
+
+
+    "playerStartDirection": "DOWN",
+    "playerStartPosition": {
+        "x": 1,
+        "y": 4
+    },
+   "objects" : [
+
+      
+        
+        
+      
+        {
+            "name": "boss2",
+            "tag": "boss",
+            "minigame": "Morra_Cinese",
+            "entry_message": "ho già affettato qualche tuo simile....<br>adesso tocca a te!!",
+            "loser_message": "qualche altro organo per la mia collezione.....",
+            "defeat_message": "noooo, devo ancora ultimare la mia collezione...",
+            "pathImage": "images\\boss2.png",
+            "position": {
+                "x": 8,
+                "y": 4
+            },
+            "defeat_position" : {
+                "x": 8,
+                "y": 5
+            }
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 3
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 5
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+
+        
+          {
+            "name": "exit_door",
+            "tag": "door",
+            "position": {
+                "x": 0,
+                "y": 4
+            },
+
+            "pathImage": "images\\porta aperta.png",
+            "isOpen": true,
+            "isExit": false,
+             "message": "cambio stanza",
+            "closed_door_path_image": "images\\portaApertaADestra.png"
+            
+
+        },
+
+          {
+            "name": "exit_door",
+            "tag": "door",
+            "position": {
+                "x": 9,
+                "y": 4
+            },
+
+            "pathImage": "images\\porta aperta.png",
+            "isOpen": true,
+            "isExit": true,
+             "message": "cambio stanza",
+            "closed_door_path_image": "images\\porta aperta.png"
+            
+
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 0,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 1,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 2,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 2,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 0
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 7,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 8,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        
+        
+        
+        
+        
+         {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 0,
+                "y": 6
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 1,
+                "y": 6
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 2,
+                "y": 6
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 2,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 6
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 8
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 8
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 6
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 7,
+                "y": 6
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 8,
+                "y": 6
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 8,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 2
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ]
+}

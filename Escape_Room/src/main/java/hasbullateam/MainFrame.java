@@ -1,5 +1,7 @@
 
-package hasbullateam.escape_room;
+package hasbullateam;
+
+import hasbullateam.escape_room.GameEngine;
 
 import javax.swing.*;
 

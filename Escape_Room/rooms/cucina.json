@@ -47,6 +47,26 @@
             
 
         },
+        
+         {
+            "name": "tavolo tondo",
+            "tag": "basic",
+            "position": {
+                "x": 4,
+                "y": 4
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "images\\tavolo tondo.png",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        
+        
         {
             "name": "lol",
             "tag": "basic",

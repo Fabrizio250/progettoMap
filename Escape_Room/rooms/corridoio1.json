@@ -1,0 +1,450 @@
+{
+    "name": "corridoio1",
+
+    "previous_room_path": "rooms\\salone.json",
+    "next_room_path": "rooms\\stanza_rossa.json",
+
+    "previous_room_name": "salone",
+    "next_room_name": "stanza_rossa",
+
+    "backGroundPath": "images\\corridoio1.png",
+
+    "playerPathImageUP_0": "images\\pic_UP_0.png",
+    "playerPathImageDOWN_0": "images\\pic_DOWN_0.png",
+    "playerPathImageLEFT_0": "images\\pic_LEFT_0.png",
+    "playerPathImageRIGHT_0": "images\\pic_RIGHT_0.png",
+
+    "playerPathImageUP_1": "images\\pic_UP_1.png",
+    "playerPathImageDOWN_1": "images\\pic_DOWN_1.png",
+    "playerPathImageLEFT_1": "images\\pic_LEFT_1.png",
+    "playerPathImageRIGHT_1": "images\\pic_RIGHT_1.png",
+
+    "playerPathImageUP_2": "images\\pic_UP_2.png",
+    "playerPathImageDOWN_2": "images\\pic_DOWN_2.png",
+    "playerPathImageLEFT_2": "images\\pic_LEFT_2.png",
+    "playerPathImageRIGHT_2": "images\\pic_RIGHT_2.png",
+    "playerStartDirection": "DOWN",
+    "playerStartPosition": {
+        "x": 1,
+        "y": 4
+    },
+    "objects" : [
+             {
+            "name": "exit_door",
+            "tag": "door",
+            "position": {
+                "x": 9,
+                "y": 4
+            },
+
+            "pathImage": "images\\porta aperta.png",
+            "isOpen": true,
+            "isExit": true,
+             "message": "cambio stanza",
+            "closed_door_path_image": "images\\porta aperta.png"
+            
+
+        },
+          {
+            "name": "exit_door",
+            "tag": "door",
+            "position": {
+                "x": 0,
+                "y": 4
+            },
+
+            "pathImage": "images\\porta aperta.png",
+            "isOpen": true,
+            "isExit": false,
+             "message": "cambio stanza",
+            "closed_door_path_image": "images\\portaApertaADestra.png"
+            
+
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 0,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 1,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        }, {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 2,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 4,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 5,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 7,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        }, {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 8,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 1
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 0,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 1,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 2,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 3,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 4,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 5,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 6,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 7,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 8,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },{
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 7
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        {
+            "name": "block",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 3
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        
+         {
+            "name": "lol",
+            "tag": "basic",
+            "position": {
+                "x": 9,
+                "y": 5
+            },
+            "color":{
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+            },
+            "pathImage": "",
+            "isPassable": false,
+            "isInteractable": false
+        },
+        
+        
+        {
+            "name": "boss1",
+            "tag": "boss",
+            "minigame": "Tris",
+            "entry_message": " Stavi tentando di scappare??? Non posso lasciare <br>che la mia cena vada via....",
+            "loser_message": "Stasera potrò finalmente mangiare carne prelibata...",
+            "defeat_message": "oh no dannazione, mi hai sconfitto.... che ne sarà di me......",
+            "pathImage": "images\\boss1.png",
+            "position": {
+                "x": 8,
+                "y": 4
+            },
+            "defeat_position" : {
+                "x": 9,
+                "y": 3
+            }
+        }    
+        
+    ]
+        
+}
+         
+
+
